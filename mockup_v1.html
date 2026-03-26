@@ -11,24 +11,28 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{--navy:#1A1A2E;--gold:#C9A84C;--ivory:#F5EDD6;--ivory-dark:#EDE0C4;--stone:#C8C0B0;--text-dark:#1A1A2E;--text-mid:#5A5043;--text-light:#8A7E6E;--white:#FFFDF8;}
 html{scroll-behavior:smooth;}
-body{font-family:'Montserrat',sans-serif;background:var(--white);color:var(--text-dark);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--text-dark);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+body.menu-open{overflow:hidden;touch-action:none;}
 button{border-radius:5px;}
 .page{display:none;}.page.active{display:block;}
+#page-store,#page-diamonds,#page-skincare,#page-enquire{padding-top:100px;}
 
 /* ── NAV ── */
-.site-nav{position:sticky;top:0;z-index:300;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;border-bottom:1px solid rgba(201,168,76,0.2);}
-.nav-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--gold);letter-spacing:1px;cursor:pointer;line-height:1.1;flex-shrink:0;}
-.nav-logo small{font-size:8px;font-style:normal;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:rgba(245,237,214,0.3);display:block;}
-.nav-links{display:flex;gap:24px;list-style:none;position:absolute;left:50%;transform:translateX(-50%);}
+.site-nav{position:absolute;top:0;left:0;right:0;z-index:300;background:transparent;backdrop-filter:none;display:flex;align-items:center;justify-content:flex-end;padding:0 40px;height:100px;border-bottom:1px solid transparent;transition:background 0.25s,border-color 0.25s,backdrop-filter 0.25s;}
+.site-nav:hover,.site-nav:focus-within{background:rgba(12,14,34,0.52);backdrop-filter:blur(8px);border-bottom-color:rgba(201,168,76,0.22);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-style:normal;font-size:clamp(34px,5vw,80px);color:rgba(245,237,214,0.95);letter-spacing:1px;cursor:pointer;line-height:1.08;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:calc(100% - 300px);text-align:center;white-space:nowrap;overflow:visible;padding-bottom:4px;z-index:1;}
+.nav-logo small{display:none;}
+.nav-links{display:flex;gap:24px;list-style:none;position:absolute;left:50%;top:66px;transform:translateX(-50%);opacity:0;pointer-events:none;transition:opacity 0.2s,transform 0.2s;z-index:2;}
+.site-nav:hover .nav-links,.site-nav:focus-within .nav-links{opacity:1;pointer-events:auto;transform:translateX(-50%);}
 .nav-links a{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,214,0.65);text-decoration:none;cursor:pointer;transition:color 0.2s;padding-bottom:2px;border-bottom:1px solid transparent;}
 .nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold);}
-.nav-cta{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:7px 16px;cursor:pointer;transition:all 0.2s;margin-left:20px;white-space:nowrap;}
+.nav-cta{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:7px 16px;cursor:pointer;transition:all 0.2s;margin-left:20px;white-space:nowrap;position:relative;z-index:3;}
 .nav-cta:hover{background:var(--gold);color:var(--navy);}
 .nav-cta:active{background:#B89535;border-color:#B89535;}
 .nav-cta:focus{outline:2px solid var(--gold);outline-offset:2px;}
 .nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
 .nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--gold);transition:all 0.25s;}
-.mobile-menu{display:none;position:fixed;inset:56px 0 0 0;background:var(--navy);z-index:250;flex-direction:column;padding:32px 24px;border-top:1px solid rgba(201,168,76,0.12);}
+.mobile-menu{display:none;position:fixed;inset:84px 0 0 0;background:var(--navy);z-index:250;flex-direction:column;padding:32px 24px;border-top:1px solid rgba(201,168,76,0.12);}
 .mobile-menu.open{display:flex;}
 .mobile-menu a{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(245,237,214,0.7);text-decoration:none;cursor:pointer;padding:18px 0;border-bottom:1px solid rgba(201,168,76,0.08);transition:color 0.2s;}
 .mobile-menu a:hover,.mobile-menu a.active{color:var(--gold);}
@@ -284,9 +288,13 @@ button{border-radius:5px;}
 }
 /* ═══ MOBILE ═══ */
 @media(max-width:768px){
-  .site-nav{padding:0 20px;}
+  .site-nav{padding:0 20px;height:84px;background:transparent;border-bottom-color:transparent;backdrop-filter:none;justify-content:flex-end;}
+  .site-nav:hover,.site-nav:focus-within{background:transparent;border-bottom-color:transparent;backdrop-filter:none;}
+  body.menu-open .site-nav{position:fixed;top:0;left:0;right:0;background:rgba(12,14,34,0.96);border-bottom-color:rgba(201,168,76,0.16);}
   .nav-links,.nav-cta{display:none;}
+  .nav-logo{font-size:clamp(24px,8.4vw,40px);width:calc(100% - 84px);line-height:1.1;padding-bottom:2px;}
   .nav-hamburger{display:flex;}
+  #page-store,#page-diamonds,#page-skincare,#page-enquire{padding-top:84px;}
   .hero-sub{font-size:12px;}
   .hero-btns{flex-direction:column;align-items:center;gap:10px;}
   .btn-gold,.btn-outline{width:220px;text-align:center;}
@@ -332,7 +340,7 @@ button{border-radius:5px;}
 
 <!-- NAV -->
 <nav class="site-nav">
-  <div class="nav-logo" onclick="showPage('home')">Altiora<small>Marketing</small></div>
+  <div class="nav-logo" onclick="showPage('home')">Altiora Marketing</div>
   <ul class="nav-links">
     <li><a class="active" onclick="showPage('home',this)">Home</a></li>
     <li><a onclick="showPage('store',this)">Store</a></li>
@@ -680,6 +688,7 @@ function closeProductModal(){
 function toggleMenu(){
   const m=document.getElementById('mobile-menu');
   const open=m.classList.toggle('open');
+  document.body.classList.toggle('menu-open',open);
   const spans=document.getElementById('hamburger').querySelectorAll('span');
   spans[0].style.transform=open?'translateY(6.5px) rotate(45deg)':'';
   spans[1].style.opacity=open?'0':'1';
@@ -687,6 +696,7 @@ function toggleMenu(){
 }
 function closeMenu(){
   document.getElementById('mobile-menu').classList.remove('open');
+  document.body.classList.remove('menu-open');
   document.getElementById('hamburger').querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});
 }
 function setFilter(el){
