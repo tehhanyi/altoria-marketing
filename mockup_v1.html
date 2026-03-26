@@ -337,7 +337,7 @@ button{border-radius:5px;}
     <li><a class="active" onclick="showPage('home',this)">Home</a></li>
     <li><a onclick="showPage('store',this)">Store</a></li>
   </ul>
-  <button class="nav-cta" onclick="openProductModal(this.parentElement.querySelector('.prod-name').textContent, this.parentElement.querySelector('.prod-cat').textContent, this.parentElement.querySelector('.prod-desc').textContent, 'Product details')">View Details Now</button>
+  <button class="nav-cta" onclick="showPage('enquire')">Enquire Now</button>
   <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
@@ -621,7 +621,7 @@ button{border-radius:5px;}
   <ul class="footer-links">
     <li><a onclick="showPage('home')">Home</a></li>
     <li><a onclick="showPage('store')">Store</a></li>
-    <li><a onclick="openProductModal(this.parentElement.querySelector('.prod-name').textContent, this.parentElement.querySelector('.prod-cat').textContent, this.parentElement.querySelector('.prod-desc').textContent, 'Product details')">View Details</a></li>
+    <li><a onclick="showPage('enquire')">Enquire</a></li>
     <li>
       <a>Instagram
         <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
@@ -824,8 +824,8 @@ function renderDiamonds(diamonds){
     const card=document.createElement('div');
     card.className='prod-card';
     card.dataset.category=prod.category;
-    card.onclick=function(){openProductModal(prod.name,prod.category,prod.description,prod.description);};
-    card.innerHTML=`<div class="prod-img jewel-bg">${jewelSvg}</div><div class="prod-info"><div class="prod-cat">${prod.category.charAt(0).toUpperCase()+prod.category.slice(1)}</div><div class="prod-name">${prod.name}</div><div class="prod-desc">${prod.description}</div></div>`;
+    card.onclick=function(){openProductModal(prod.name,prod.category,prod.specs||'',prod.description||'');};
+    card.innerHTML=`<div class="prod-img jewel-bg">${jewelSvg}</div><div class="prod-info"><div class="prod-cat">${prod.category.charAt(0).toUpperCase()+prod.category.slice(1)}</div><div class="prod-name">${prod.name}</div><div class="prod-desc">${prod.specs||''}</div></div>`;
     grid.appendChild(card);
   });
 }
@@ -837,9 +837,9 @@ function renderSkincare(skincare){
     const card=document.createElement('div');
     card.className='prod-card';
     card.dataset.category=prod.category;
-    card.onclick=function(){openProductModal(prod.name,prod.category,prod.description,prod.description);};
+    card.onclick=function(){openProductModal(prod.name,prod.category,prod.specs||'',prod.description||'');};
     const badge=prod.badge?`<div class="prod-badge">${prod.badge}</div>`:'';
-    card.innerHTML=`<div class="prod-img skin-bg">${badge}${skinSvg}</div><div class="prod-info"><div class="prod-cat">${prod.category.charAt(0).toUpperCase()+prod.category.slice(1)}</div><div class="prod-name">${prod.name}</div><div class="prod-desc">${prod.description}</div></div>`;
+    card.innerHTML=`<div class="prod-img skin-bg">${badge}${skinSvg}</div><div class="prod-info"><div class="prod-cat">${prod.category.charAt(0).toUpperCase()+prod.category.slice(1)}</div><div class="prod-name">${prod.name}</div><div class="prod-desc">${prod.specs||''}</div></div>`;
     grid.appendChild(card);
   });
 }
