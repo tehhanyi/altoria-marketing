@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Altiora Marketing</title>
+<link rel="icon" type="image/png" href="logo.png"/>
+<link rel="apple-touch-icon" href="logo.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--navy:#1A1A2E;--gold:#C9A84C;--ivory:#F5EDD6;--ivory-dark:#EDE0C4;--stone:#C8C0B0;--text-dark:#1A1A2E;--text-mid:#5A5043;--text-light:#8A7E6E;--white:#FFFDF8;}
+html{scroll-behavior:smooth;}
+body{font-family:'Montserrat',sans-serif;background:var(--white);color:var(--text-dark);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+.page{display:none;}.page.active{display:block;}
+
+/* ── NAV ── */
+.site-nav{position:sticky;top:0;z-index:300;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:56px;border-bottom:1px solid rgba(201,168,76,0.2);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--gold);letter-spacing:1px;cursor:pointer;line-height:1.1;flex-shrink:0;}
+.nav-logo small{font-size:8px;font-style:normal;font-weight:400;letter-spacing:3px;text-transform:uppercase;color:rgba(245,237,214,0.3);display:block;}
+.nav-links{display:flex;gap:24px;list-style:none;position:absolute;left:50%;transform:translateX(-50%);}
+.nav-links a{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,214,0.65);text-decoration:none;cursor:pointer;transition:color 0.2s;padding-bottom:2px;border-bottom:1px solid transparent;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);border-bottom-color:var(--gold);}
+.nav-cta{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:7px 16px;cursor:pointer;transition:all 0.2s;margin-left:20px;white-space:nowrap;}
+.nav-cta:hover{background:var(--gold);color:var(--navy);}
+.nav-cta:active{background:#B89535;border-color:#B89535;}
+.nav-cta:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;}
+.nav-hamburger span{display:block;width:22px;height:1.5px;background:var(--gold);transition:all 0.25s;}
+.mobile-menu{display:none;position:fixed;inset:56px 0 0 0;background:var(--navy);z-index:250;flex-direction:column;padding:32px 24px;border-top:1px solid rgba(201,168,76,0.12);}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-size:11px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(245,237,214,0.7);text-decoration:none;cursor:pointer;padding:18px 0;border-bottom:1px solid rgba(201,168,76,0.08);transition:color 0.2s;}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--gold);}
+.mobile-menu .mob-cta{margin-top:24px;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:var(--navy);border:none;padding:14px;cursor:pointer;width:100%;}
+
+/* ── HERO VIDEO ── */
+.hero-video{position:relative;background:var(--navy);height:100svh;min-height:500px;max-height:720px;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+/* looping shimmer animation simulating a video */
+@keyframes shimmer{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes pulse-ring{0%,100%{opacity:0.18}50%{opacity:0.28}}
+.video-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0d0d1a,#1A1A2E,#12122a,#0d1020,#1A1A2E,#0d0d1a);background-size:400% 400%;animation:shimmer 8s ease infinite;display:flex;align-items:center;justify-content:center;}
+.video-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;animation:pulse-ring 3s ease-in-out infinite;}
+.play-ring{width:60px;height:60px;border:1.5px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.play-ring svg{width:18px;height:18px;fill:var(--gold);margin-left:4px;}
+.video-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+.video-overlay{position:absolute;inset:0;background:rgba(10,10,20,0.52);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;}
+.hero-eyebrow{font-size:9px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+/* 'Crafted to last' now non-italic — both lines are normal weight */
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,8vw,58px);font-weight:300;line-height:1.1;color:var(--ivory);margin-bottom:14px;font-style:normal;}
+.hero-title-accent{color:var(--gold);}
+.hero-sub{font-size:13px;font-weight:300;color:rgba(245,237,214,0.65);max-width:460px;margin-bottom:32px;line-height:1.9;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn-gold{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:var(--navy);border:none;padding:14px 26px;cursor:pointer;transition:all 0.2s;}
+.btn-gold:hover{background:#E0BF6A;}
+.btn-gold:active{background:#B89535;}
+.btn-gold:focus{outline:2px solid var(--navy);outline-offset:2px;}
+.btn-outline{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:rgba(245,237,214,0.8);border:1px solid rgba(245,237,214,0.35);padding:14px 26px;cursor:pointer;transition:all 0.2s;}
+.btn-outline:hover{border-color:var(--ivory);color:var(--ivory);}
+.btn-outline:active{background:rgba(245,237,214,0.1);}
+.btn-outline:focus{outline:2px solid var(--gold);outline-offset:2px;}
+
+/* ── BRAND INTRO ── */
+.brand-intro{background:var(--navy);padding:64px 40px;text-align:center;border-top:1px solid rgba(201,168,76,0.1);}
+.brand-intro h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,5vw,36px);font-weight:300;font-style:italic;color:var(--ivory);margin-bottom:12px;}
+.brand-intro p{font-size:13px;font-weight:300;color:rgba(245,237,214,0.5);max-width:500px;margin:0 auto 36px;line-height:1.9;}
+.brand-cats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.brand-cat{border:1px solid rgba(201,168,76,0.2);padding:28px 32px;text-align:center;cursor:pointer;transition:all 0.25s;flex:1;min-width:200px;max-width:260px;}
+.brand-cat:hover{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.brand-cat:active{background:rgba(201,168,76,0.12);}
+.brand-cat:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.brand-cat-icon{display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.brand-cat-icon svg{width:20px;height:20px;fill:none;stroke:var(--gold);}
+.brand-cat-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--ivory);display:block;margin-bottom:6px;}
+.brand-cat-desc{font-size:11px;font-weight:300;color:rgba(245,237,214,0.4);line-height:1.7;}
+
+/* ── CHATBOT SECTION ── */
+.chatbot-strip{background:var(--ivory);padding:64px 40px;display:grid;grid-template-columns:1fr 360px;gap:52px;align-items:start;}
+.chat-copy .eyebrow,.eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.chat-copy h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,36px);font-weight:300;line-height:1.2;color:var(--navy);margin-bottom:12px;}
+.chat-copy p{font-size:13px;font-weight:300;color:var(--text-mid);line-height:1.9;margin-bottom:22px;}
+.cap-list{display:flex;flex-direction:column;gap:10px;}
+.cap-item{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;background:var(--white);border-left:2px solid var(--gold);}
+.cap-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.cap-icon svg{width:14px;height:14px;fill:none;stroke:var(--gold);stroke-width:1.5;}
+.cap-text{font-size:12px;font-weight:300;color:var(--text-mid);line-height:1.5;}
+.cap-text strong{color:var(--navy);font-weight:500;display:block;font-size:12px;margin-bottom:1px;}
+/* chat widget */
+.chat-widget{background:var(--white);border:1px solid var(--ivory-dark);border-radius:2px;overflow:hidden;box-shadow:0 8px 28px rgba(26,26,46,0.07);}
+.chat-header{background:var(--navy);padding:13px 16px;display:flex;align-items:center;gap:10px;}
+.chat-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+.chat-header-text{font-size:11px;font-weight:500;letter-spacing:1px;color:var(--ivory);}
+.chat-header-sub{font-size:9px;color:rgba(245,237,214,0.4);letter-spacing:0.5px;}
+.chat-messages{padding:14px;display:flex;flex-direction:column;gap:10px;min-height:160px;max-height:240px;overflow-y:auto;}
+.chat-msg{padding:9px 13px;font-size:12px;line-height:1.6;max-width:88%;border-radius:2px;}
+.chat-msg.bot{background:var(--ivory);color:var(--text-dark);align-self:flex-start;border-left:2px solid var(--gold);}
+.chat-msg.user{background:var(--navy);color:var(--ivory);align-self:flex-end;}
+.chat-chips{padding:4px 14px 12px;display:flex;flex-wrap:wrap;gap:6px;}
+.chat-chip{font-size:10px;font-weight:500;letter-spacing:0.5px;padding:5px 11px;border:1px solid var(--stone);color:var(--text-mid);cursor:pointer;transition:all 0.2s;background:transparent;border-radius:1px;}
+.chat-chip:hover{background:var(--navy);color:var(--ivory);border-color:var(--navy);}
+.chat-chip:active{background:#0d0d1a;}
+.chat-chip:focus{outline:1px solid var(--gold);outline-offset:1px;}
+.chat-input-row{display:flex;border-top:1px solid var(--ivory-dark);}
+.chat-input{flex:1;border:none;padding:12px 14px;font-family:'Montserrat',sans-serif;font-size:12px;color:var(--text-dark);background:var(--white);outline:none;}
+.chat-send{background:var(--gold);border:none;padding:0 16px;cursor:pointer;color:var(--navy);display:flex;align-items:center;justify-content:center;}
+.chat-send svg{width:14px;height:14px;fill:none;stroke:var(--navy);stroke-width:2;}
+
+/* ── FLOATING CHAT BUTTON ── */
+.fab-chat{position:fixed;bottom:28px;right:28px;z-index:400;width:52px;height:52px;background:var(--navy);border:1.5px solid var(--gold);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(26,26,46,0.3);transition:all 0.2s;}
+.fab-chat:hover{background:var(--gold);}
+.fab-chat:hover svg{stroke:var(--navy);}
+.fab-chat:active{background:#B89535;border-color:#B89535;}
+.fab-chat:focus{box-shadow:0 4px 20px rgba(26,26,46,0.3),0 0 0 2px var(--gold);}
+.fab-chat svg{width:22px;height:22px;fill:none;stroke:var(--gold);stroke-width:1.8;transition:stroke 0.2s;}
+/* floating chat panel */
+.fab-panel{position:fixed;bottom:92px;right:28px;z-index:400;width:320px;background:var(--white);border:1px solid var(--ivory-dark);border-radius:2px;box-shadow:0 12px 40px rgba(26,26,46,0.18);display:none;flex-direction:column;overflow:hidden;}
+.fab-panel.open{display:flex;}
+.fab-panel-header{background:var(--navy);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;}
+.fab-panel-title{display:flex;align-items:center;gap:8px;}
+.fab-panel-dot{width:7px;height:7px;background:var(--gold);border-radius:50%;}
+.fab-panel-name{font-size:11px;font-weight:500;letter-spacing:1px;color:var(--ivory);}
+.fab-panel-sub{font-size:9px;color:rgba(245,237,214,0.4);}
+.fab-panel-close{background:none;border:none;cursor:pointer;color:rgba(245,237,214,0.5);font-size:16px;line-height:1;display:flex;align-items:center;padding:2px;}
+.fab-panel-close:hover{color:var(--gold);}
+.fab-panel-msgs{padding:12px;display:flex;flex-direction:column;gap:8px;min-height:140px;max-height:200px;overflow-y:auto;}
+.fab-panel-chips{padding:4px 12px 10px;display:flex;flex-wrap:wrap;gap:5px;}
+.fab-panel-input-row{display:flex;border-top:1px solid var(--ivory-dark);}
+.fab-panel-input{flex:1;border:none;padding:10px 12px;font-family:'Montserrat',sans-serif;font-size:11px;color:var(--text-dark);background:var(--white);outline:none;}
+.fab-panel-send{background:var(--gold);border:none;padding:0 14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.fab-panel-send svg{width:12px;height:12px;fill:none;stroke:var(--navy);stroke-width:2;}
+
+/* ── STORE ── */
+.store-hero{background:var(--navy);padding:56px 40px 40px;text-align:center;border-bottom:1px solid rgba(201,168,76,0.12);}
+.store-hero .eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.store-hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,6vw,44px);font-weight:300;color:var(--ivory);margin-bottom:12px;}
+.store-hero p{font-size:13px;font-weight:300;color:rgba(245,237,214,0.5);max-width:420px;margin:0 auto;}
+.store-cats{display:grid;grid-template-columns:1fr 1fr;}
+.store-cat-card{padding:72px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;border:1px solid var(--ivory-dark);background:var(--white);}
+.store-cat-card:hover{background:var(--ivory);}
+.store-cat-card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);transition:width 0.3s;}
+.store-cat-card:hover::after{width:72px;}
+.store-cat-icon{margin-bottom:18px;}
+.store-cat-icon svg{width:52px;height:52px;opacity:0.5;}
+.store-cat-tag{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.store-cat-name{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,36px);font-weight:300;color:var(--navy);margin-bottom:10px;}
+.store-cat-desc{font-size:12px;font-weight:300;color:var(--text-light);line-height:1.8;max-width:260px;margin-bottom:20px;}
+.store-cat-link{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--navy);border-bottom:1px solid var(--navy);padding-bottom:2px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s;}
+.store-cat-link:hover{color:var(--gold);border-bottom-color:var(--gold);}
+.store-cat-link:active{opacity:0.7;}
+.store-cat-link:focus{outline:1px solid var(--navy);outline-offset:2px;}
+.store-cat-link svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;}
+
+/* ── INSTAGRAM ── */
+.ig-section{background:var(--ivory);padding:56px 40px;}
+.ig-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:12px;}
+.ig-title{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,28px);font-weight:300;font-style:italic;color:var(--navy);}
+.ig-handle{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:7px 14px;cursor:pointer;background:transparent;transition:all 0.2s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;}
+.ig-handle:hover{background:var(--gold);color:var(--navy);}
+.ig-handle:active{background:#B89535;border-color:#B89535;}
+.ig-handle:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.ig-handle svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;}
+.ig-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.ig-tile{aspect-ratio:1;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden;}
+.ig-tile:nth-child(odd){background:#E8DFC8;}.ig-tile:nth-child(even){background:#DDD4BA;}.ig-tile:nth-child(3n){background:#D5C9AE;}
+.ig-tile svg{width:24px;height:24px;opacity:0.28;}
+.ig-tile-overlay{position:absolute;inset:0;background:rgba(26,26,46,0);display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+.ig-tile:hover .ig-tile-overlay{background:rgba(26,26,46,0.3);}
+.ig-tile-tag{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ivory);opacity:0;transition:opacity 0.2s;}
+.ig-tile:hover .ig-tile-tag{opacity:1;}
+
+/* ── SUB-PAGES ── */
+.subpage-hero{padding:52px 40px 40px;text-align:center;}
+.subpage-hero.diamonds{background:var(--navy);}
+.subpage-hero.skincare{background:#1E1215;}
+.subpage-hero .eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.subpage-hero h2{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,6vw,42px);font-weight:300;color:var(--ivory);margin-bottom:10px;}
+.subpage-hero p{font-size:13px;font-weight:300;color:rgba(245,237,214,0.5);max-width:420px;margin:0 auto 24px;}
+.back-link{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,214,0.4);cursor:pointer;display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;border-bottom:1px solid transparent;transition:all 0.2s;}
+.back-link svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:2;}
+.back-link:hover{color:var(--gold);border-bottom-color:var(--gold);}
+.back-link:active{opacity:0.6;}
+.back-link:focus{outline:1px solid var(--gold);outline-offset:2px;}
+.filter-bar{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
+.filter-btn{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;background:transparent;color:rgba(245,237,214,0.5);border:1px solid rgba(245,237,214,0.18);padding:7px 14px;cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.filter-btn:active{background:#B89535;border-color:#B89535;}
+.filter-btn:focus{outline:1px solid var(--gold);outline-offset:1px;}
+.product-grid{padding:36px 40px;background:var(--white);display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.prod-card{background:var(--white);border:1px solid var(--ivory-dark);cursor:pointer;transition:all 0.25s;}
+.prod-card:hover{box-shadow:0 8px 30px rgba(26,26,46,0.08);transform:translateY(-2px);border-color:rgba(201,168,76,0.4);}
+.prod-img{height:180px;display:flex;align-items:center;justify-content:center;position:relative;}
+.prod-img.jewel-bg{background:#F0E8D4;}.prod-img.skin-bg{background:#F0E4E0;}
+.prod-badge{position:absolute;top:8px;left:8px;font-size:8px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:var(--navy);color:var(--gold);padding:3px 8px;}
+.prod-img svg{width:56px;height:56px;opacity:0.22;}
+.prod-info{padding:14px 14px 18px;}
+.prod-cat{font-size:8px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--stone);margin-bottom:4px;}
+.prod-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--navy);margin-bottom:5px;}
+.prod-desc{font-size:11px;font-weight:300;color:var(--text-light);line-height:1.6;margin-bottom:12px;}
+.prod-cta{font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:transparent;color:var(--navy);border:1px solid var(--navy);padding:7px 12px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:5px;}
+.prod-cta svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2;}
+.prod-cta:hover{background:var(--navy);color:var(--ivory);}
+.prod-cta:active{background:#0d0d1a;}
+.prod-cta:focus{outline:1px solid var(--navy);outline-offset:1px;}
+
+/* ── ENQUIRE ── */
+.enquire-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:540px;}
+.enq-side{background:var(--navy);padding:60px 40px;position:relative;overflow:hidden;}
+.enq-side::before{content:'◇';position:absolute;bottom:-50px;right:-30px;font-size:200px;color:rgba(201,168,76,0.04);line-height:1;pointer-events:none;}
+.enq-side .eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.enq-side h2{font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,34px);font-weight:300;color:var(--ivory);line-height:1.2;margin-bottom:12px;}
+.enq-side p{font-size:13px;font-weight:300;color:rgba(245,237,214,0.5);line-height:1.9;margin-bottom:28px;}
+.enq-perks{display:flex;flex-direction:column;gap:16px;}
+.enq-perk{display:flex;gap:12px;align-items:flex-start;}
+.enq-perk-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:7px;}
+.enq-perk-text{font-size:12px;font-weight:300;color:rgba(245,237,214,0.6);line-height:1.6;}
+.enq-perk-text strong{display:block;color:var(--ivory);font-weight:500;font-size:12px;margin-bottom:1px;}
+.wa-btn{display:inline-flex;align-items:center;gap:8px;margin-top:24px;font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;background:transparent;color:var(--gold);border:1px solid rgba(201,168,76,0.4);padding:10px 16px;cursor:pointer;transition:all 0.2s;}
+.wa-btn:hover{background:rgba(201,168,76,0.08);border-color:var(--gold);}
+.wa-btn:active{background:rgba(201,168,76,0.15);}
+.wa-btn:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.wa-btn svg{width:14px;height:14px;fill:var(--gold);flex-shrink:0;}
+.enq-form{background:var(--ivory);padding:60px 40px;}
+.form-eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.form-grp{margin-bottom:16px;}
+.form-lbl{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--text-mid);display:block;margin-bottom:7px;}
+.form-inp,.form-sel,.form-ta{width:100%;background:var(--white);border:1px solid var(--stone);padding:11px 14px;font-family:'Montserrat',sans-serif;font-size:12px;color:var(--text-dark);outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;border-radius:0;}
+.form-inp:focus,.form-sel:focus,.form-ta:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.2);}
+.form-inp:active,.form-sel:active,.form-ta:active{border-color:var(--gold);}
+.form-ta{height:90px;resize:none;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-sub{width:100%;background:var(--navy);color:var(--ivory);font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;border:none;padding:14px;cursor:pointer;margin-top:6px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.form-sub svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;}
+.form-sub:hover{background:var(--gold);color:var(--navy);}
+.form-sub:active{background:#B89535;}
+.form-sub:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.form-note{font-size:10px;color:var(--text-light);text-align:center;margin-top:10px;font-weight:300;}
+
+/* ── FOOTER ── */
+.site-footer{background:#10101D;padding:36px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(201,168,76,0.1);}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold);}
+.footer-sub{font-size:9px;font-weight:300;color:rgba(245,237,214,0.22);letter-spacing:1px;margin-top:3px;}
+.footer-links{display:flex;gap:16px;list-style:none;flex-wrap:wrap;align-items:center;}
+.footer-links a{font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(245,237,214,0.28);text-decoration:none;cursor:pointer;transition:color 0.2s;display:inline-flex;align-items:center;gap:4px;}
+.footer-links a:hover{color:var(--gold);}
+.footer-links svg{width:9px;height:9px;fill:none;stroke:currentColor;stroke-width:2;}
+.footer-copy{font-size:9px;color:rgba(245,237,214,0.16);}
+
+/* ═══ TABLET ═══ */
+@media(max-width:900px){
+  .chatbot-strip{grid-template-columns:1fr;gap:36px;padding:56px 32px;}
+  .product-grid{grid-template-columns:repeat(2,1fr);padding:28px 24px;}
+  .store-cat-card{padding:52px 28px;}
+}
+/* ═══ MOBILE ═══ */
+@media(max-width:768px){
+  .site-nav{padding:0 20px;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+  .hero-sub{font-size:12px;}
+  .hero-btns{flex-direction:column;align-items:center;gap:10px;}
+  .btn-gold,.btn-outline{width:220px;text-align:center;}
+  .brand-intro{padding:48px 20px;}
+  .brand-cats{flex-direction:column;align-items:stretch;}
+  .brand-cat{max-width:100%;}
+  .chatbot-strip{grid-template-columns:1fr;gap:32px;padding:48px 20px;}
+  .store-hero{padding:48px 20px 36px;}
+  .store-cats{grid-template-columns:1fr;}
+  .store-cat-card{padding:48px 24px;}
+  .ig-section{padding:48px 20px;}
+  .ig-grid{grid-template-columns:repeat(2,1fr);gap:6px;}
+  .ig-tile:nth-child(n+5){display:none;}
+  .subpage-hero{padding:44px 20px 36px;}
+  .product-grid{grid-template-columns:repeat(2,1fr);padding:24px 20px;gap:14px;}
+  .prod-img{height:150px;}
+  .enquire-wrap{grid-template-columns:1fr;}
+  .enq-side{padding:48px 20px;}
+  .enq-side::before{font-size:140px;}
+  .enq-form{padding:40px 20px;}
+  .form-row{grid-template-columns:1fr;}
+  .site-footer{flex-direction:column;align-items:flex-start;gap:16px;padding:32px 20px;}
+  .footer-links{gap:12px;}
+  .fab-chat{bottom:20px;right:20px;}
+  .fab-panel{right:20px;bottom:84px;width:calc(100vw - 40px);}
+}
+/* ═══ SMALL MOBILE ═══ */
+@media(max-width:480px){
+  .product-grid{grid-template-columns:1fr;gap:14px;}
+  .prod-img{height:200px;}
+  .filter-btn{font-size:8px;padding:6px 10px;letter-spacing:1.5px;}
+  .store-cat-card{padding:40px 20px;}
+  .store-cat-name{font-size:28px;}
+  .brand-cat{padding:24px 20px;}
+  .ig-grid{gap:5px;}
+  .hero-title{font-size:33px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-logo" onclick="showPage('home')">Altiora<small>Marketing</small></div>
+  <ul class="nav-links">
+    <li><a class="active" onclick="showPage('home',this)">Home</a></li>
+    <li><a onclick="showPage('store',this)">Store</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('enquire')">Enquire Now</button>
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU — 2 tabs + Enquire Now -->
+<div class="mobile-menu" id="mobile-menu">
+  <a onclick="showPage('home');closeMenu()">Home</a>
+  <a onclick="showPage('store');closeMenu()">Store</a>
+  <button class="mob-cta" onclick="showPage('enquire');closeMenu()">Enquire Now</button>
+</div>
+
+<!-- FLOATING CHAT BUTTON -->
+<button class="fab-chat" id="fab-btn" onclick="toggleFab()" aria-label="Open Advisor">
+  <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<!-- FLOATING CHAT PANEL -->
+<div class="fab-panel" id="fab-panel">
+  <div class="fab-panel-header">
+    <div class="fab-panel-title">
+      <div class="fab-panel-dot"></div>
+      <div>
+        <div class="fab-panel-name">Altiora Advisor</div>
+        <div class="fab-panel-sub">Typically responds instantly</div>
+      </div>
+    </div>
+    <button class="fab-panel-close" onclick="toggleFab()">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="fab-panel-msgs" id="fab-msgs">
+    <div class="chat-msg bot">Hello! I'm here to help you find the perfect diamonds or skincare. What brings you here today?</div>
+  </div>
+  <div class="chat-chips fab-panel-chips" id="fab-chips">
+    <button class="chat-chip" onclick="fabReply('Looking for diamonds','diamonds')">Looking for diamonds</button>
+    <button class="chat-chip" onclick="fabReply('Looking for skincare','skincare')">Looking for skincare</button>
+    <button class="chat-chip" onclick="fabReply('I have a question','faq')">I have a question</button>
+  </div>
+  <div class="fab-panel-input-row">
+    <input class="fab-panel-input" id="fab-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendFab()"/>
+    <button class="fab-panel-send" onclick="sendFab()">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+
+  <div class="hero-video">
+    <div class="video-bg">
+      <div class="video-placeholder">
+        <div class="play-ring"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+        <div class="video-label">Brand video placeholder</div>
+      </div>
+    </div>
+    <div class="video-overlay">
+      <div class="hero-eyebrow">◇ Singapore · Est. 2026</div>
+      <h1 class="hero-title">Curated for you.<br><span class="hero-title-accent">Crafted to last.</span></h1>
+      <p class="hero-sub">Fine lab-grown diamonds & elevated skincare <br> Sourced from Asia's finest, guided by someone who cares.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="showPage('store')">Explore the Store</button>
+        <button class="btn-outline" onclick="document.getElementById('chat-section').scrollIntoView({behavior:'smooth'})">Chat with Us</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="brand-intro">
+    <h2>Two worlds. One vision.</h2>
+    <p>Altiora brings together fine lab-grown diamond jeweller and elevated skincare <br>Each curated with the same commitment to quality, ethics, and personal guidance.</p>
+    <div class="brand-cats">
+      <div class="brand-cat" onclick="showPage('diamonds')">
+        <div class="brand-cat-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.2"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+        </div>
+        <span class="brand-cat-name">Diamonds by Altiora</span>
+        <span class="brand-cat-desc">Lab-grown diamond jewelleries, handpicked from Asia's finest artisans.</span>
+      </div>
+      <div class="brand-cat" onclick="showPage('skincare')">
+        <div class="brand-cat-icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--gold)" stroke-width="1.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="var(--gold)" stroke="none"/></svg>
+        </div>
+        <span class="brand-cat-name">Skincare by Altiora</span>
+        <span class="brand-cat-desc">Elevated formulations for every skin, every routine.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot-strip" id="chat-section">
+    <div class="chat-copy">
+      <div class="eyebrow">◇ AI Advisor</div>
+      <h2>Not sure where<br>to start? Ask us.</h2>
+      <p>Our advisor helps you find diamonds or skincare and answers your questions. If you need more help, we will connect you with a live agent.</p>
+      <button class="btn-gold" onclick="toggleFab()" style="margin-bottom:28px;">Ask Now</button>
+      <div class="cap-list">
+        <div class="cap-item">
+          <div class="cap-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 22,8 22,16 12,22 2,16 2,8" stroke="var(--gold)" stroke-width="1.5" fill="none"/></svg></div>
+          <div class="cap-text"><strong>Find diamonds</strong>Tell us the occasion and style — we'll guide you.</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="var(--gold)" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="4" stroke="var(--gold)" stroke-width="1" fill="none"/></svg></div>
+          <div class="cap-text"><strong>Find skincare</strong>Skin type, concerns, routine — we'll match you.</div>
+        </div>
+        <div class="cap-item">
+          <div class="cap-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="var(--gold)" stroke-width="1.5" fill="none"/><line x1="12" y1="8" x2="12" y2="12" stroke="var(--gold)" stroke-width="1.5"/><circle cx="12" cy="16" r="0.8" fill="var(--gold)"/></svg></div>
+          <div class="cap-text"><strong>Answer FAQs</strong>Shipping, sourcing, custom orders and more.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STORE ═══ -->
+<div id="page-store" class="page">
+  <div class="store-hero">
+    <div class="eyebrow">◇ Our Collections</div>
+    <h2>Discover Altiora</h2>
+    <p>Two curated collections sourced from the finest of Asia.</p>
+  </div>
+  <div class="store-cats">
+    <div class="store-cat-card" onclick="showPage('diamonds')">
+      <div class="store-cat-icon"><svg viewBox="0 0 80 80" fill="none"><polygon points="40,6 74,28 74,52 40,74 6,52 6,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,6 74,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="74,28 74,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="6,28 40,40 6,52" fill="rgba(201,168,76,0.10)"/><polygon points="40,74 6,52 40,40" fill="rgba(201,168,76,0.14)"/><line x1="40" y1="6" x2="40" y2="40" stroke="#C9A84C" stroke-width="0.6" opacity="0.5"/><line x1="74" y1="28" x2="40" y2="40" stroke="#C9A84C" stroke-width="0.6" opacity="0.5"/><line x1="40" y1="74" x2="40" y2="40" stroke="#C9A84C" stroke-width="0.6" opacity="0.5"/></svg></div>
+      <div class="store-cat-tag">Collection 01</div>
+      <div class="store-cat-name">Diamonds by Altiora</div>
+      <div class="store-cat-desc">Lab-grown diamond rings, necklaces, earrings and bracelets. Handpicked from Asia's finest artisans.</div>
+      <div class="store-cat-link">Browse Diamonds <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    </div>
+    <div class="store-cat-card" onclick="showPage('skincare')">
+      <div class="store-cat-icon"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="30" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="19" fill="rgba(201,168,76,0.09)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="9" fill="rgba(201,168,76,0.2)"/><line x1="40" y1="10" x2="40" y2="70" stroke="#C9A84C" stroke-width="0.5" opacity="0.22"/><line x1="10" y1="40" x2="70" y2="40" stroke="#C9A84C" stroke-width="0.5" opacity="0.22"/></svg></div>
+      <div class="store-cat-tag">Collection 02</div>
+      <div class="store-cat-name">Skincare by Altiora</div>
+      <div class="store-cat-desc">Elevated skincare formulations for the discerning. Curated for every skin type, occasion, and routine.</div>
+      <div class="store-cat-link">Browse Skincare <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    </div>
+  </div>
+  <div class="ig-section">
+    <div class="ig-header">
+      <div class="ig-title">As seen on Instagram</div>
+      <button class="ig-handle">@ALTIORAMARKETINGSG <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>
+    </div>
+    <div class="ig-grid">
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+      <div class="ig-tile"><svg viewBox="0 0 40 40" fill="none"><rect x="6" y="6" width="28" height="28" rx="3" stroke="#C9A84C" stroke-width="1"/><circle cx="20" cy="20" r="8" stroke="#C9A84C" stroke-width="1"/><circle cx="28" cy="12" r="2" fill="#C9A84C"/></svg><div class="ig-tile-overlay"><span class="ig-tile-tag">View post</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DIAMONDS ═══ -->
+<div id="page-diamonds" class="page">
+  <div class="subpage-hero diamonds">
+    <div class="back-link" onclick="showPage('store')"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Store</div>
+    <div class="eyebrow">◇ Collection 01</div>
+    <h2>Diamonds by Altiora</h2>
+    <p>Lab-grown diamond jewellery, handpicked from Asia's finest artisans. Ethically sourced, beautifully crafted.</p>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="setFilter(this)">All</button>
+      <button class="filter-btn" onclick="setFilter(this)">Rings</button>
+      <button class="filter-btn" onclick="setFilter(this)">Necklaces</button>
+      <button class="filter-btn" onclick="setFilter(this)">Earrings</button>
+      <button class="filter-btn" onclick="setFilter(this)">Bracelets</button>
+    </div>
+  </div>
+  <div class="product-grid">
+    <div class="prod-card"><div class="prod-img jewel-bg"><div class="prod-badge">New In</div><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Rings</div><div class="prod-name">Soleil Solitaire</div><div class="prod-desc">Round brilliant cut, 1ct equivalent. Set in 18k white gold. Everyday elegance.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img jewel-bg"><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Necklaces</div><div class="prod-name">Lumière Pendant</div><div class="prod-desc">Pear-cut diamond drop, 0.5ct. Delicate chain, 40cm.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img jewel-bg"><div class="prod-badge">Bestseller</div><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Earrings</div><div class="prod-name">Céleste Studs</div><div class="prod-desc">Round brilliant, 0.3ct each. Set in 18k rose gold. Effortlessly versatile.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img jewel-bg"><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Rings</div><div class="prod-name">Étoile Band</div><div class="prod-desc">Pavé diamond eternity band. Stackable. Perfect for anniversaries.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img jewel-bg"><div class="prod-badge">New In</div><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Necklaces</div><div class="prod-name">Arc Solitaire</div><div class="prod-desc">Marquise-cut, 0.7ct. Gold vermeil chain, 42cm.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img jewel-bg"><svg viewBox="0 0 80 80" fill="none"><polygon points="40,8 72,28 72,52 40,72 8,52 8,28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><polygon points="40,8 72,28 40,40" fill="rgba(201,168,76,0.14)"/><polygon points="72,28 72,52 40,40" fill="rgba(201,168,76,0.07)"/><polygon points="8,28 40,40 8,52" fill="rgba(201,168,76,0.11)"/><polygon points="40,72 8,52 40,40" fill="rgba(201,168,76,0.14)"/></svg></div><div class="prod-info"><div class="prod-cat">Earrings</div><div class="prod-name">Mer Drops</div><div class="prod-desc">Pear-cut drops, 0.25ct each. 18k yellow gold. All-day wear.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+  </div>
+</div>
+
+<!-- ═══ SKINCARE ═══ -->
+<div id="page-skincare" class="page">
+  <div class="subpage-hero skincare">
+    <div class="back-link" onclick="showPage('store')"><svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back to Store</div>
+    <div class="eyebrow">◇ Collection 02</div>
+    <h2>Skincare by Altiora</h2>
+    <p>Elevated formulations for every skin type. Curated with the same care as our diamonds.</p>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="setFilter(this)">All</button>
+      <button class="filter-btn" onclick="setFilter(this)">Serums</button>
+      <button class="filter-btn" onclick="setFilter(this)">Moisturisers</button>
+      <button class="filter-btn" onclick="setFilter(this)">Cleansers</button>
+      <button class="filter-btn" onclick="setFilter(this)">Sets</button>
+    </div>
+  </div>
+  <div class="product-grid">
+    <div class="prod-card"><div class="prod-img skin-bg"><div class="prod-badge">New In</div><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Serums</div><div class="prod-name">Luminance Serum</div><div class="prod-desc">Brightening vitamin C complex. Lightweight, fast-absorbing.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img skin-bg"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Moisturisers</div><div class="prod-name">Veil Cream</div><div class="prod-desc">24-hour hydration barrier. Fragrance-free, for sensitive skin.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img skin-bg"><div class="prod-badge">Bestseller</div><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Cleansers</div><div class="prod-name">Purity Gel</div><div class="prod-desc">Gentle foaming cleanser. Removes impurities without stripping.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img skin-bg"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Sets</div><div class="prod-name">Starter Ritual</div><div class="prod-desc">A curated 3-step morning and evening routine.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img skin-bg"><div class="prod-badge">New In</div><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Serums</div><div class="prod-name">Repair Ampoule</div><div class="prod-desc">Overnight recovery treatment. Fragrance-free, post-procedure safe.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+    <div class="prod-card"><div class="prod-img skin-bg"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" fill="none" stroke="#C9A84C" stroke-width="1.5"/><circle cx="40" cy="40" r="16" fill="rgba(201,168,76,0.1)" stroke="#C9A84C" stroke-width="0.7" opacity="0.6"/><circle cx="40" cy="40" r="7" fill="rgba(201,168,76,0.2)"/></svg></div><div class="prod-info"><div class="prod-cat">Moisturisers</div><div class="prod-name">Dew Shield SPF</div><div class="prod-desc">Lightweight SPF 50 daily moisturiser. No white cast.</div><button class="prod-cta" onclick="showPage('enquire')">Enquire <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div></div>
+  </div>
+</div>
+
+<!-- ═══ ENQUIRE ═══ -->
+<div id="page-enquire" class="page">
+  <div class="enquire-wrap">
+    <div class="enq-side">
+      <div class="eyebrow">◇ Get in Touch</div>
+      <h2>Let's find what<br>you're looking for.</h2>
+      <p>Fill in the form and we'll get back to you!</p>
+      <div class="enq-perks">
+        <div class="enq-perk"><div class="enq-perk-dot"></div><div class="enq-perk-text"><strong>Curated for you</strong>Recommendations matched to your needs.</div></div>
+        <div class="enq-perk"><div class="enq-perk-dot"></div><div class="enq-perk-text"><strong>Response within 24 hours</strong>A dedicated member of our team gives every message their full attention.</div></div>
+        <div class="enq-perk"><div class="enq-perk-dot"></div><div class="enq-perk-text"><strong>No account required</strong>Just your name and a way to reach you.</div></div>
+      </div>
+      <button class="wa-btn" onclick="alert('Redirecting to WhatsApp...')">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--gold)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat on WhatsApp
+      </button>
+    </div>
+    <div class="enq-form">
+      <div class="form-eyebrow">◇ Enquiry Form</div>
+      <div class="form-row">
+        <div class="form-grp">
+          <label class="form-lbl">Your Name</label>
+          <input type="text" class="form-inp" placeholder="e.g. Sarah Tan">
+        </div>
+        <div class="form-grp">
+          <label class="form-lbl">Email or WhatsApp</label>
+          <input type="text" class="form-inp" placeholder="email or +65 number">
+        </div>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Category</label>
+        <select class="form-sel">
+          <option value="" disabled selected>What are you enquiring about?</option>
+          <option>Diamonds by Altiora</option>
+          <option>Skincare by Altiora</option>
+          <option>Both / Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Occasion or Purpose (optional)</label>
+        <select class="form-sel">
+          <option value="" disabled selected>Select if applicable</option>
+          <option>Gift for someone</option>
+          <option>Self-purchase</option>
+          <option>Engagement / Anniversary</option>
+          <option>Birthday</option>
+          <option>Skincare routine starter</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-grp">
+        <label class="form-lbl">Your Enquiry</label>
+        <textarea class="form-ta" placeholder="Tell us what you're looking for. The more you share, the better we can help."></textarea>
+      </div>
+      <button class="form-sub" onclick="alert('Thank you — we\'ll be in touch within 24 hours.')">
+        Submit Enquiry
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+      <p class="form-note">No account needed · Responses within 24 hours · No obligation to purchase</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div>
+    <div class="footer-logo">◇ Altiora</div>
+    <div class="footer-sub">Marketing · UEN 202612413E · Singapore</div>
+  </div>
+  <ul class="footer-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('store')">Store</a></li>
+    <li><a onclick="showPage('enquire')">Enquire</a></li>
+    <li>
+      <a>Instagram
+        <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </li>
+    <li>
+      <a>WhatsApp
+        <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+      </a>
+    </li>
+  </ul>
+  <div class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</div>
+</footer>
+
+<script>
+const allPages=['home','store','diamonds','skincare','enquire'];
+
+function showPage(id,linkEl){
+  allPages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.classList.remove('active');});
+  const t=document.getElementById('page-'+id);
+  if(t){t.classList.add('active');window.scrollTo(0,0);}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(linkEl)linkEl.classList.add('active');
+  else{const map={home:0,store:1,diamonds:1,skincare:1,enquire:null};const idx=map[id];if(idx!=null)document.querySelectorAll('.nav-links a')[idx]?.classList.add('active');}
+  closeMenu();
+}
+
+function toggleMenu(){
+  const m=document.getElementById('mobile-menu');
+  const open=m.classList.toggle('open');
+  const spans=document.getElementById('hamburger').querySelectorAll('span');
+  spans[0].style.transform=open?'translateY(6.5px) rotate(45deg)':'';
+  spans[1].style.opacity=open?'0':'1';
+  spans[2].style.transform=open?'translateY(-6.5px) rotate(-45deg)':'';
+}
+function closeMenu(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.getElementById('hamburger').querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';});
+}
+function setFilter(el){
+  el.closest('.filter-bar').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── FLOATING CHAT PANEL ── */
+function toggleFab(){
+  document.getElementById('fab-panel').classList.toggle('open');
+}
+
+/* ── SHARED CHAT LOGIC ── */
+const chatFlows={
+  diamonds:[{bot:"Great! Are you shopping for a gift or for yourself?"},{chips:["A gift for someone","For myself"]}],
+  skincare:[{bot:"Lovely! What's your main skin concern?"},{chips:["Hydration","Brightening","Anti-ageing","Sensitive skin"]}],
+  faq:[{bot:"Of course! What would you like to know?"},{chips:["Shipping & delivery","Lab-grown diamonds","Skincare ingredients","Custom orders"]}]
+};
+
+function addMsgTo(containerID,text,type){
+  const msgs=document.getElementById(containerID);
+  const div=document.createElement('div');div.className='chat-msg '+type;div.textContent=text;
+  msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;
+}
+
+function setChipsIn(chipsID,msgsID,chips){
+  const c=document.getElementById(chipsID);c.innerHTML='';
+  chips.forEach(label=>{
+    const btn=document.createElement('button');btn.className='chat-chip';btn.textContent=label;
+    btn.onclick=()=>{
+      addMsgTo(msgsID,label,'user');c.innerHTML='';
+      setTimeout(()=>{
+        addMsgTo(msgsID,"I'd love to help further. Please fill in our enquiry form and we'll get back to you shortly.",'bot');
+        setTimeout(()=>{
+          const e=document.createElement('button');e.className='chat-chip';e.textContent='Enquire now';
+          e.onclick=()=>{showPage('enquire');document.getElementById('fab-panel').classList.remove('open');};
+          c.appendChild(e);
+        },400);
+      },600);
+    };
+    c.appendChild(btn);
+  });
+}
+
+function runFlow(msgsID,chipsID,flow){
+  const f=chatFlows[flow]||[];let i=0;
+  function next(){if(i>=f.length)return;const step=f[i++];
+    if(step.bot)setTimeout(()=>{addMsgTo(msgsID,step.bot,'bot');next();},500);
+    else if(step.chips)setTimeout(()=>{setChipsIn(chipsID,msgsID,step.chips);},350);}
+  setTimeout(next,450);
+}
+
+/* inline chat widget */
+function chatReply(userText,flow){
+  addMsgTo('chat-msgs',userText,'user');document.getElementById('chat-chips').innerHTML='';
+  runFlow('chat-msgs','chat-chips',flow);
+}
+function sendChat(){
+  const inp=document.getElementById('chat-input');const val=inp.value.trim();if(!val)return;
+  addMsgTo('chat-msgs',val,'user');inp.value='';document.getElementById('chat-chips').innerHTML='';
+  const lower=val.toLowerCase();
+  setTimeout(()=>{
+    if(lower.includes('diamond')||lower.includes('ring')||lower.includes('necklace')||lower.includes('earring')||lower.includes('jewel')){
+      addMsgTo('chat-msgs',"Sounds like you're looking for diamonds! Let me help narrow it down.",'bot');
+      setTimeout(()=>setChipsIn('chat-chips','chat-msgs',["A gift","For myself","Engagement","Birthday"]),400);
+    }else if(lower.includes('skin')||lower.includes('serum')||lower.includes('moistur')||lower.includes('cream')||lower.includes('cleanser')){
+      addMsgTo('chat-msgs',"I can help with skincare! What's your primary concern?",'bot');
+      setTimeout(()=>setChipsIn('chat-chips','chat-msgs',["Hydration","Brightening","Anti-ageing","Sensitive skin"]),400);
+    }else{
+      addMsgTo('chat-msgs',"Great question. Please fill in our enquiry form and our team will get back to you.",'bot');
+      setTimeout(()=>setChipsIn('chat-chips','chat-msgs',["Go to Enquire form"]),400);
+    }},600);
+}
+
+/* floating panel chat */
+function fabReply(userText,flow){
+  addMsgTo('fab-msgs',userText,'user');document.getElementById('fab-chips').innerHTML='';
+  runFlow('fab-msgs','fab-chips',flow);
+}
+function sendFab(){
+  const inp=document.getElementById('fab-input');const val=inp.value.trim();if(!val)return;
+  addMsgTo('fab-msgs',val,'user');inp.value='';document.getElementById('fab-chips').innerHTML='';
+  const lower=val.toLowerCase();
+  setTimeout(()=>{
+    if(lower.includes('diamond')||lower.includes('ring')||lower.includes('necklace')||lower.includes('earring')||lower.includes('jewel')){
+      addMsgTo('fab-msgs',"Sounds like you're looking for diamonds! Let me help.",'bot');
+      setTimeout(()=>setChipsIn('fab-chips','fab-msgs',["A gift","For myself"]),400);
+    }else if(lower.includes('skin')||lower.includes('serum')||lower.includes('moistur')){
+      addMsgTo('fab-msgs',"I can help with skincare! What's your main concern?",'bot');
+      setTimeout(()=>setChipsIn('fab-chips','fab-msgs',["Hydration","Brightening","Anti-ageing"]),400);
+    }else{
+      addMsgTo('fab-msgs',"Let me connect you with our team — fill in the enquiry form and we'll be in touch.",'bot');
+      setTimeout(()=>setChipsIn('fab-chips','fab-msgs',["Enquire now"]),400);
+    }},600);
+}
+</script>
+</body>
+</html>
