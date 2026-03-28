@@ -1,0 +1,2512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Altiora Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   DESIGN TOKENS
+   ============================================= */
+:root {
+  --navy: #1A1A2E;
+  --gold: #C9A84C;
+  --gold-hover: #E0BF6A;
+  --gold-press: #B89535;
+  --ivory: #F5EDD6;
+  --ivory-dark: #EDE0C4;
+  --stone: #C8C0B0;
+  --text-dark: #1A1A2E;
+  --text-mid: #5A5043;
+  --text-light: #8A7E6E;
+  --white: #FFFDF8;
+  --deep-dark: #10101D;
+  --near-black: #0d0d1a;
+  --skincaredark: #1E1215;
+}
+
+/* =============================================
+   RESET & BASE
+   ============================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: var(--navy);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+button, input, select, textarea { font-family: inherit; }
+button { cursor: pointer; border: none; background: none; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+/* =============================================
+   PAGE SYSTEM
+   ============================================= */
+.page { display: none; }
+.page.active { display: block; }
+
+/* Page transition */
+.page-enter {
+  animation: pageEnter 0.4s ease forwards;
+}
+.page-exit {
+  animation: pageExit 0.25s ease forwards;
+}
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pageExit {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* =============================================
+   SCROLL REVEAL SYSTEM
+   ============================================= */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+.reveal-delay-6 { transition-delay: 0.6s; }
+
+/* =============================================
+   NAVIGATION
+   ============================================= */
+#site-nav {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 40px;
+  z-index: 300;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+#site-nav.nav-sticky {
+  position: fixed;
+  background: rgba(12,14,34,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(201,168,76,0.22);
+}
+#site-nav:hover, #site-nav:focus-within {
+  background: rgba(12,14,34,0.52);
+  backdrop-filter: blur(8px);
+  border-bottom-color: rgba(201,168,76,0.22);
+}
+.nav-logo {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(34px, 5vw, 80px);
+  font-weight: 400;
+  letter-spacing: 1px;
+  color: rgba(245,237,214,0.95);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.nav-logo:hover { color: var(--gold); }
+.nav-links {
+  position: absolute;
+  left: 50%;
+  top: 66px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 28px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+#site-nav:hover .nav-links,
+#site-nav:focus-within .nav-links {
+  opacity: 1;
+  pointer-events: all;
+}
+.nav-link {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,237,214,0.65);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+.nav-cta {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: 5px;
+  transition: background 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+.nav-cta:hover { background: var(--gold); color: var(--navy); }
+.nav-cta:active { background: var(--gold-press); }
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+  z-index: 10;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--gold);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 84px; left: 0; right: 0;
+  background: var(--navy);
+  padding: 32px 24px;
+  z-index: 299;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.mobile-menu.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+.mobile-menu-link {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(245,237,214,0.65);
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.mobile-menu-link:hover { color: var(--gold); }
+.mobile-menu-cta {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+}
+.mobile-menu-cta:hover { background: var(--gold-hover); }
+
+@media (max-width: 768px) {
+  #site-nav { height: 84px; padding: 0 20px; }
+  .nav-logo {
+    left: 20px;
+    transform: translateY(-50%);
+    font-size: clamp(24px, 8.4vw, 40px);
+    max-width: calc(100% - 84px);
+  }
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { display: block; }
+  #site-nav.nav-sticky { position: fixed; }
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-gold:hover { background: var(--gold-hover); transform: translateY(-1px); }
+.btn-gold:active { background: var(--gold-press); transform: translateY(0); }
+
+.btn-outline-light {
+  background: transparent;
+  color: rgba(245,237,214,0.8);
+  border: 1px solid rgba(245,237,214,0.35);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-outline-light:hover {
+  color: var(--ivory);
+  border-color: var(--ivory);
+  transform: translateY(-1px);
+}
+.btn-outline-light:active { background: rgba(245,237,214,0.1); transform: translateY(0); }
+
+/* =============================================
+   EYEBROW
+   ============================================= */
+.eyebrow {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* =============================================
+   FLOATING ACTION BUTTON (FAB)
+   ============================================= */
+#fab-btn {
+  position: fixed;
+  bottom: 28px; right: 28px;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 400;
+  box-shadow: 0 4px 20px rgba(26,26,46,0.3);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+#fab-btn:hover { background: var(--gold); transform: scale(1.08); }
+#fab-btn:hover .fab-icon { stroke: var(--navy); }
+#fab-btn:active { background: var(--gold-press); }
+.fab-icon { stroke: var(--gold); fill: none; stroke-width: 1.8; transition: stroke 0.2s ease; }
+
+#fab-panel {
+  position: fixed;
+  bottom: 92px; right: 28px;
+  width: 320px;
+  z-index: 400;
+  background: var(--white);
+  border: 1px solid var(--ivory-dark);
+  border-radius: 2px;
+  box-shadow: 0 12px 40px rgba(26,26,46,0.18);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  transform-origin: bottom right;
+  animation: none;
+}
+#fab-panel.panel-open {
+  display: flex;
+  animation: panelOpen 0.22s ease forwards;
+}
+#fab-panel.panel-close {
+  animation: panelClose 0.18s ease forwards;
+}
+@keyframes panelOpen {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes panelClose {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.92) translateY(8px); }
+}
+.fab-header {
+  background: var(--navy);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fab-header-left { display: flex; flex-direction: column; gap: 2px; }
+.fab-header-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--ivory);
+}
+.fab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.fab-subtitle {
+  font-size: 9px;
+  color: rgba(245,237,214,0.4);
+  margin-left: 14px;
+}
+.fab-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+.fab-close:hover { opacity: 1; }
+.fab-close svg { stroke: var(--ivory); display: block; }
+.fab-messages {
+  padding: 12px;
+  min-height: 140px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.chat-msg {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-dark);
+  padding: 8px 10px;
+  border-radius: 2px;
+  max-width: 90%;
+  line-height: 1.5;
+  animation: msgIn 0.3s ease;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.chat-msg.bot {
+  background: var(--ivory);
+  border-left: 2px solid var(--gold);
+  align-self: flex-start;
+}
+.chat-msg.user {
+  background: var(--navy);
+  color: var(--ivory);
+  align-self: flex-end;
+}
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 10px;
+  background: var(--ivory);
+  border-left: 2px solid var(--gold);
+  border-radius: 2px;
+  align-self: flex-start;
+  animation: msgIn 0.3s ease;
+}
+.typing-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-mid);
+  animation: typingPulse 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingPulse {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(1); }
+  30% { opacity: 1; transform: scale(1.2); }
+}
+.fab-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 12px 8px;
+}
+.chat-chip {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  color: var(--text-mid);
+  padding: 5px 10px;
+  border: 1px solid var(--stone);
+  border-radius: 2px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.chat-chip:hover { background: var(--navy); color: var(--ivory); border-color: var(--navy); }
+.chat-chip:active { background: #0d0d1a; }
+.fab-input-row {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--ivory-dark);
+  padding: 8px 12px;
+  gap: 8px;
+}
+.fab-input {
+  flex: 1;
+  font-size: 11px;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--text-dark);
+}
+.fab-input::placeholder { color: var(--stone); }
+.fab-send {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: var(--gold);
+  transition: opacity 0.2s ease;
+}
+.fab-send:hover { opacity: 0.7; }
+
+@media (max-width: 768px) {
+  #fab-btn { bottom: 20px; right: 20px; }
+  #fab-panel { right: 20px; width: calc(100vw - 40px); }
+}
+
+/* =============================================
+   PRODUCT DETAIL MODAL
+   ============================================= */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  backdrop-filter: blur(0px);
+  z-index: 999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+#modal-overlay.open {
+  display: flex;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+}
+#modal-container {
+  background: var(--white);
+  border-radius: 5px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(26,26,46,0.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px;
+  animation: modalOpen 0.3s ease;
+}
+@keyframes modalOpen {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.modal-close-btn {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #F5F5F5;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.modal-close-btn:hover { background: var(--ivory); }
+.modal-close-btn:hover svg { stroke: var(--gold); }
+.modal-close-btn svg { stroke: var(--navy); display: block; }
+.modal-main-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #F0E8D4;
+  border: 1px solid var(--ivory-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.modal-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.modal-thumb {
+  aspect-ratio: 1;
+  background: #F0E8D4;
+  border: 1px solid var(--ivory-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.modal-thumb:hover { border-color: var(--gold); background: #F5E8D8; }
+.modal-cat-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 8px;
+}
+.modal-product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--navy);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.modal-specs {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.modal-desc {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+.modal-cta {
+  width: 100%;
+  background: var(--navy);
+  color: var(--ivory);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.modal-cta:hover { background: var(--gold); color: var(--navy); }
+.modal-cta:active { background: var(--gold-press); }
+
+@media (max-width: 768px) {
+  #modal-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+    max-height: 95vh;
+  }
+}
+
+/* =============================================
+   HOME PAGE
+   ============================================= */
+#page-home { }
+
+/* Hero */
+.hero {
+  position: relative;
+  height: 100svh;
+  min-height: 500px;
+  max-height: 720px;
+  overflow: hidden;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d0d1a, #1A1A2E, #12122a, #0d1020, #1A1A2E, #0d0d1a);
+  background-size: 400% 400%;
+  animation: shimmer 8s ease infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.hero-video-placeholder {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  animation: pulsePlaceholder 3s ease-in-out infinite;
+}
+@keyframes pulsePlaceholder {
+  0%, 100% { opacity: 0.18; }
+  50% { opacity: 0.28; }
+}
+.hero-play-ring {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-placeholder-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,20,0.52);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Hero text stagger animations */
+.hero-eyebrow {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: heroIn 0.7s ease 0.3s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 8vw, 58px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--ivory);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: heroIn 0.7s ease 0.55s forwards;
+}
+.hero-title .accent { color: var(--gold); }
+.hero-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.65);
+  max-width: 460px;
+  line-height: 1.9;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: heroIn 0.7s ease 0.8s forwards;
+}
+.hero-btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: heroIn 0.7s ease 1.0s forwards;
+}
+@keyframes heroIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .hero-sub { font-size: 12px; }
+  .hero-btns { flex-direction: column; align-items: center; }
+  .hero-btns .btn-gold, .hero-btns .btn-outline-light { width: 220px; justify-content: center; }
+}
+
+/* Brand intro */
+.brand-intro {
+  background: var(--navy);
+  border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 64px 40px;
+  text-align: center;
+}
+.brand-intro h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px,5vw,36px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ivory);
+  margin-bottom: 12px;
+}
+.brand-intro p {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.5);
+  max-width: 500px;
+  margin: 0 auto 36px;
+  line-height: 1.9;
+}
+.brand-cards {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.brand-card {
+  flex: 1;
+  min-width: 200px;
+  max-width: 260px;
+  padding: 28px 32px;
+  border: 1px solid rgba(201,168,76,0.2);
+  background: transparent;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  border-radius: 5px;
+}
+.brand-card:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.04);
+  transform: translateY(-3px);
+}
+.brand-card:active { background: rgba(201,168,76,0.12); transform: translateY(0); }
+.brand-card-icon {
+  width: 22px; height: 22px;
+  margin: 0 auto 12px;
+  display: block;
+}
+.brand-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ivory);
+  display: block;
+  margin-bottom: 6px;
+}
+.brand-card-desc {
+  font-size: 11px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.4);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .brand-intro { padding: 48px 20px; }
+  .brand-cards { flex-direction: column; align-items: center; }
+  .brand-card { max-width: 100%; width: 100%; }
+}
+
+/* AI Advisor section */
+.advisor-section {
+  background: var(--ivory);
+  padding: 64px 40px;
+}
+.advisor-inner {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 52px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.advisor-left .eyebrow { margin-bottom: 14px; }
+.advisor-left h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px,4vw,36px);
+  font-weight: 300;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.advisor-left p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-mid);
+  line-height: 1.9;
+  margin-bottom: 22px;
+}
+.advisor-left .btn-gold { margin-bottom: 28px; }
+.capability-items { display: flex; flex-direction: column; gap: 10px; }
+.capability-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--white);
+  border-left: 2px solid var(--gold);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.capability-item:hover {
+  transform: translateX(3px);
+  box-shadow: 2px 0 12px rgba(201,168,76,0.1);
+}
+.cap-icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+.cap-icon svg { stroke: var(--gold); fill: none; stroke-width: 1.5; display: block; }
+.cap-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--navy);
+  display: block;
+  margin-bottom: 2px;
+}
+.cap-desc { font-size: 12px; font-weight: 300; color: var(--text-mid); }
+
+@media (max-width: 900px) {
+  .advisor-inner { grid-template-columns: 1fr; gap: 36px; }
+}
+@media (max-width: 768px) {
+  .advisor-section { padding: 48px 20px; }
+}
+
+/* =============================================
+   STORE PAGE
+   ============================================= */
+#page-store { padding-top: 100px; }
+@media (max-width: 768px) { #page-store { padding-top: 84px; } }
+
+.store-hero {
+  background: var(--navy);
+  padding: 56px 40px 40px;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  text-align: center;
+}
+.store-hero .eyebrow { margin-bottom: 14px; }
+.store-hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(30px,6vw,44px);
+  font-weight: 300;
+  color: var(--ivory);
+  margin-bottom: 10px;
+}
+.store-hero p {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.5);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.store-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 768px) { .store-categories { grid-template-columns: 1fr; } }
+
+.store-cat-card {
+  background: var(--white);
+  border: 1px solid var(--ivory-dark);
+  padding: 72px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+.store-cat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 2px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+.store-cat-card:hover { background: var(--ivory); }
+.store-cat-card:hover::after { width: 72px; }
+.store-cat-icon {
+  width: 52px; height: 52px;
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+.store-cat-tag {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.store-cat-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px,4vw,36px);
+  font-weight: 300;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+.store-cat-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1.8;
+  max-width: 260px;
+  margin-bottom: 20px;
+}
+.store-browse-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--navy);
+  border-bottom: 1px solid var(--navy);
+  padding-bottom: 2px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.store-browse-link:hover { color: var(--gold); border-color: var(--gold); }
+
+@media (max-width: 900px) { .store-cat-card { padding: 52px 28px; } }
+@media (max-width: 768px) { .store-cat-card { padding: 48px 24px; } }
+@media (max-width: 480px) { .store-cat-card { padding: 40px 20px; } }
+
+/* Instagram feed */
+.insta-section {
+  background: var(--ivory);
+  padding: 56px 40px;
+}
+.insta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.insta-header h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(20px,4vw,28px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--navy);
+}
+.insta-handle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  padding: 7px 14px;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+.insta-handle-btn:hover { background: var(--gold); color: var(--navy); }
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.insta-tile {
+  aspect-ratio: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.insta-tile:nth-child(3n+1) { background: #E8DFC8; }
+.insta-tile:nth-child(3n+2) { background: #DDD4BA; }
+.insta-tile:nth-child(3n)   { background: #D5C9AE; }
+.insta-tile-icon {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 0.28;
+}
+.insta-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,26,46,0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+.insta-tile:hover .insta-tile-overlay { background: rgba(26,26,46,0.3); }
+.insta-tile-label {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ivory);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.insta-tile:hover .insta-tile-label { opacity: 1; }
+
+@media (max-width: 768px) {
+  .insta-section { padding: 40px 20px; }
+  .insta-header { flex-direction: column; align-items: flex-start; }
+  .insta-grid { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+  .insta-tile:nth-child(n+5) { display: none; }
+}
+
+/* =============================================
+   DIAMONDS & SKINCARE PAGES
+   ============================================= */
+#page-diamonds, #page-skincare { padding-top: 100px; }
+@media (max-width: 768px) {
+  #page-diamonds, #page-skincare { padding-top: 84px; }
+}
+
+.subpage-hero {
+  padding: 52px 40px 40px;
+  text-align: center;
+}
+#page-diamonds .subpage-hero { background: var(--navy); }
+#page-skincare .subpage-hero { background: var(--skincaredark); }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,237,214,0.4);
+  margin-bottom: 16px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.back-link:hover { color: var(--gold); border-color: var(--gold); }
+.subpage-hero .eyebrow { margin-bottom: 14px; }
+.subpage-hero h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px,6vw,42px);
+  font-weight: 300;
+  color: var(--ivory);
+  margin-bottom: 10px;
+}
+.subpage-hero p {
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(245,237,214,0.5);
+  max-width: 420px;
+  margin: 0 auto 24px;
+}
+.filter-bar {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 7px 14px;
+  border: 1px solid rgba(245,237,214,0.18);
+  color: rgba(245,237,214,0.5);
+  background: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+}
+.filter-btn:active { background: var(--gold-press); }
+
+.filter-count {
+  font-size: 9px;
+  font-weight: 400;
+  color: rgba(245,237,214,0.3);
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 1px;
+  transition: opacity 0.3s ease;
+}
+
+/* Product grid */
+.product-grid-section {
+  background: var(--white);
+  padding: 36px 40px;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+@media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: 1fr; gap: 14px; }
+  .product-grid-section { padding: 28px 24px; }
+}
+
+.prod-card {
+  background: var(--white);
+  border: 1px solid var(--ivory-dark);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  overflow: hidden;
+  /* stagger reveal */
+  opacity: 0;
+  transform: translateY(16px);
+}
+.prod-card.card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.prod-card.card-hidden {
+  display: none;
+}
+.prod-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(26,26,46,0.08);
+  border-color: rgba(201,168,76,0.4);
+}
+.prod-img {
+  height: 180px;
+  background: #F0E8D4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#page-skincare .prod-img { background: #F0E4E0; }
+@media (max-width: 480px) { .prod-img { height: 200px; } }
+
+.prod-img-inner {
+  opacity: 0.22;
+  transition: transform 0.35s ease;
+}
+.prod-card:hover .prod-img-inner { transform: scale(1.06); }
+
+.prod-badge {
+  position: absolute;
+  top: 8px; left: 8px;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--navy);
+  color: var(--gold);
+  padding: 3px 8px;
+}
+.prod-info { padding: 14px 14px 18px; }
+.prod-cat {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--stone);
+  margin-bottom: 4px;
+}
+.prod-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--navy);
+  margin-bottom: 5px;
+}
+.prod-specs {
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* =============================================
+   ENQUIRE PAGE
+   ============================================= */
+#page-enquire { padding-top: 100px; }
+@media (max-width: 768px) { #page-enquire { padding-top: 84px; } }
+
+.enquire-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 540px;
+}
+@media (max-width: 768px) { .enquire-grid { grid-template-columns: 1fr; } }
+
+.enquire-sidebar {
+  background: var(--navy);
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.enquire-sidebar::before {
+  content: '◇';
+  position: absolute;
+  bottom: -20px; right: -10px;
+  font-size: 200px;
+  color: rgba(201,168,76,0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+.enquire-sidebar .eyebrow { margin-bottom: 14px; }
+.enquire-sidebar h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(24px,4vw,34px);
+  font-weight: 300;
+  color: var(--ivory);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.enquire-sidebar > p {
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.5);
+  line-height: 1.9;
+  margin-bottom: 32px;
+}
+.perk-items { display: flex; flex-direction: column; gap: 16px; }
+.perk-item { display: flex; gap: 12px; }
+.perk-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+.perk-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ivory);
+  display: block;
+  margin-bottom: 2px;
+}
+.perk-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.6);
+  line-height: 1.6;
+}
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 10px 16px;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,76,0.4);
+  background: transparent;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.whatsapp-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+.whatsapp-btn:active { background: rgba(201,168,76,0.15); }
+
+@media (max-width: 768px) {
+  .enquire-sidebar { padding: 48px 20px; }
+  .enquire-sidebar::before { font-size: 140px; }
+}
+
+/* Form panel */
+.enquire-form-panel {
+  background: var(--ivory);
+  padding: 60px 40px;
+}
+.form-eyebrow { margin-bottom: 24px; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+@media (max-width: 768px) {
+  .enquire-form-panel { padding: 40px 20px; }
+  .form-row { grid-template-columns: 1fr; gap: 12px; }
+}
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-bottom: 7px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--stone);
+  padding: 11px 14px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dark);
+  border-radius: 0;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: var(--stone); }
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.2);
+}
+.form-textarea { height: 90px; resize: none; }
+.form-select { cursor: pointer; }
+.form-submit {
+  width: 100%;
+  background: var(--navy);
+  color: var(--ivory);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
+  transition: background 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+.form-submit:hover { background: var(--gold); color: var(--navy); }
+.form-submit:active { background: var(--gold-press); }
+.form-submit .submit-text { transition: opacity 0.2s ease; }
+.form-submit .submit-spinner {
+  position: absolute;
+  display: none;
+}
+.form-submit.loading .submit-text { opacity: 0; }
+.form-submit.loading .submit-spinner { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner-ring {
+  width: 16px; height: 16px;
+  border: 2px solid rgba(245,237,214,0.3);
+  border-top-color: var(--ivory);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+.form-note {
+  font-size: 10px;
+  font-weight: 300;
+  color: var(--text-light);
+  text-align: center;
+  margin-top: 10px;
+}
+/* Success state */
+.form-success {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+.form-success.show { display: flex; animation: heroIn 0.5s ease; }
+.success-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.form-success h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--navy);
+}
+.form-success p {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text-mid);
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+footer {
+  background: var(--deep-dark);
+  padding: 36px 40px;
+  border-top: 1px solid rgba(201,168,76,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 4px;
+}
+.footer-uen {
+  font-size: 9px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.22);
+  letter-spacing: 1px;
+}
+.footer-links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-link {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,237,214,0.28);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s ease;
+}
+.footer-link:hover { color: var(--gold); }
+.footer-copy {
+  font-size: 9px;
+  color: rgba(245,237,214,0.16);
+}
+@media (max-width: 768px) {
+  footer { flex-direction: column; align-items: flex-start; padding: 32px 20px; gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     NAVIGATION
+     ============================================= -->
+<nav id="site-nav">
+  <span class="nav-logo" onclick="showPage('home')">Altiora Marketing</span>
+  <div class="nav-links">
+    <span class="nav-link" onclick="showPage('home')" id="nl-home">Home</span>
+    <span class="nav-link" onclick="showPage('store')" id="nl-store">Store</span>
+  </div>
+  <button class="nav-cta" onclick="showPage('enquire')">Enquire Now</button>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <span class="mobile-menu-link" onclick="showPage('home');closeMenu()">Home</span>
+  <span class="mobile-menu-link" onclick="showPage('store');closeMenu()">Store</span>
+  <button class="mobile-menu-cta" onclick="showPage('enquire');closeMenu()">Enquire Now</button>
+</div>
+
+<!-- =============================================
+     FAB
+     ============================================= -->
+<button id="fab-btn" onclick="toggleFab()" aria-label="Open AI Advisor">
+  <svg class="fab-icon" width="22" height="22" viewBox="0 0 22 22">
+    <path d="M3 3h16v12H3zM7 18l4 2 4-2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<div id="fab-panel">
+  <div class="fab-header">
+    <div class="fab-header-left">
+      <div class="fab-header-title">
+        <span class="fab-dot"></span>
+        Altiora Advisor
+      </div>
+      <div class="fab-subtitle">Typically responds instantly</div>
+    </div>
+    <button class="fab-close" onclick="closeFab()">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1 1l12 12M13 1L1 13" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="fab-messages" id="fab-messages"></div>
+  <div class="fab-chips" id="fab-chips"></div>
+  <div class="fab-input-row">
+    <input class="fab-input" id="fab-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter') sendFabMsg()">
+    <button class="fab-send" onclick="sendFabMsg()">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 6H2M7 3l3 3-3 3"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- =============================================
+     PRODUCT MODAL
+     ============================================= -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal-container">
+    <button class="modal-close-btn" onclick="closeModal(null)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M5 5l14 14M19 5L5 19" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <!-- Left: images -->
+    <div>
+      <div class="modal-main-image">
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
+          <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
+          <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
+          <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
+          <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
+          <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
+        </svg>
+      </div>
+      <div class="modal-thumbnails">
+        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
+        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
+        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
+        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
+      </div>
+    </div>
+    <!-- Right: info -->
+    <div id="modal-info">
+      <div class="modal-cat-label" id="modal-cat"></div>
+      <div class="modal-product-name" id="modal-name"></div>
+      <div class="modal-specs" id="modal-specs"></div>
+      <div class="modal-desc" id="modal-desc"></div>
+      <button class="modal-cta" onclick="showPage('enquire');closeModal(null)">Enquire About This</button>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================
+     PAGE: HOME
+     ============================================= -->
+<div id="page-home" class="page active">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-video-placeholder">
+      <div class="hero-play-ring">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="#C9A84C">
+          <polygon points="6,3 15,9 6,15"/>
+        </svg>
+      </div>
+      <span class="hero-placeholder-label">Brand video placeholder</span>
+    </div>
+    <div class="hero-overlay">
+      <div class="hero-eyebrow">◇ Singapore · Est. 2026</div>
+      <h1 class="hero-title">Curated for you.<br><span class="accent">Crafted to last.</span></h1>
+      <p class="hero-sub">Fine lab-grown diamonds &amp; elevated skincare<br>Sourced from Asia's finest, guided by someone who cares.</p>
+      <div class="hero-btns">
+        <button class="btn-gold" onclick="showPage('store')">Explore the Store</button>
+        <button class="btn-outline-light" onclick="scrollToChat()">Chat with Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Intro -->
+  <section class="brand-intro">
+    <h2 class="reveal">Two worlds. One vision.</h2>
+    <p class="reveal reveal-delay-1">Altiora brings together fine lab-grown diamond jewellery and elevated skincare — each curated with the same commitment to quality, ethics, and personal guidance.</p>
+    <div class="brand-cards">
+      <div class="brand-card reveal reveal-delay-2" onclick="showPage('diamonds')">
+        <svg class="brand-card-icon" viewBox="0 0 22 22" fill="none" stroke="#C9A84C" stroke-width="1.5">
+          <polygon points="11,2 20,7 20,15 11,20 2,15 2,7"/>
+          <polygon points="11,5 17,8.5 17,13.5 11,17 5,13.5 5,8.5"/>
+          <line x1="11" y1="2" x2="11" y2="5"/>
+          <line x1="20" y1="7" x2="17" y2="8.5"/>
+          <line x1="20" y1="15" x2="17" y2="13.5"/>
+          <line x1="11" y1="20" x2="11" y2="17"/>
+          <line x1="2" y1="15" x2="5" y2="13.5"/>
+          <line x1="2" y1="7" x2="5" y2="8.5"/>
+        </svg>
+        <span class="brand-card-name">Diamonds by Altiora</span>
+        <span class="brand-card-desc">Lab-grown diamond jewellery, handpicked from Asia's finest artisans.</span>
+      </div>
+      <div class="brand-card reveal reveal-delay-3" onclick="showPage('skincare')">
+        <svg class="brand-card-icon" viewBox="0 0 22 22" fill="none" stroke="#C9A84C" stroke-width="1.5">
+          <circle cx="11" cy="11" r="9"/>
+          <circle cx="11" cy="11" r="5"/>
+          <circle cx="11" cy="11" r="2"/>
+        </svg>
+        <span class="brand-card-name">Skincare by Altiora</span>
+        <span class="brand-card-desc">Elevated formulations for every skin, every routine.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Advisor -->
+  <section class="advisor-section" id="chat-section">
+    <div class="advisor-inner">
+      <div class="advisor-left">
+        <div class="eyebrow reveal">◇ AI ADVISOR</div>
+        <h2 class="reveal reveal-delay-1">Not sure where to start? Ask us.</h2>
+        <p class="reveal reveal-delay-2">Our advisor helps you find diamonds or skincare and answers your questions. If you need more help, we'll connect you with a live agent.</p>
+        <button class="btn-gold reveal reveal-delay-3" onclick="openFab()">Ask Now</button>
+        <div class="capability-items">
+          <div class="capability-item reveal reveal-delay-3">
+            <span class="cap-icon">
+              <svg viewBox="0 0 14 14"><polygon points="7,1 13,4 13,10 7,13 1,10 1,4"/></svg>
+            </span>
+            <div>
+              <strong class="cap-label">Find diamonds</strong>
+              <span class="cap-desc">Tell us the occasion and style — we'll guide you.</span>
+            </div>
+          </div>
+          <div class="capability-item reveal reveal-delay-4">
+            <span class="cap-icon">
+              <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><circle cx="7" cy="7" r="3"/></svg>
+            </span>
+            <div>
+              <strong class="cap-label">Find skincare</strong>
+              <span class="cap-desc">Skin type, concerns, routine — we'll match you.</span>
+            </div>
+          </div>
+          <div class="capability-item reveal reveal-delay-5">
+            <span class="cap-icon">
+              <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="6"/><line x1="7" y1="5" x2="7" y2="8" stroke-linecap="round"/><circle cx="7" cy="10" r="0.6" fill="#C9A84C"/></svg>
+            </span>
+            <div>
+              <strong class="cap-label">Answer FAQs</strong>
+              <span class="cap-desc">Shipping, sourcing, custom orders and more.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right side intentionally empty in v1 (inline chat removed) -->
+      <div></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-uen">UEN 202612413E · Singapore</span>
+    </div>
+    <nav class="footer-links">
+      <span class="footer-link" onclick="showPage('home')">Home</span>
+      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
+      <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">
+        Instagram
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
+      </a>
+      <a class="footer-link" href="https://wa.me/65" target="_blank">
+        WhatsApp
+        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
+      </a>
+    </nav>
+    <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
+  </footer>
+</div>
+
+<!-- =============================================
+     PAGE: STORE
+     ============================================= -->
+<div id="page-store" class="page">
+  <section class="store-hero">
+    <div class="eyebrow reveal">◇ OUR COLLECTIONS</div>
+    <h2 class="reveal reveal-delay-1">Discover Altiora</h2>
+    <p class="reveal reveal-delay-2">Two curated collections sourced from the finest of Asia.</p>
+  </section>
+  <div class="store-categories">
+    <div class="store-cat-card reveal" onclick="showPage('diamonds')">
+      <svg class="store-cat-icon" viewBox="0 0 52 52" fill="none" stroke="#C9A84C" stroke-width="1.5">
+        <polygon points="26,4 48,14 48,38 26,48 4,38 4,14"/>
+        <polygon points="26,10 42,18 42,34 26,42 10,34 10,18"/>
+        <line x1="26" y1="4" x2="26" y2="10"/>
+        <line x1="48" y1="14" x2="42" y2="18"/>
+        <line x1="48" y1="38" x2="42" y2="34"/>
+        <line x1="26" y1="48" x2="26" y2="42"/>
+        <line x1="4" y1="38" x2="10" y2="34"/>
+        <line x1="4" y1="14" x2="10" y2="18"/>
+      </svg>
+      <div class="store-cat-tag">Collection 01</div>
+      <div class="store-cat-name">Diamonds by Altiora</div>
+      <div class="store-cat-desc">Lab-grown diamond rings, necklaces, earrings and bracelets. Handpicked from Asia's finest artisans.</div>
+      <span class="store-browse-link">
+        Browse Diamonds
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+      </span>
+    </div>
+    <div class="store-cat-card reveal reveal-delay-2" onclick="showPage('skincare')">
+      <svg class="store-cat-icon" viewBox="0 0 52 52" fill="none" stroke="#C9A84C" stroke-width="1.5">
+        <circle cx="26" cy="26" r="22"/>
+        <circle cx="26" cy="26" r="14"/>
+        <circle cx="26" cy="26" r="6"/>
+      </svg>
+      <div class="store-cat-tag">Collection 02</div>
+      <div class="store-cat-name">Skincare by Altiora</div>
+      <div class="store-cat-desc">Elevated skincare formulations for the discerning. Curated for every skin type, occasion, and routine.</div>
+      <span class="store-browse-link">
+        Browse Skincare
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <!-- Instagram -->
+  <section class="insta-section">
+    <div class="insta-header reveal">
+      <h3>As seen on Instagram</h3>
+      <a href="https://instagram.com/altioramarketingsg" target="_blank" class="insta-handle-btn">
+        @ALTIORAMARKETINGSG
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+      </a>
+    </div>
+    <div class="insta-grid" id="insta-grid"></div>
+  </section>
+
+  <footer>
+    <div>
+      <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-uen">UEN 202612413E · Singapore</span>
+    </div>
+    <nav class="footer-links">
+      <span class="footer-link" onclick="showPage('home')">Home</span>
+      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
+      <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">Instagram <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
+      <a class="footer-link" href="https://wa.me/65" target="_blank">WhatsApp <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
+    </nav>
+    <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
+  </footer>
+</div>
+
+<!-- =============================================
+     PAGE: DIAMONDS
+     ============================================= -->
+<div id="page-diamonds" class="page">
+  <section class="subpage-hero">
+    <span class="back-link" onclick="showPage('store')">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
+      Back to Store
+    </span>
+    <div class="eyebrow">◇ COLLECTION 01</div>
+    <h2>Diamonds by Altiora</h2>
+    <p>Lab-grown diamond jewellery, handpicked from Asia's finest artisans. Ethically sourced, beautifully crafted.</p>
+    <div class="filter-bar" id="diamond-filters">
+      <button class="filter-btn active" onclick="setFilter('diamonds','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('diamonds','rings',this)">Rings</button>
+      <button class="filter-btn" onclick="setFilter('diamonds','necklaces',this)">Necklaces</button>
+      <button class="filter-btn" onclick="setFilter('diamonds','earrings',this)">Earrings</button>
+      <button class="filter-btn" onclick="setFilter('diamonds','bracelets',this)">Bracelets</button>
+    </div>
+    <div class="filter-count" id="diamond-count"></div>
+  </section>
+  <div class="product-grid-section">
+    <div class="product-grid" id="diamonds-grid"></div>
+  </div>
+  <footer>
+    <div>
+      <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-uen">UEN 202612413E · Singapore</span>
+    </div>
+    <nav class="footer-links">
+      <span class="footer-link" onclick="showPage('home')">Home</span>
+      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
+    </nav>
+    <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
+  </footer>
+</div>
+
+<!-- =============================================
+     PAGE: SKINCARE
+     ============================================= -->
+<div id="page-skincare" class="page">
+  <section class="subpage-hero">
+    <span class="back-link" onclick="showPage('store')">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
+      Back to Store
+    </span>
+    <div class="eyebrow">◇ COLLECTION 02</div>
+    <h2>Skincare by Altiora</h2>
+    <p>Elevated formulations for every skin type. Curated with the same care as our diamonds.</p>
+    <div class="filter-bar" id="skincare-filters">
+      <button class="filter-btn active" onclick="setFilter('skincare','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('skincare','serums',this)">Serums</button>
+      <button class="filter-btn" onclick="setFilter('skincare','moisturisers',this)">Moisturisers</button>
+      <button class="filter-btn" onclick="setFilter('skincare','cleansers',this)">Cleansers</button>
+      <button class="filter-btn" onclick="setFilter('skincare','sets',this)">Sets</button>
+    </div>
+    <div class="filter-count" id="skincare-count"></div>
+  </section>
+  <div class="product-grid-section">
+    <div class="product-grid" id="skincare-grid"></div>
+  </div>
+  <footer>
+    <div>
+      <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-uen">UEN 202612413E · Singapore</span>
+    </div>
+    <nav class="footer-links">
+      <span class="footer-link" onclick="showPage('home')">Home</span>
+      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
+    </nav>
+    <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
+  </footer>
+</div>
+
+<!-- =============================================
+     PAGE: ENQUIRE
+     ============================================= -->
+<div id="page-enquire" class="page">
+  <div class="enquire-grid">
+    <div class="enquire-sidebar">
+      <div class="eyebrow reveal">◇ GET IN TOUCH</div>
+      <h2 class="reveal reveal-delay-1">Let's find what you're looking for.</h2>
+      <p class="reveal reveal-delay-2">Fill in the form and we'll get back to you!</p>
+      <div class="perk-items">
+        <div class="perk-item reveal reveal-delay-2">
+          <span class="perk-dot"></span>
+          <div>
+            <strong class="perk-label">Curated for you</strong>
+            <span class="perk-desc">Recommendations matched to your needs.</span>
+          </div>
+        </div>
+        <div class="perk-item reveal reveal-delay-3">
+          <span class="perk-dot"></span>
+          <div>
+            <strong class="perk-label">Response within 24 hours</strong>
+            <span class="perk-desc">A dedicated member of our team gives every message their full attention.</span>
+          </div>
+        </div>
+        <div class="perk-item reveal reveal-delay-4">
+          <span class="perk-dot"></span>
+          <div>
+            <strong class="perk-label">No account required</strong>
+            <span class="perk-desc">Just your name and a way to reach you.</span>
+          </div>
+        </div>
+      </div>
+      <button class="whatsapp-btn reveal reveal-delay-5">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="#C9A84C">
+          <path d="M7 0.5C3.41 0.5 0.5 3.41 0.5 7c0 1.23.33 2.38.9 3.37L0.5 13.5l3.23-.88C4.69 13.17 5.82 13.5 7 13.5c3.59 0 6.5-2.91 6.5-6.5S10.59 0.5 7 0.5zm3.44 9.06c-.14.4-.83.76-1.15.81-.3.05-.67.07-1.08-.07-.25-.09-.57-.21-.98-.41-1.72-.74-2.84-2.47-2.93-2.58-.09-.11-.73-.97-.73-1.85 0-.88.46-1.31.63-1.49.14-.15.38-.22.51-.22h.36c.12 0 .28.01.43.33.17.36.57 1.39.62 1.49.05.1.08.22.02.35-.06.13-.09.21-.18.32-.09.11-.19.24-.27.32-.09.09-.18.19-.08.37.1.18.46.75.98 1.22.67.59 1.24.78 1.41.86.18.08.28.07.39-.04.11-.11.46-.54.59-.72.12-.18.25-.15.42-.09.17.06 1.1.52 1.29.61.18.09.31.14.35.22.05.08.05.46-.09.86z"/>
+        </svg>
+        Chat on WhatsApp
+      </button>
+    </div>
+
+    <div class="enquire-form-panel">
+      <div class="eyebrow form-eyebrow reveal">◇ ENQUIRY FORM</div>
+      <div id="form-body">
+        <div class="form-row">
+          <div>
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" placeholder="e.g. Sarah Tan" id="f-name">
+          </div>
+          <div>
+            <label class="form-label">Email or WhatsApp</label>
+            <input type="text" class="form-input" placeholder="email or +65 number" id="f-contact">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="f-cat">
+            <option value="" disabled selected>What are you enquiring about?</option>
+            <option>Diamonds by Altiora</option>
+            <option>Skincare by Altiora</option>
+            <option>Both / Not sure yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Occasion or Purpose (optional)</label>
+          <select class="form-select" id="f-occasion">
+            <option value="" disabled selected>Select if applicable</option>
+            <option>Gift for someone</option>
+            <option>Self-purchase</option>
+            <option>Engagement / Anniversary</option>
+            <option>Birthday</option>
+            <option>Skincare routine starter</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Enquiry</label>
+          <textarea class="form-textarea" id="f-message" placeholder="Tell us what you're looking for. The more you share, the better we can help."></textarea>
+        </div>
+        <button class="form-submit" id="form-submit" onclick="submitForm()">
+          <span class="submit-text">
+            Submit Enquiry
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 6h8M7 3l3 3-3 3"/></svg>
+          </span>
+          <span class="submit-spinner">
+            <span class="spinner-ring"></span>
+          </span>
+        </button>
+        <div class="form-note">No account needed · Responses within 24 hours · No obligation to purchase</div>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="success-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4,11 9,16 18,7"/>
+          </svg>
+        </div>
+        <h3>We've received your enquiry.</h3>
+        <p>A member of our team will get back to you within 24 hours. Thank you for choosing Altiora.</p>
+        <button class="btn-gold" onclick="showPage('store')" style="margin-top:8px">Back to Store</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div>
+      <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-uen">UEN 202612413E · Singapore</span>
+    </div>
+    <nav class="footer-links">
+      <span class="footer-link" onclick="showPage('home')">Home</span>
+      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
+    </nav>
+    <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
+  </footer>
+</div>
+
+<!-- =============================================
+     JAVASCRIPT
+     ============================================= -->
+<script>
+/* ----------------------------------------
+   PRODUCT DATA
+   ---------------------------------------- */
+const PRODUCTS = {
+  diamonds: [
+    { id:'diamond-001', name:'Round Cut Necklace',           category:'necklaces', specs:'1.05 - 1.07 ct', description:'A delicate round cut necklace featuring a 1.05 - 1.07 ct lab-grown diamond, set in refined precious metal. Perfect for everyday elegance.' },
+    { id:'diamond-002', name:'Emerald Cut Ring',             category:'rings',     specs:'3.55ct',          description:'A striking emerald cut ring with a 3.55ct lab-grown diamond. Clean lines and exceptional clarity define this piece.' },
+    { id:'diamond-003', name:'Pear Cut Ring',                category:'rings',     specs:'3.04ct',          description:'A graceful pear cut ring at 3.04ct, combining romantic shape with modern brilliance.' },
+    { id:'diamond-004', name:'Pear Cut Ring',                category:'rings',     specs:'3.20ct',          description:'An elegant 3.20ct pear cut ring — distinctive silhouette, exceptional sparkle.' },
+    { id:'diamond-005', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'10.14ct',         description:'A stunning pair of round cut diamond earrings totalling 10.14ct. Dramatic presence, everyday wearability.' },
+    { id:'diamond-006', name:'Princess Cut Pendant Necklace',category:'necklaces', specs:'2.03ct',          description:'A regal 2.03ct princess cut pendant that commands attention with its geometric precision.' },
+    { id:'diamond-007', name:'Heart Cut Ring',               category:'rings',     specs:'3.01ct',          description:'A romantic 3.01ct heart cut ring. The ultimate symbol of love, crafted in lab-grown brilliance.' },
+    { id:'diamond-008', name:'Emerald Cut Ring',             category:'rings',     specs:'5.06ct',          description:'A statement 5.06ct emerald cut ring — broad, glassy, magnificent.' },
+    { id:'diamond-009', name:'Round Cut Tennis Bracelet',    category:'bracelets', specs:'11.08ct',         description:'An iconic 11.08ct round cut tennis bracelet. Continuous brilliance, effortless sophistication.' },
+    { id:'diamond-010', name:'Round Cut Tennis Bracelet',    category:'bracelets', specs:'9.00ct',          description:'A refined 9.00ct tennis bracelet for those who appreciate understated luxury.' },
+    { id:'diamond-011', name:'Round Cut Half Eternity Ring', category:'rings',     specs:'3.50ct',          description:'A 3.50ct half eternity ring with round brilliant diamonds — timeless, wearable, beautiful.' },
+    { id:'diamond-012', name:'Round Cut Half Eternity Ring', category:'rings',     specs:'5.68ct',          description:'An elevated 5.68ct half eternity ring. Substantial presence on the hand.' },
+    { id:'diamond-013', name:'Emerald Cut Full Eternity Ring',category:'rings',    specs:'7.50ct',          description:'A breathtaking 7.50ct full eternity ring in emerald cut. 360° brilliance.' },
+    { id:'diamond-014', name:'Butterflies Earrings',         category:'earrings',  specs:'3.60ct',          description:'3.60ct butterfly-shaped diamond earrings — delicate design, extraordinary sparkle.', badge:'New In' },
+    { id:'diamond-015', name:'Round Cut Full Eternity Ring', category:'rings',     specs:'2.02ct',          description:'A refined 2.02ct full eternity band. Simple, perfect, complete.' },
+    { id:'diamond-016', name:'Pear Cut Pendant Necklace',    category:'necklaces', specs:'1.50ct',          description:'A graceful 1.50ct pear cut pendant — elegant movement, timeless style.' },
+    { id:'diamond-017', name:'Flower Earrings',              category:'earrings',  specs:'6.16ct',          description:'Floral diamond earrings at 6.16ct. Nature-inspired design in lab-grown brilliance.' },
+    { id:'diamond-018', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'6.01ct',          description:'A versatile 6.01ct round cut earring pair. Effortless day-to-evening wear.' },
+    { id:'diamond-019', name:'Round Cut Hoop Earrings',      category:'earrings',  specs:'5.76ct',          description:'5.76ct round cut diamond hoops. Classic silhouette, extraordinary stones.' },
+    { id:'diamond-020', name:'Oval Cut Ring',                category:'rings',     specs:'5.08ct',          description:'A 5.08ct oval cut ring with the elongating elegance only an oval can provide.' },
+    { id:'diamond-021', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'2.00ct',          description:'A refined 2.00ct round cut pair — the perfect everyday diamond earring.', badge:'Bestseller' },
+  ],
+  skincare: [
+    { id:'skincare-001', name:'Luminance Serum',    category:'serums',        specs:'Brightening vitamin C complex. Lightweight, fast-absorbing.',            description:'Our brightening vitamin C serum in a lightweight, fast-absorbing formula. Designed to illuminate and even skin tone with consistent use.', badge:'New In' },
+    { id:'skincare-002', name:'Veil Cream',         category:'moisturisers',  specs:'24-hour hydration barrier. Fragrance-free, for sensitive skin.',         description:'A fragrance-free moisturiser delivering 24-hour hydration. Formulated for sensitive skin that demands gentleness without compromise.' },
+    { id:'skincare-003', name:'Purity Gel',         category:'cleansers',     specs:'Gentle foaming cleanser. Removes impurities without stripping.',         description:'A gentle foaming cleanser that removes impurities while respecting the skin barrier. Suitable for morning and evening use.', badge:'Bestseller' },
+    { id:'skincare-004', name:'Starter Ritual',     category:'sets',          specs:'A curated 3-step morning and evening routine.',                          description:'Everything you need to start a consistent skincare ritual. A curated 3-step morning and evening routine for glowing skin.' },
+    { id:'skincare-005', name:'Repair Ampoule',     category:'serums',        specs:'Overnight recovery treatment. Fragrance-free, post-procedure safe.',    description:'A potent overnight recovery ampoule. Fragrance-free and post-procedure safe — designed for skin in need of restoration.', badge:'New In' },
+    { id:'skincare-006', name:'Dew Shield SPF',     category:'moisturisers',  specs:'Lightweight SPF 50 daily moisturiser. No white cast.',                  description:'A lightweight SPF 50 daily moisturiser that leaves no white cast. The last step your morning routine needs.' },
+  ]
+};
+
+/* ----------------------------------------
+   PAGE NAVIGATION
+   ---------------------------------------- */
+let currentPage = 'home';
+
+function showPage(id) {
+  const current = document.getElementById('page-' + currentPage);
+  const next = document.getElementById('page-' + id);
+  if (!next || currentPage === id) return;
+
+  current.classList.remove('active');
+  next.classList.add('active');
+  next.classList.add('page-enter');
+  setTimeout(() => next.classList.remove('page-enter'), 400);
+
+  currentPage = id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Nav sticky on inner pages
+  const nav = document.getElementById('site-nav');
+  if (id === 'home') {
+    nav.classList.remove('nav-sticky');
+  } else {
+    nav.classList.add('nav-sticky');
+  }
+
+  // Update nav active link
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  const nl = document.getElementById('nl-' + id);
+  if (nl) nl.classList.add('active');
+
+  // Trigger reveals for new page
+  setTimeout(triggerReveal, 100);
+
+  // Render page-specific content
+  if (id === 'diamonds') { renderGrid('diamonds'); updateCount('diamonds'); }
+  if (id === 'skincare') { renderGrid('skincare'); updateCount('skincare'); }
+  if (id === 'store') { renderInstaGrid(); }
+  if (id === 'enquire') { resetForm(); }
+}
+
+/* ----------------------------------------
+   SCROLL REVEAL
+   ---------------------------------------- */
+function triggerReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.page.active .reveal:not(.visible)').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// Initial trigger + scroll-based
+window.addEventListener('scroll', () => triggerReveal());
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(triggerReveal, 200);
+});
+
+/* ----------------------------------------
+   STICKY NAV ON SCROLL (home page)
+   ---------------------------------------- */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('site-nav');
+  if (currentPage !== 'home') return;
+  if (window.scrollY > 80) {
+    nav.classList.add('nav-sticky');
+  } else {
+    nav.classList.remove('nav-sticky');
+  }
+});
+
+/* ----------------------------------------
+   HAMBURGER MENU
+   ---------------------------------------- */
+function toggleMenu() {
+  const hb = document.getElementById('hamburger');
+  const mm = document.getElementById('mobile-menu');
+  hb.classList.toggle('open');
+  mm.classList.toggle('open');
+  document.body.style.overflow = mm.classList.contains('open') ? 'hidden' : '';
+}
+function closeMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ----------------------------------------
+   PRODUCT GRIDS
+   ---------------------------------------- */
+function diamondSVG() {
+  return `<svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#C9A84C" stroke-width="1">
+    <polygon points="28,6 50,17 50,39 28,50 6,39 6,17"/>
+    <polygon points="28,12 44,20 44,36 28,44 12,36 12,20"/>
+    <line x1="28" y1="6" x2="28" y2="12"/>
+    <line x1="50" y1="17" x2="44" y2="20"/>
+    <line x1="50" y1="39" x2="44" y2="36"/>
+    <line x1="28" y1="50" x2="28" y2="44"/>
+    <line x1="6" y1="39" x2="12" y2="36"/>
+    <line x1="6" y1="17" x2="12" y2="20"/>
+  </svg>`;
+}
+function skincareSVG() {
+  return `<svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#C9A84C" stroke-width="1">
+    <circle cx="28" cy="28" r="22"/>
+    <circle cx="28" cy="28" r="14"/>
+    <circle cx="28" cy="28" r="6"/>
+  </svg>`;
+}
+
+function renderGrid(type) {
+  const grid = document.getElementById(type + '-grid');
+  grid.innerHTML = '';
+  const items = PRODUCTS[type];
+  const isSkin = type === 'skincare';
+
+  items.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'prod-card';
+    card.dataset.category = p.category;
+    card.innerHTML = `
+      <div class="prod-img">
+        <div class="prod-img-inner">${isSkin ? skincareSVG() : diamondSVG()}</div>
+        ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
+      </div>
+      <div class="prod-info">
+        <div class="prod-cat">${p.category}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-specs">${p.specs}</div>
+      </div>
+    `;
+    card.onclick = () => openModal(p);
+    grid.appendChild(card);
+
+    // Stagger card entrance
+    setTimeout(() => {
+      card.style.transition = `opacity 0.4s ease ${i * 55}ms, transform 0.4s ease ${i * 55}ms`;
+      card.classList.add('card-visible');
+    }, 60 + i * 55);
+  });
+}
+
+function setFilter(type, cat, btn) {
+  // Update active button
+  const filterBar = document.getElementById(type + '-filters');
+  filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Filter cards with animation
+  const grid = document.getElementById(type + '-grid');
+  const cards = grid.querySelectorAll('.prod-card');
+  let visibleCount = 0;
+  let animIdx = 0;
+
+  cards.forEach(card => {
+    const match = cat === 'all' || card.dataset.category === cat;
+    if (match) {
+      card.classList.remove('card-hidden');
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(12px)';
+      const delay = animIdx * 50;
+      setTimeout(() => {
+        card.style.transition = `opacity 0.35s ease ${delay}ms, transform 0.35s ease ${delay}ms`;
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, 20);
+      animIdx++;
+      visibleCount++;
+    } else {
+      card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.96)';
+      setTimeout(() => card.classList.add('card-hidden'), 200);
+    }
+  });
+
+  updateCount(type, visibleCount);
+}
+
+function updateCount(type, count) {
+  const el = document.getElementById(type + '-count');
+  if (!el) return;
+  const total = count !== undefined ? count : PRODUCTS[type].length;
+  el.textContent = total + ' item' + (total !== 1 ? 's' : '');
+}
+
+/* ----------------------------------------
+   INSTAGRAM GRID
+   ---------------------------------------- */
+function renderInstaGrid() {
+  const grid = document.getElementById('insta-grid');
+  if (grid.children.length > 0) return; // already rendered
+  for (let i = 0; i < 8; i++) {
+    const tile = document.createElement('div');
+    tile.className = 'insta-tile';
+    tile.style.opacity = '0';
+    tile.style.transform = 'scale(0.95)';
+    tile.innerHTML = `
+      <svg class="insta-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.2">
+        <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <circle cx="12" cy="12" r="5"/>
+        <circle cx="17.5" cy="6.5" r="1" fill="#C9A84C"/>
+      </svg>
+      <div class="insta-tile-overlay">
+        <span class="insta-tile-label">View Post</span>
+      </div>
+    `;
+    grid.appendChild(tile);
+    // stagger entrance
+    setTimeout(() => {
+      tile.style.transition = `opacity 0.4s ease, transform 0.4s ease`;
+      tile.style.opacity = '1';
+      tile.style.transform = 'scale(1)';
+    }, 80 + i * 60);
+  }
+}
+
+/* ----------------------------------------
+   PRODUCT MODAL
+   ---------------------------------------- */
+function openModal(product) {
+  document.getElementById('modal-cat').textContent = product.category.charAt(0).toUpperCase() + product.category.slice(1);
+  document.getElementById('modal-name').textContent = product.name;
+  document.getElementById('modal-specs').textContent = product.specs;
+  document.getElementById('modal-desc').textContent = product.description;
+  const overlay = document.getElementById('modal-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+// Close on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal(null);
+    closeFab();
+  }
+});
+
+/* ----------------------------------------
+   FAB CHATBOT
+   ---------------------------------------- */
+let fabOpen = false;
+let chatState = 'start';
+
+const BOT_FLOWS = {
+  start: {
+    msg: "Hello! I'm here to help you find the perfect diamonds or skincare. What brings you here today?",
+    chips: ['Looking for diamonds', 'Looking for skincare', 'I have a question']
+  },
+  diamonds: {
+    msg: "Great! Are you shopping for a gift or for yourself?",
+    chips: ['A gift for someone', 'For myself']
+  },
+  skincare: {
+    msg: "Lovely! What's your main skin concern?",
+    chips: ['Hydration', 'Brightening', 'Anti-ageing', 'Sensitive skin']
+  },
+  faq: {
+    msg: "Of course! What would you like to know?",
+    chips: ['Shipping & delivery', 'Lab-grown diamonds', 'Skincare ingredients', 'Custom orders']
+  },
+  enquire: {
+    msg: "I'd love to help further. Please fill in our enquiry form and we'll get back to you shortly.",
+    chips: ['Enquire now']
+  }
+};
+
+function openFab() {
+  const panel = document.getElementById('fab-panel');
+  panel.classList.remove('panel-close');
+  panel.classList.add('panel-open');
+  fabOpen = true;
+  if (document.getElementById('fab-messages').children.length === 0) {
+    initChat();
+  }
+}
+function closeFab() {
+  const panel = document.getElementById('fab-panel');
+  panel.classList.add('panel-close');
+  setTimeout(() => {
+    panel.classList.remove('panel-open', 'panel-close');
+    fabOpen = false;
+  }, 180);
+}
+function toggleFab() {
+  fabOpen ? closeFab() : openFab();
+}
+
+function initChat() {
+  const msgs = document.getElementById('fab-messages');
+  msgs.innerHTML = '';
+  document.getElementById('fab-chips').innerHTML = '';
+  chatState = 'start';
+  setTimeout(() => addBotMsg(BOT_FLOWS.start.msg, BOT_FLOWS.start.chips), 400);
+}
+
+function addBotMsg(text, chips) {
+  const msgs = document.getElementById('fab-messages');
+  const chipsEl = document.getElementById('fab-chips');
+  chipsEl.innerHTML = '';
+
+  // Show typing indicator
+  const typing = document.createElement('div');
+  typing.className = 'typing-indicator';
+  typing.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(() => {
+    msgs.removeChild(typing);
+    const msg = document.createElement('div');
+    msg.className = 'chat-msg bot';
+    msg.textContent = text;
+    msgs.appendChild(msg);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    if (chips && chips.length) {
+      setTimeout(() => {
+        chips.forEach(label => {
+          const chip = document.createElement('button');
+          chip.className = 'chat-chip';
+          chip.textContent = label;
+          chip.onclick = () => handleChip(label);
+          chipsEl.appendChild(chip);
+        });
+      }, 350);
+    }
+  }, 480);
+}
+
+function addUserMsg(text) {
+  const msgs = document.getElementById('fab-messages');
+  document.getElementById('fab-chips').innerHTML = '';
+  const msg = document.createElement('div');
+  msg.className = 'chat-msg user';
+  msg.textContent = text;
+  msgs.appendChild(msg);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function handleChip(label) {
+  addUserMsg(label);
+  const l = label.toLowerCase();
+  if (l.includes('diamond')) {
+    chatState = 'diamonds';
+    setTimeout(() => addBotMsg(BOT_FLOWS.diamonds.msg, BOT_FLOWS.diamonds.chips), 200);
+  } else if (l.includes('skincare') || l.includes('skin')) {
+    chatState = 'skincare';
+    setTimeout(() => addBotMsg(BOT_FLOWS.skincare.msg, BOT_FLOWS.skincare.chips), 200);
+  } else if (l.includes('question')) {
+    chatState = 'faq';
+    setTimeout(() => addBotMsg(BOT_FLOWS.faq.msg, BOT_FLOWS.faq.chips), 200);
+  } else if (l === 'enquire now') {
+    closeFab();
+    showPage('enquire');
+  } else {
+    // terminal step
+    setTimeout(() => addBotMsg(BOT_FLOWS.enquire.msg, BOT_FLOWS.enquire.chips), 200);
+  }
+}
+
+function sendFabMsg() {
+  const input = document.getElementById('fab-input');
+  const val = input.value.trim();
+  if (!val) return;
+  input.value = '';
+  addUserMsg(val);
+  const l = val.toLowerCase();
+  let response, chips;
+  if (/diamond|ring|necklace|earring|jewel|bracelet/.test(l)) {
+    response = "I can help you find the perfect diamond piece! Let me connect you with our team.";
+    chips = ['Enquire now'];
+  } else if (/skin|serum|moistur|cream|cleanser|spf/.test(l)) {
+    response = "I'd love to help match you with the right skincare. Let our team guide you.";
+    chips = ['Enquire now'];
+  } else {
+    response = "Great question. Please fill in our enquiry form and our team will get back to you.";
+    chips = ['Go to Enquire form'];
+  }
+  setTimeout(() => {
+    addBotMsg(response, chips);
+    if (chips[0] === 'Go to Enquire form') {
+      document.getElementById('fab-chips').querySelectorAll('.chat-chip').forEach(c => {
+        if (c.textContent === 'Go to Enquire form') {
+          c.onclick = () => { closeFab(); showPage('enquire'); };
+        }
+      });
+    }
+  }, 200);
+}
+
+/* ----------------------------------------
+   ENQUIRY FORM
+   ---------------------------------------- */
+function resetForm() {
+  document.getElementById('form-body').style.display = '';
+  document.getElementById('form-success').classList.remove('show');
+  document.getElementById('form-submit').classList.remove('loading');
+  ['f-name','f-contact','f-message'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['f-cat','f-occasion'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+}
+
+function submitForm() {
+  const btn = document.getElementById('form-submit');
+  btn.classList.add('loading');
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+  }, 1600);
+}
+
+/* ----------------------------------------
+   SCROLL TO CHAT
+   ---------------------------------------- */
+function scrollToChat() {
+  const el = document.getElementById('chat-section');
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ----------------------------------------
+   INIT
+   ---------------------------------------- */
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial scroll reveal
+  setTimeout(triggerReveal, 300);
+});
+</script>
+</body>
+</html>
