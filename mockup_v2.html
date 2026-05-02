@@ -664,46 +664,14 @@ ul { list-style: none; }
   align-items: center;
   justify-content: center;
 }
-.hero-bg {
+.hero-video {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, #0d0d1a, #1A1A2E, #12122a, #0d1020, #1A1A2E, #0d0d1a);
-  background-size: 400% 400%;
-  animation: shimmer 8s ease infinite;
-}
-@keyframes shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.hero-video-placeholder {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  animation: pulsePlaceholder 3s ease-in-out infinite;
-}
-@keyframes pulsePlaceholder {
-  0%, 100% { opacity: 0.18; }
-  50% { opacity: 0.28; }
-}
-.hero-play-ring {
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  border: 1.5px solid var(--gold);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero-placeholder-label {
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 3px;
-  color: var(--gold);
-  text-transform: uppercase;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
 }
 .hero-overlay {
   position: absolute;
@@ -715,6 +683,7 @@ ul { list-style: none; }
   justify-content: center;
   text-align: center;
   padding: 0 20px;
+  z-index: 2;
 }
 
 /* Hero text stagger animations */
@@ -1641,15 +1610,10 @@ footer {
 <div id="page-home" class="page active">
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-video-placeholder">
-      <div class="hero-play-ring">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="#C9A84C">
-          <polygon points="6,3 15,9 6,15"/>
-        </svg>
-      </div>
-      <span class="hero-placeholder-label">Brand video placeholder</span>
-    </div>
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="assets/homepage.mp4" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
     <div class="hero-overlay">
       <div class="hero-eyebrow">◇ Singapore · Est. 2026</div>
       <h1 class="hero-title">Curated for you.<br><span class="accent">Crafted to last.</span></h1>
@@ -2029,46 +1993,28 @@ footer {
 /* ----------------------------------------
    PRODUCT DATA
    ---------------------------------------- */
-const PRODUCTS = {
-  diamonds: [
-    { id:'diamond-001', name:'Round Cut Necklace',           category:'necklaces', specs:'1.05 - 1.07 ct', description:'A delicate round cut necklace featuring a 1.05 - 1.07 ct lab-grown diamond, set in refined precious metal. Perfect for everyday elegance.' },
-    { id:'diamond-002', name:'Emerald Cut Ring',             category:'rings',     specs:'3.55ct',          description:'A striking emerald cut ring with a 3.55ct lab-grown diamond. Clean lines and exceptional clarity define this piece.' },
-    { id:'diamond-003', name:'Pear Cut Ring',                category:'rings',     specs:'3.04ct',          description:'A graceful pear cut ring at 3.04ct, combining romantic shape with modern brilliance.' },
-    { id:'diamond-004', name:'Pear Cut Ring',                category:'rings',     specs:'3.20ct',          description:'An elegant 3.20ct pear cut ring — distinctive silhouette, exceptional sparkle.' },
-    { id:'diamond-005', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'10.14ct',         description:'A stunning pair of round cut diamond earrings totalling 10.14ct. Dramatic presence, everyday wearability.' },
-    { id:'diamond-006', name:'Princess Cut Pendant Necklace',category:'necklaces', specs:'2.03ct',          description:'A regal 2.03ct princess cut pendant that commands attention with its geometric precision.' },
-    { id:'diamond-007', name:'Heart Cut Ring',               category:'rings',     specs:'3.01ct',          description:'A romantic 3.01ct heart cut ring. The ultimate symbol of love, crafted in lab-grown brilliance.' },
-    { id:'diamond-008', name:'Emerald Cut Ring',             category:'rings',     specs:'5.06ct',          description:'A statement 5.06ct emerald cut ring — broad, glassy, magnificent.' },
-    { id:'diamond-009', name:'Round Cut Tennis Bracelet',    category:'bracelets', specs:'11.08ct',         description:'An iconic 11.08ct round cut tennis bracelet. Continuous brilliance, effortless sophistication.' },
-    { id:'diamond-010', name:'Round Cut Tennis Bracelet',    category:'bracelets', specs:'9.00ct',          description:'A refined 9.00ct tennis bracelet for those who appreciate understated luxury.' },
-    { id:'diamond-011', name:'Round Cut Half Eternity Ring', category:'rings',     specs:'3.50ct',          description:'A 3.50ct half eternity ring with round brilliant diamonds — timeless, wearable, beautiful.' },
-    { id:'diamond-012', name:'Round Cut Half Eternity Ring', category:'rings',     specs:'5.68ct',          description:'An elevated 5.68ct half eternity ring. Substantial presence on the hand.' },
-    { id:'diamond-013', name:'Emerald Cut Full Eternity Ring',category:'rings',    specs:'7.50ct',          description:'A breathtaking 7.50ct full eternity ring in emerald cut. 360° brilliance.' },
-    { id:'diamond-014', name:'Butterflies Earrings',         category:'earrings',  specs:'3.60ct',          description:'3.60ct butterfly-shaped diamond earrings — delicate design, extraordinary sparkle.', badge:'New In' },
-    { id:'diamond-015', name:'Round Cut Full Eternity Ring', category:'rings',     specs:'2.02ct',          description:'A refined 2.02ct full eternity band. Simple, perfect, complete.' },
-    { id:'diamond-016', name:'Pear Cut Pendant Necklace',    category:'necklaces', specs:'1.50ct',          description:'A graceful 1.50ct pear cut pendant — elegant movement, timeless style.' },
-    { id:'diamond-017', name:'Flower Earrings',              category:'earrings',  specs:'6.16ct',          description:'Floral diamond earrings at 6.16ct. Nature-inspired design in lab-grown brilliance.' },
-    { id:'diamond-018', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'6.01ct',          description:'A versatile 6.01ct round cut earring pair. Effortless day-to-evening wear.' },
-    { id:'diamond-019', name:'Round Cut Hoop Earrings',      category:'earrings',  specs:'5.76ct',          description:'5.76ct round cut diamond hoops. Classic silhouette, extraordinary stones.' },
-    { id:'diamond-020', name:'Oval Cut Ring',                category:'rings',     specs:'5.08ct',          description:'A 5.08ct oval cut ring with the elongating elegance only an oval can provide.' },
-    { id:'diamond-021', name:'Round Cut (Pair) Earrings',    category:'earrings',  specs:'2.00ct',          description:'A refined 2.00ct round cut pair — the perfect everyday diamond earring.', badge:'Bestseller' },
-  ],
-  skincare: [
-    { id:'skincare-001', name:'Luminance Serum',    category:'serums',        specs:'Brightening vitamin C complex. Lightweight, fast-absorbing.',            description:'Our brightening vitamin C serum in a lightweight, fast-absorbing formula. Designed to illuminate and even skin tone with consistent use.', badge:'New In' },
-    { id:'skincare-002', name:'Veil Cream',         category:'moisturisers',  specs:'24-hour hydration barrier. Fragrance-free, for sensitive skin.',         description:'A fragrance-free moisturiser delivering 24-hour hydration. Formulated for sensitive skin that demands gentleness without compromise.' },
-    { id:'skincare-003', name:'Purity Gel',         category:'cleansers',     specs:'Gentle foaming cleanser. Removes impurities without stripping.',         description:'A gentle foaming cleanser that removes impurities while respecting the skin barrier. Suitable for morning and evening use.', badge:'Bestseller' },
-    { id:'skincare-004', name:'Starter Ritual',     category:'sets',          specs:'A curated 3-step morning and evening routine.',                          description:'Everything you need to start a consistent skincare ritual. A curated 3-step morning and evening routine for glowing skin.' },
-    { id:'skincare-005', name:'Repair Ampoule',     category:'serums',        specs:'Overnight recovery treatment. Fragrance-free, post-procedure safe.',    description:'A potent overnight recovery ampoule. Fragrance-free and post-procedure safe — designed for skin in need of restoration.', badge:'New In' },
-    { id:'skincare-006', name:'Dew Shield SPF',     category:'moisturisers',  specs:'Lightweight SPF 50 daily moisturiser. No white cast.',                  description:'A lightweight SPF 50 daily moisturiser that leaves no white cast. The last step your morning routine needs.' },
-  ]
-};
+let PRODUCTS = { diamonds: [], skincare: [] };
+
+async function loadProducts() {
+  try {
+    const response = await fetch('./products.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    PRODUCTS = data.products || { diamonds: [], skincare: [] };
+  } catch (error) {
+    console.error('Failed to load products.json', error);
+    PRODUCTS = { diamonds: [], skincare: [] };
+  }
+}
+
+const productsReady = loadProducts();
 
 /* ----------------------------------------
    PAGE NAVIGATION
    ---------------------------------------- */
 let currentPage = 'home';
 
-function showPage(id) {
+async function showPage(id) {
   const current = document.getElementById('page-' + currentPage);
   const next = document.getElementById('page-' + id);
   if (!next || currentPage === id) return;
@@ -2098,6 +2044,9 @@ function showPage(id) {
   setTimeout(triggerReveal, 100);
 
   // Render page-specific content
+  if (id === 'diamonds' || id === 'skincare') {
+    await productsReady;
+  }
   if (id === 'diamonds') { renderGrid('diamonds'); updateCount('diamonds'); }
   if (id === 'skincare') { renderGrid('skincare'); updateCount('skincare'); }
   if (id === 'store') { renderInstaGrid(); }
