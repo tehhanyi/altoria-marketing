@@ -13,8 +13,18 @@
           {
             "id": "diamond-001",
             "img_id": "diamond-001-1",
-            "img_addr": ""
-          }
+            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_1a.jpg"
+          },
+          {
+            "id": "diamond-001",
+            "img_id": "diamond-001-2",
+            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_2a.jpg"
+          },
+          {
+            "id": "diamond-001",
+            "img_id": "diamond-001-3",
+            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_3a.jpg"
+          }      
         ]
       },
       {
