@@ -1186,8 +1186,34 @@ ul { list-style: none; }
 @media (max-width: 480px) { .prod-img { height: 200px; } }
 
 .prod-img-inner {
-  opacity: 0.22;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
   transition: transform 0.35s ease;
+}
+.prod-img-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.placeholder-art {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(245,237,214,0.95), rgba(230,219,190,0.92));
+  color: var(--navy);
+  text-align: center;
+  padding: 16px;
+}
+.placeholder-art span {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 4vw, 28px);
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1.1;
 }
 .prod-card:hover .prod-img-inner { transform: scale(1.06); }
 
@@ -1352,6 +1378,7 @@ ul { list-style: none; }
   color: var(--text-dark);
   border-radius: 0;
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -1937,25 +1964,19 @@ footer {
 <!-- =============================================
      JAVASCRIPT
      ============================================= -->
+<script src="assets-config.js"></script>
+<script src="products.js"></script>
 <script>
 /* ----------------------------------------
    PRODUCT DATA
    ---------------------------------------- */
-let PRODUCTS = { diamonds: [], skincare: [] };
+window.ASSETS_BASE = window.ASSETS_BASE || 'https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets';
 
-async function loadProducts() {
-  try {
-    const response = await fetch('./products.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    PRODUCTS = data.products || { diamonds: [], skincare: [] };
-  } catch (error) {
-    console.error('Failed to load products.json', error);
-    PRODUCTS = { diamonds: [], skincare: [] };
-  }
-}
+// Embedded product data — no fetch needed
+const EMBEDDED_PRODUCTS = window.EMBEDDED_PRODUCTS || { diamonds: [], skincare: [] };
 
-const productsReady = loadProducts();
+let PRODUCTS = EMBEDDED_PRODUCTS;
+const productsReady = Promise.resolve();
 
 /* ----------------------------------------
    PAGE NAVIGATION
@@ -2077,6 +2098,10 @@ function skincareSVG() {
   </svg>`;
 }
 
+function placeholderArt() {
+  return `<div class="placeholder-art"><span>Altiora Marketing</span></div>`;
+}
+
 function renderGrid(type) {
   const grid = document.getElementById(type + '-grid');
   grid.innerHTML = '';
@@ -2087,9 +2112,27 @@ function renderGrid(type) {
     const card = document.createElement('div');
     card.className = 'prod-card';
     card.dataset.category = p.category;
+    // Choose image HTML: use product image if available, otherwise fallback to SVG
+    const rawAddr = (p.img && p.img[0] && p.img[0].img_addr) ? p.img[0].img_addr : '';
+    let imgSrc = '';
+    if (rawAddr) {
+      if (/^https?:\/\//i.test(rawAddr) || rawAddr.startsWith('//')) {
+        imgSrc = rawAddr;
+      } else {
+        // Join with ASSETS_BASE, preserving leading/trailing slashes
+        const base = (window.ASSETS_BASE || '').replace(/\/$/, '');
+        const path = rawAddr.replace(/^\//, '');
+        imgSrc = base ? `${base}/${path}` : path;
+      }
+    }
+
+    const imgInner = imgSrc
+      ? `<img src="${imgSrc}" loading="lazy" alt="${p.name}" />`
+      : placeholderArt();
+
     card.innerHTML = `
       <div class="prod-img">
-        <div class="prod-img-inner">${isSkin ? skincareSVG() : diamondSVG()}</div>
+        <div class="prod-img-inner">${imgInner}</div>
         ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
       </div>
       <div class="prod-info">
@@ -2111,7 +2154,8 @@ function renderGrid(type) {
 
 function setFilter(type, cat, btn) {
   // Update active button
-  const filterBar = document.getElementById(type + '-filters');
+  const singularType = type.endsWith('s') ? type.slice(0, -1) : type;
+  const filterBar = document.getElementById(type + '-filters') || document.getElementById(singularType + '-filters');
   filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
@@ -2147,7 +2191,8 @@ function setFilter(type, cat, btn) {
 }
 
 function updateCount(type, count) {
-  const el = document.getElementById(type + '-count');
+  const singularType = type.endsWith('s') ? type.slice(0, -1) : type;
+  const el = document.getElementById(type + '-count') || document.getElementById(singularType + '-count');
   if (!el) return;
   const total = count !== undefined ? count : PRODUCTS[type].length;
   el.textContent = total + ' item' + (total !== 1 ? 's' : '');

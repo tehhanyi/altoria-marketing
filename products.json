@@ -13,17 +13,17 @@
           {
             "id": "diamond-001",
             "img_id": "diamond-001-1",
-            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_1a.jpg"
+            "img_addr": "diamond/21%20Necklace/F3003529-2.jpg"
           },
           {
             "id": "diamond-001",
             "img_id": "diamond-001-2",
-            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_2a.jpg"
+            "img_addr": "diamond/21%20Necklace/F3003543.jpg"
           },
           {
             "id": "diamond-001",
             "img_id": "diamond-001-3",
-            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/diamond/1%20Ring/LG652439541_3a.jpg"
+            "img_addr": "diamond/21%20Necklace/F3003550.jpg"
           }      
         ]
       },
@@ -39,8 +39,18 @@
           {
             "id": "diamond-002",
             "img_id": "diamond-002-1",
-            "img_addr": ""
-          }
+            "img_addr": "diamond/1%20Ring/LG652439541_1a.jpg"
+          },
+          {
+            "id": "diamond-002",
+            "img_id": "diamond-002-2",
+            "img_addr": "diamond/1%20Ring/LG652439541_2a.jpg"
+          },
+          {
+            "id": "diamond-002",
+            "img_id": "diamond-002-3",
+            "img_addr": "diamond/1%20Ring/LG652439541_3a.jpg"
+          }      
         ]
       },
       {
@@ -55,7 +65,17 @@
           {
             "id": "diamond-003",
             "img_id": "diamond-003-1",
-            "img_addr": ""
+            "img_addr": "diamond/2%20Ring/F3003583.jpg"
+          },
+          {
+            "id": "diamond-003",
+            "img_id": "diamond-003-2",
+            "img_addr": "diamond/2%20Ring/F3003589.jpg"
+          },
+          {
+            "id": "diamond-003",
+            "img_id": "diamond-003-3",
+            "img_addr": "diamond/2%20Ring/F3003591.jpg"
           }
         ]
       },
@@ -71,7 +91,17 @@
           {
             "id": "diamond-004",
             "img_id": "diamond-004-1",
-            "img_addr": ""
+            "img_addr": "diamond/3%20Ring/F3003595.jpg"
+          },
+          {
+            "id": "diamond-004",
+            "img_id": "diamond-004-2",
+            "img_addr": "diamond/3%20Ring/F3003597.jpg"
+          },
+          {
+            "id": "diamond-004",
+            "img_id": "diamond-004-3",
+            "img_addr": "diamond/3%20Ring/F3003600.jpg"
           }
         ]
       },
@@ -87,7 +117,17 @@
           {
             "id": "diamond-005",
             "img_id": "diamond-005-1",
-            "img_addr": ""
+            "img_addr": "diamond/4%20Earring/LG70477276_1.jpg"
+          },
+          {
+            "id": "diamond-005",
+            "img_id": "diamond-005-2",
+            "img_addr": "diamond/4%20Earring/LG70477276_2.jpg"
+          },
+          {
+            "id": "diamond-005",
+            "img_id": "diamond-005-3",
+            "img_addr": "diamond/4%20Earring/LG70477276_3.jpg"
           }
         ]
       },
@@ -103,7 +143,17 @@
           {
             "id": "diamond-006",
             "img_id": "diamond-006-1",
-            "img_addr": ""
+            "img_addr": "diamond/5%20Necklace/F3003797.jpg"
+          },
+          {
+            "id": "diamond-006",
+            "img_id": "diamond-006-2",
+            "img_addr": "diamond/5%20Necklace/F3003800.jpg"
+          },
+          {
+            "id": "diamond-006",
+            "img_id": "diamond-006-3",
+            "img_addr": "diamond/5%20Necklace/F3003804.jpg"
           }
         ]
       },
@@ -119,7 +169,17 @@
           {
             "id": "diamond-007",
             "img_id": "diamond-007-1",
-            "img_addr": ""
+            "img_addr": "diamond/6%20Ring/F3003603.jpg"
+          },
+          {
+            "id": "diamond-007",
+            "img_id": "diamond-007-2",
+            "img_addr": "diamond/6%20Ring/F3003605.jpg"
+          },
+          {
+            "id": "diamond-007",
+            "img_id": "diamond-007-3",
+            "img_addr": "diamond/6%20Ring/F3003609.jpg"
           }
         ]
       },
@@ -134,8 +194,18 @@
         "img": [
           {
             "id": "diamond-008",
+            "img_id": "diamond-008-3",
+            "img_addr": "diamond/7%20Ring/F3003620.jpg"
+          },
+          {
+            "id": "diamond-008",
             "img_id": "diamond-008-1",
-            "img_addr": ""
+            "img_addr": "diamond/7%20Ring/F3003614.jpg"
+          },
+          {
+            "id": "diamond-008",
+            "img_id": "diamond-008-2",
+            "img_addr": "diamond/7%20Ring/F3003615.jpg"
           }
         ]
       },
@@ -151,7 +221,17 @@
           {
             "id": "diamond-009",
             "img_id": "diamond-009-1",
-            "img_addr": ""
+            "img_addr": "diamond/8%20Bracelet/F3003518.jpg"
+          },
+          {
+            "id": "diamond-009",
+            "img_id": "diamond-009-2",
+            "img_addr": "diamond/8%20Bracelet/F3003520.jpg"
+          },
+          {
+            "id": "diamond-009",
+            "img_id": "diamond-009-3",
+            "img_addr": "diamond/8%20Bracelet/F3003524.jpg"
           }
         ]
       },
@@ -167,7 +247,17 @@
           {
             "id": "diamond-010",
             "img_id": "diamond-010-1",
-            "img_addr": ""
+            "img_addr": "diamond/9%20Bracelet/F3003782.jpg"
+          },
+          {
+            "id": "diamond-010",
+            "img_id": "diamond-010-2",
+            "img_addr": "diamond/9%20Bracelet/F3003785.jpg"
+          },
+          {
+            "id": "diamond-010",
+            "img_id": "diamond-010-3",
+            "img_addr": "diamond/9%20Bracelet/F3003786.jpg"
           }
         ]
       },
@@ -183,7 +273,17 @@
           {
             "id": "diamond-011",
             "img_id": "diamond-011-1",
-            "img_addr": ""
+            "img_addr": "diamond/10%20Ring/F3003636.jpg"
+          },
+          {
+            "id": "diamond-011",
+            "img_id": "diamond-011-2",
+            "img_addr": "diamond/10%20Ring/F3003637.jpg"
+          },
+          {
+            "id": "diamond-011",
+            "img_id": "diamond-011-3",
+            "img_addr": "diamond/10%20Ring/F3003639.jpg"
           }
         ]
       },
@@ -199,7 +299,17 @@
           {
             "id": "diamond-012",
             "img_id": "diamond-012-1",
-            "img_addr": ""
+            "img_addr": "diamond/11%20Ring/F3003646.jpg"
+          },
+          {
+            "id": "diamond-012",
+            "img_id": "diamond-012-2",
+            "img_addr": "diamond/11%20Ring/F3003650.jpg"
+          },
+          {
+            "id": "diamond-012",
+            "img_id": "diamond-012-3",
+            "img_addr": "diamond/11%20Ring/F3003655.jpg"
           }
         ]
       },
@@ -215,7 +325,17 @@
           {
             "id": "diamond-013",
             "img_id": "diamond-013-1",
-            "img_addr": ""
+            "img_addr": "diamond/12%20Ring/F3003665.jpg"
+          },
+          {
+            "id": "diamond-013",
+            "img_id": "diamond-013-2",
+            "img_addr": "diamond/12%20Ring/F3003670.jpg"
+          },
+          {
+            "id": "diamond-013",
+            "img_id": "diamond-013-3",
+            "img_addr": "diamond/12%20Ring/F3003672.jpg"
           }
         ]
       },
@@ -231,7 +351,17 @@
           {
             "id": "diamond-014",
             "img_id": "diamond-014-1",
-            "img_addr": ""
+            "img_addr": "diamond/13%20Earring/F3003694.jpg"
+          },
+          {
+            "id": "diamond-014",
+            "img_id": "diamond-014-2",
+            "img_addr": "diamond/13%20Earring/F3003702.jpg"
+          },
+          {
+            "id": "diamond-014",
+            "img_id": "diamond-014-3",
+            "img_addr": "diamond/13%20Earring/F3003700.jpg"
           }
         ]
       },
@@ -247,7 +377,17 @@
           {
             "id": "diamond-015",
             "img_id": "diamond-015-1",
-            "img_addr": ""
+            "img_addr": "diamond/14%20Ring/F3003660.jpg"
+          },
+          {
+            "id": "diamond-015",
+            "img_id": "diamond-015-2",
+            "img_addr": "diamond/14%20Ring/F3003661.jpg"
+          },
+          {
+            "id": "diamond-015",
+            "img_id": "diamond-015-3",
+            "img_addr": "diamond/14%20Ring/F3003664.jpg"
           }
         ]
       },
@@ -263,7 +403,22 @@
           {
             "id": "diamond-016",
             "img_id": "diamond-016-1",
-            "img_addr": ""
+            "img_addr": "diamond/15%20Necklace/F3003815.jpg"
+          },
+          {
+            "id": "diamond-016",
+            "img_id": "diamond-016-2",
+            "img_addr": "diamond/15%20Necklace/F3003820.jpg"
+          },
+          {
+            "id": "diamond-016",
+            "img_id": "diamond-016-3",
+            "img_addr": "diamond/15%20Necklace/F3003810.jpg"
+          },
+          {
+            "id": "diamond-016",
+            "img_id": "diamond-016-4",
+            "img_addr": "diamond/15%20Necklace/F3003794.jpg"
           }
         ]
       },
@@ -279,7 +434,17 @@
           {
             "id": "diamond-017",
             "img_id": "diamond-017-1",
-            "img_addr": ""
+            "img_addr": "diamond/16%20Earring/F3003712.jpg"
+          },
+          {
+            "id": "diamond-017",
+            "img_id": "diamond-017-2",
+            "img_addr": "diamond/16%20Earring/F3003718.jpg"
+          },
+          {
+            "id": "diamond-017",
+            "img_id": "diamond-017-3",
+            "img_addr": "diamond/16%20Earring/F3003723.jpg"
           }
         ]
       },
@@ -295,7 +460,22 @@
           {
             "id": "diamond-018",
             "img_id": "diamond-018-1",
-            "img_addr": ""
+            "img_addr": "diamond/17%20Earring/F3003764.jpg"
+          },
+          {
+            "id": "diamond-018",
+            "img_id": "diamond-018-2",
+            "img_addr": "diamond/17%20Earring/F3003766.jpg"
+          },
+          {
+            "id": "diamond-018",
+            "img_id": "diamond-018-3",
+            "img_addr": "diamond/17%20Earring/F3003731.jpg"
+          },
+          {
+            "id": "diamond-018",
+            "img_id": "diamond-018-4",
+            "img_addr": "diamond/17%20Earring/F3003733.jpg"
           }
         ]
       },
@@ -311,7 +491,12 @@
           {
             "id": "diamond-019",
             "img_id": "diamond-019-1",
-            "img_addr": ""
+            "img_addr": "diamond/18%20Earring/F3003735.jpg"
+          },
+          {
+            "id": "diamond-019",
+            "img_id": "diamond-019-2",
+            "img_addr": "diamond/18%20Earring/F3003743.jpg"
           }
         ]
       },
@@ -327,7 +512,17 @@
           {
             "id": "diamond-020",
             "img_id": "diamond-020-1",
-            "img_addr": ""
+            "img_addr": "diamond/19%20Ring/F3003674.jpg"
+          },
+          {
+            "id": "diamond-020",
+            "img_id": "diamond-020-2",
+            "img_addr": "diamond/19%20Ring/F3003678.jpg"
+          },
+          {
+            "id": "diamond-020",
+            "img_id": "diamond-020-3",
+            "img_addr": "diamond/19%20Ring/F3003682.jpg"
           }
         ]
       },
@@ -343,7 +538,22 @@
           {
             "id": "diamond-021",
             "img_id": "diamond-021-1",
-            "img_addr": ""
+            "img_addr": "diamond/20%20Earring/F3003773.jpg"
+          },
+          {
+            "id": "diamond-021",
+            "img_id": "diamond-021-2",
+            "img_addr": "diamond/20%20Earring/F3003777.jpg"
+          },
+          {
+            "id": "diamond-021",
+            "img_id": "diamond-021-3",
+            "img_addr": "diamond/20%20Earring/F3003751.jpg"
+          },
+          {
+            "id": "diamond-021",
+            "img_id": "diamond-021-4",
+            "img_addr": "diamond/20%20Earring/F3003756.jpg"
           }
         ]
       }
