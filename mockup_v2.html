@@ -565,7 +565,13 @@ ul { list-style: none; }
 .modal-close-btn:hover { background: var(--ivory); }
 .modal-close-btn:hover svg { stroke: var(--gold); }
 .modal-close-btn svg { stroke: var(--navy); display: block; }
+.modal-media {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 .modal-main-image {
+  position: relative;
   width: 100%;
   aspect-ratio: 4/3;
   background: #F0E8D4;
@@ -575,6 +581,45 @@ ul { list-style: none; }
   justify-content: center;
   overflow: hidden;
 }
+.modal-main-image img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.modal-main-image img.img-loaded {
+  opacity: 1;
+}
+.modal-main-image.img-loading::after,
+.modal-thumb.img-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(240,232,212,0)    0%,
+    rgba(240,232,212,0.78) 40%,
+    rgba(255,248,230,0.94) 50%,
+    rgba(240,232,212,0.78) 60%,
+    rgba(240,232,212,0)    100%
+  );
+  background-size: 1200px 100%;
+  animation: imgShimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+.modal-main-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
 .modal-thumbnails {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -582,16 +627,36 @@ ul { list-style: none; }
   margin-top: 12px;
 }
 .modal-thumb {
+  position: relative;
   aspect-ratio: 1;
   background: #F0E8D4;
   border: 1px solid var(--ivory-dark);
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.modal-thumb:hover { border-color: var(--gold); background: #F5E8D8; transform: translateY(-1px); }
+.modal-thumb.thumb-active { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(201,168,76,0.15); }
+.modal-thumb img {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.modal-thumb img.img-loaded { opacity: 1; }
+.modal-thumb-fallback {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  z-index: 0;
 }
-.modal-thumb:hover { border-color: var(--gold); background: #F5E8D8; }
 .modal-cat-label {
   font-size: 9px;
   font-weight: 500;
@@ -1185,17 +1250,58 @@ ul { list-style: none; }
 #page-skincare .prod-img { background: #F0E4E0; }
 @media (max-width: 480px) { .prod-img { height: 200px; } }
 
+/* Skeleton shimmer — shown while image is fetching */
+@keyframes imgShimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+.prod-img.img-loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(240,232,212,0)    0%,
+    rgba(240,232,212,0.85) 40%,
+    rgba(255,248,230,0.95) 50%,
+    rgba(240,232,212,0.85) 60%,
+    rgba(240,232,212,0)    100%
+  );
+  background-size: 1200px 100%;
+  animation: imgShimmer 1.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+#page-skincare .prod-img.img-loading { background: #F0E4E0; }
+#page-skincare .prod-img.img-loading::after {
+  background: linear-gradient(
+    90deg,
+    rgba(240,228,224,0)    0%,
+    rgba(240,228,224,0.85) 40%,
+    rgba(255,240,236,0.95) 50%,
+    rgba(240,228,224,0.85) 60%,
+    rgba(240,228,224,0)    100%
+  );
+  background-size: 1200px 100%;
+}
+
 .prod-img-inner {
   width: 100%;
   height: 100%;
   opacity: 1;
   transition: transform 0.35s ease;
 }
+/* Image starts invisible, fades in on load */
 .prod-img-inner img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.prod-img-inner img.img-loaded {
+  opacity: 1;
 }
 .placeholder-art {
   width: 100%;
@@ -1494,6 +1600,12 @@ footer {
   color: rgba(245,237,214,0.22);
   letter-spacing: 1px;
 }
+.footer-est {
+  font-size: 9px;
+  font-weight: 300;
+  color: rgba(245,237,214,0.28);
+  letter-spacing: 1px;
+}
 .footer-links {
   display: flex;
   gap: 16px;
@@ -1530,7 +1642,7 @@ footer {
   <span class="nav-logo" onclick="showPage('home')">Altiora Marketing</span>
   <div class="nav-links">
     <span class="nav-link" onclick="showPage('home')" id="nl-home">Home</span>
-    <span class="nav-link" onclick="showPage('store')" id="nl-store">Store</span>
+    <span class="nav-link" onclick="showPage('store')" id="nl-store">Collections</span>
   </div>
   <button class="nav-cta" onclick="showPage('enquire')">Enquire Now</button>
   <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
@@ -1539,7 +1651,7 @@ footer {
 </nav>
 <div class="mobile-menu" id="mobile-menu">
   <span class="mobile-menu-link" onclick="showPage('home');closeMenu()">Home</span>
-  <span class="mobile-menu-link" onclick="showPage('store');closeMenu()">Store</span>
+  <span class="mobile-menu-link" onclick="showPage('store');closeMenu()">Collections</span>
   <button class="mobile-menu-cta" onclick="showPage('enquire');closeMenu()">Enquire Now</button>
 </div>
 
@@ -1590,22 +1702,20 @@ footer {
       </svg>
     </button>
     <!-- Left: images -->
-    <div>
-      <div class="modal-main-image">
-        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
-          <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
-          <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
-          <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
-          <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
-          <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
-        </svg>
+    <div class="modal-media">
+      <div class="modal-main-image" id="modal-main-image">
+        <div class="modal-main-fallback" id="modal-main-fallback">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
+            <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
+            <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
+            <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
+            <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
+            <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
+          </svg>
+        </div>
+        <img id="modal-main-img" alt="" />
       </div>
-      <div class="modal-thumbnails">
-        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
-        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
-        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
-        <div class="modal-thumb"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2"><polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/></svg></div>
-      </div>
+      <div class="modal-thumbnails" id="modal-thumbnails"></div>
     </div>
     <!-- Right: info -->
     <div id="modal-info">
@@ -1630,10 +1740,9 @@ footer {
     </video>
     <div class="hero-overlay">
       <h1 class="hero-title">Curated for you.<br><span class="accent">Crafted to last.</span></h1>
-      <div class="hero-eyebrow">Est. 2026</div>
-      <p class="hero-sub">Fine lab-grown diamonds &amp; elevated skincare<br>Sourced from Asia's finest, guided by someone who cares.</p>
+      <p class="hero-sub">Fine lab-grown diamonds &amp; elevated skincare<br>Sourced from Asia's finest, guided by people who cares.</p>
       <div class="hero-btns">
-        <button class="btn-gold" onclick="showPage('store')">Explore the Store</button>
+        <button class="btn-gold" onclick="showPage('store')">Explore Collections</button>
         <button class="btn-outline-light" onclick="scrollToChat()">Chat with Us</button>
       </div>
     </div>
@@ -1693,17 +1802,18 @@ footer {
   <footer>
     <div>
       <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-est">Est. 2026</span>
       <span class="footer-uen">UEN 202612413E · Singapore</span>
     </div>
     <nav class="footer-links">
       <span class="footer-link" onclick="showPage('home')">Home</span>
-      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
       <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">
         Instagram
         <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
       </a>
-      <a class="footer-link" href="https://wa.me/65" target="_blank">
+      <a class="footer-link" href="https://wa.me/6596992282" target="_blank">
         WhatsApp
         <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
       </a>
@@ -1757,14 +1867,15 @@ footer {
   <footer>
     <div>
       <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-est">Est. 2026</span>
       <span class="footer-uen">UEN 202612413E · Singapore</span>
     </div>
     <nav class="footer-links">
       <span class="footer-link" onclick="showPage('home')">Home</span>
-      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
       <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">Instagram <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
-      <a class="footer-link" href="https://wa.me/65" target="_blank">WhatsApp <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
+      <a class="footer-link" href="https://wa.me/6596992282" target="_blank">WhatsApp <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
   </footer>
@@ -1777,7 +1888,7 @@ footer {
   <section class="subpage-hero">
     <span class="back-link" onclick="showPage('store')">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
-      Back to Store
+      Back to Collections
     </span>
     <div class="eyebrow">COLLECTION 01</div>
     <h2>Diamonds by Altiora</h2>
@@ -1797,11 +1908,12 @@ footer {
   <footer>
     <div>
       <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-est">Est. 2026</span>
       <span class="footer-uen">UEN 202612413E · Singapore</span>
     </div>
     <nav class="footer-links">
       <span class="footer-link" onclick="showPage('home')">Home</span>
-      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
@@ -1815,7 +1927,7 @@ footer {
   <section class="subpage-hero">
     <span class="back-link" onclick="showPage('store')">
       <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
-      Back to Store
+      Back to Collections
     </span>
     <div class="eyebrow">COLLECTION 02</div>
     <h2>Skincare by Altiora</h2>
@@ -1835,11 +1947,12 @@ footer {
   <footer>
     <div>
       <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-est">Est. 2026</span>
       <span class="footer-uen">UEN 202612413E · Singapore</span>
     </div>
     <nav class="footer-links">
       <span class="footer-link" onclick="showPage('home')">Home</span>
-      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
@@ -1878,7 +1991,7 @@ footer {
           </div>
         </div>
       </div>
-      <button class="whatsapp-btn reveal reveal-delay-5">
+      <button class="whatsapp-btn reveal reveal-delay-5" onclick="window.open('https://wa.me/6596992282', '_blank')">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="#C9A84C">
           <path d="M7 0.5C3.41 0.5 0.5 3.41 0.5 7c0 1.23.33 2.38.9 3.37L0.5 13.5l3.23-.88C4.69 13.17 5.82 13.5 7 13.5c3.59 0 6.5-2.91 6.5-6.5S10.59 0.5 7 0.5zm3.44 9.06c-.14.4-.83.76-1.15.81-.3.05-.67.07-1.08-.07-.25-.09-.57-.21-.98-.41-1.72-.74-2.84-2.47-2.93-2.58-.09-.11-.73-.97-.73-1.85 0-.88.46-1.31.63-1.49.14-.15.38-.22.51-.22h.36c.12 0 .28.01.43.33.17.36.57 1.39.62 1.49.05.1.08.22.02.35-.06.13-.09.21-.18.32-.09.11-.19.24-.27.32-.09.09-.18.19-.08.37.1.18.46.75.98 1.22.67.59 1.24.78 1.41.86.18.08.28.07.39-.04.11-.11.46-.54.59-.72.12-.18.25-.15.42-.09.17.06 1.1.52 1.29.61.18.09.31.14.35.22.05.08.05.46-.09.86z"/>
         </svg>
@@ -1943,18 +2056,19 @@ footer {
         </div>
         <h3>We've received your enquiry.</h3>
         <p>A member of our team will get back to you within 24 hours. Thank you for choosing Altiora.</p>
-        <button class="btn-gold" onclick="showPage('store')" style="margin-top:8px">Back to Store</button>
+        <button class="btn-gold" onclick="showPage('store')" style="margin-top:8px">Back to Collections</button>
       </div>
     </div>
   </div>
   <footer>
     <div>
       <span class="footer-logo">Altiora Marketing</span>
+      <span class="footer-est">Est. 2026</span>
       <span class="footer-uen">UEN 202612413E · Singapore</span>
     </div>
     <nav class="footer-links">
       <span class="footer-link" onclick="showPage('home')">Home</span>
-      <span class="footer-link" onclick="showPage('store')">Store</span>
+      <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
@@ -1977,6 +2091,55 @@ const EMBEDDED_PRODUCTS = window.EMBEDDED_PRODUCTS || { diamonds: [], skincare: 
 
 let PRODUCTS = EMBEDDED_PRODUCTS;
 const productsReady = Promise.resolve();
+
+function resolveAssetUrl(rawAddr) {
+  if (!rawAddr) return '';
+  if (/^https?:\/\//i.test(rawAddr) || rawAddr.startsWith('//')) {
+    return rawAddr;
+  }
+  const base = (window.ASSETS_BASE || '').replace(/\/$/, '');
+  const path = rawAddr.replace(/^\//, '');
+  return base ? `${base}/${path}` : path;
+}
+
+function getProductImageUrls(product, limit = 4) {
+  return (product.img || [])
+    .map(item => resolveAssetUrl(item && item.img_addr))
+    .filter(Boolean)
+    .slice(0, limit);
+}
+
+function setImageWithLoadingState(imgEl, containerEl, fallbackEl, src, alt) {
+  if (!imgEl || !containerEl || !fallbackEl) return;
+  containerEl.classList.add('img-loading');
+  imgEl.classList.remove('img-loaded');
+  imgEl.removeAttribute('src');
+  imgEl.alt = alt || '';
+
+  if (!src) {
+    fallbackEl.style.display = 'flex';
+    containerEl.classList.remove('img-loading');
+    return;
+  }
+
+  fallbackEl.style.display = 'none';
+  imgEl.src = src;
+
+  const onLoaded = () => {
+    imgEl.classList.add('img-loaded');
+    containerEl.classList.remove('img-loading');
+  };
+
+  if (imgEl.complete && imgEl.naturalWidth > 0) {
+    onLoaded();
+  } else {
+    imgEl.addEventListener('load', onLoaded, { once: true });
+    imgEl.addEventListener('error', () => {
+      containerEl.classList.remove('img-loading');
+      fallbackEl.style.display = 'flex';
+    }, { once: true });
+  }
+}
 
 /* ----------------------------------------
    PAGE NAVIGATION
@@ -2113,25 +2276,15 @@ function renderGrid(type) {
     card.className = 'prod-card';
     card.dataset.category = p.category;
     // Choose image HTML: use product image if available, otherwise fallback to SVG
-    const rawAddr = (p.img && p.img[0] && p.img[0].img_addr) ? p.img[0].img_addr : '';
-    let imgSrc = '';
-    if (rawAddr) {
-      if (/^https?:\/\//i.test(rawAddr) || rawAddr.startsWith('//')) {
-        imgSrc = rawAddr;
-      } else {
-        // Join with ASSETS_BASE, preserving leading/trailing slashes
-        const base = (window.ASSETS_BASE || '').replace(/\/$/, '');
-        const path = rawAddr.replace(/^\//, '');
-        imgSrc = base ? `${base}/${path}` : path;
-      }
-    }
+    const imgSrc = resolveAssetUrl(p.img && p.img[0] && p.img[0].img_addr);
 
-    const imgInner = imgSrc
+    const hasImg = !!imgSrc;
+    const imgInner = hasImg
       ? `<img src="${imgSrc}" loading="lazy" alt="${p.name}" />`
       : placeholderArt();
 
     card.innerHTML = `
-      <div class="prod-img">
+      <div class="prod-img${hasImg ? ' img-loading' : ''}">
         <div class="prod-img-inner">${imgInner}</div>
         ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
       </div>
@@ -2143,6 +2296,28 @@ function renderGrid(type) {
     `;
     card.onclick = () => openModal(p);
     grid.appendChild(card);
+
+    // Attach load/error handlers after DOM insertion
+    if (hasImg) {
+      const imgEl = card.querySelector('.prod-img-inner img');
+      const prodImgEl = card.querySelector('.prod-img');
+      if (imgEl) {
+        const onLoaded = () => {
+          imgEl.classList.add('img-loaded');
+          prodImgEl.classList.remove('img-loading');
+        };
+        // Already cached by browser (complete before listener attached)
+        if (imgEl.complete && imgEl.naturalWidth > 0) {
+          onLoaded();
+        } else {
+          imgEl.addEventListener('load', onLoaded, { once: true });
+          imgEl.addEventListener('error', () => {
+            prodImgEl.classList.remove('img-loading');
+            card.querySelector('.prod-img-inner').innerHTML = placeholderArt();
+          }, { once: true });
+        }
+      }
+    }
 
     // Stagger card entrance
     setTimeout(() => {
@@ -2233,10 +2408,67 @@ function renderInstaGrid() {
    PRODUCT MODAL
    ---------------------------------------- */
 function openModal(product) {
+  const images = getProductImageUrls(product, 4);
+  const mainImage = document.getElementById('modal-main-img');
+  const mainContainer = document.getElementById('modal-main-image');
+  const mainFallback = document.getElementById('modal-main-fallback');
+  const thumbnails = document.getElementById('modal-thumbnails');
+
   document.getElementById('modal-cat').textContent = product.category.charAt(0).toUpperCase() + product.category.slice(1);
   document.getElementById('modal-name').textContent = product.name;
   document.getElementById('modal-specs').textContent = product.specs;
   document.getElementById('modal-desc').textContent = product.description;
+
+  thumbnails.innerHTML = '';
+  const fallbackMarkup = `
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
+      <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
+      <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
+      <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
+      <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
+      <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
+    </svg>
+  `;
+
+  if (!images.length) {
+    mainFallback.innerHTML = fallbackMarkup;
+    mainFallback.style.display = 'flex';
+    mainContainer.classList.remove('img-loading');
+    mainImage.removeAttribute('src');
+  } else {
+    mainFallback.innerHTML = fallbackMarkup;
+    setImageWithLoadingState(mainImage, mainContainer, mainFallback, images[0], product.name);
+
+    images.forEach((src, index) => {
+      const thumb = document.createElement('button');
+      thumb.type = 'button';
+      thumb.className = 'modal-thumb' + (index === 0 ? ' thumb-active' : '');
+      thumb.setAttribute('aria-label', `View image ${index + 1} of ${product.name}`);
+
+      const fallback = document.createElement('div');
+      fallback.className = 'modal-thumb-fallback';
+      fallback.innerHTML = `
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2">
+          <polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/>
+        </svg>
+      `;
+
+      const img = document.createElement('img');
+      img.alt = `${product.name} thumbnail ${index + 1}`;
+
+      thumb.appendChild(fallback);
+      thumb.appendChild(img);
+      thumb.onclick = () => {
+        thumbnails.querySelectorAll('.modal-thumb').forEach(button => button.classList.remove('thumb-active'));
+        thumb.classList.add('thumb-active');
+        setImageWithLoadingState(mainImage, mainContainer, mainFallback, src, product.name);
+      };
+
+      thumbnails.appendChild(thumb);
+      setImageWithLoadingState(img, thumb, fallback, src, product.name);
+    });
+  }
+
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
