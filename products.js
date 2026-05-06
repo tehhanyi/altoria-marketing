@@ -38,17 +38,17 @@ window.EMBEDDED_PRODUCTS = {
         {
           "id": "diamond-002",
           "img_id": "diamond-002-1",
-          "img_addr": "diamond/1%20Ring/LG652439541_1a.jpg"
+          "img_addr": "diamond/1%20Ring/F3003625.jpg"
         },
         {
           "id": "diamond-002",
           "img_id": "diamond-002-2",
-          "img_addr": "diamond/1%20Ring/LG652439541_2a.jpg"
+          "img_addr": "diamond/1%20Ring/F3003628.jpg"
         },
         {
           "id": "diamond-002",
           "img_id": "diamond-002-3",
-          "img_addr": "diamond/1%20Ring/LG652439541_3a.jpg"
+          "img_addr": "diamond/1%20Ring/F3003632.jpg"
         }
       ]
     },
@@ -116,17 +116,17 @@ window.EMBEDDED_PRODUCTS = {
         {
           "id": "diamond-005",
           "img_id": "diamond-005-1",
-          "img_addr": "diamond/4%20Earring/LG70477276_1.jpg"
+          "img_addr": "diamond/4%20Earring/F3003491.jpg"
         },
         {
           "id": "diamond-005",
           "img_id": "diamond-005-2",
-          "img_addr": "diamond/4%20Earring/LG70477276_2.jpg"
+          "img_addr": "diamond/4%20Earring/F3003494.jpg"
         },
         {
           "id": "diamond-005",
           "img_id": "diamond-005-3",
-          "img_addr": "diamond/4%20Earring/LG70477276_3.jpg"
+          "img_addr": "diamond/4%20Earring/F3003497.jpg"
         }
       ]
     },
@@ -220,7 +220,7 @@ window.EMBEDDED_PRODUCTS = {
         {
           "id": "diamond-009",
           "img_id": "diamond-009-1",
-          "img_addr": "diamond/8%20Bracelet/F3003518.jpg"
+          "img_addr": "diamond/8%20Bracelet/1.jpg"
         },
         {
           "id": "diamond-009",
