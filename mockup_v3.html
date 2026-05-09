@@ -633,19 +633,63 @@ ul { list-style: none; }
   justify-content: center;
   z-index: 0;
 }
-.modal-thumb-carousel {
-  display: grid;
-  grid-template-columns: 32px 1fr 32px;
+.modal-zoom-overlay {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 48px;
+  height: 48px;
+  background: rgba(26, 26, 46, 0.7);
+  border-radius: 6px;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-  padding: 0 12px 20px;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+  pointer-events: none;
+}
+.modal-main-image:hover .modal-zoom-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal-zoom-icon {
+  width: 28px;
+  height: 28px;
+}
+.modal-zoom-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  display: none;
+  z-index: 4;
+  background: transparent;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.modal-zoom-preview img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.modal-thumb-carousel {
+  position: relative;
+  width: calc(100% - 40px);
+  margin: 12px 20px 20px;
+  padding: 0;
 }
 .modal-thumbnails-viewport {
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  width: 100%;
+  padding-top: 2px;
 }
 .modal-thumbnails-viewport::-webkit-scrollbar {
   display: none;
@@ -656,22 +700,25 @@ ul { list-style: none; }
   gap: 12px;
 }
 .modal-thumb-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(201,168,76,0.35);
-  background: rgba(255,255,255,0.95);
-  color: var(--navy);
-  font-size: 16px;
+  border: none;
+  background: transparent;
+  color: rgba(26,26,46,0.72);
+  font-size: 28px;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  text-shadow: 0 2px 10px rgba(255,253,248,0.9), 0 0 18px rgba(255,253,248,0.55);
 }
 .modal-thumb-nav:hover {
-  border-color: var(--gold);
   color: var(--gold);
 }
 .modal-thumb-nav:disabled {
@@ -679,8 +726,14 @@ ul { list-style: none; }
   cursor: default;
 }
 .modal-thumb-nav.hidden {
-  visibility: hidden;
+  opacity: 0;
   pointer-events: none;
+}
+.modal-thumb-nav.prev {
+  left: 8px;
+}
+.modal-thumb-nav.next {
+  right: 8px;
 }
 .modal-thumb {
   position: relative;
@@ -689,36 +742,41 @@ ul { list-style: none; }
   aspect-ratio: 1;
   background: linear-gradient(135deg, #F5EDD6 0%, #FFFDF8 100%);
   border: 2px solid #EDE0C4;
+  background-clip: padding-box;
   cursor: pointer;
   overflow: hidden;
   padding: 0;
   transition: all 0.25s ease;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .modal-thumb:hover { 
   border-color: var(--gold); 
   background: #F5E8D8; 
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(201,168,76,0.15);
 }
 .modal-thumb.thumb-active { 
   border-color: var(--gold); 
-  box-shadow: 0 0 0 2px rgba(201,168,76,0.3);
 }
 .modal-thumb img {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 2px;
+  z-index: 1;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
   object-fit: cover;
+  object-position: center;
   display: block;
   opacity: 0;
   transition: opacity 0.35s ease;
+  border-radius: 2px;
 }
 .modal-thumb img.img-loaded { opacity: 1; }
 .modal-thumb-fallback {
   position: absolute;
-  inset: 0;
+  inset: 3px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -802,22 +860,36 @@ ul { list-style: none; }
     border-radius: 8px;
   }
   .modal-media {
-    min-height: 300px;
+    min-height: 180px;
   }
   .modal-main-image {
     width: calc(100% - 24px);
     margin: 12px 12px 0;
+    aspect-ratio: 4 / 3;
   }
   .modal-thumb-carousel {
-    grid-template-columns: 28px 1fr 28px;
-    gap: 8px;
-    padding: 0 8px 12px;
+    width: calc(100% - 24px);
+    margin: 4px 12px 12px;
+  }
+  .modal-thumbnails-viewport {
+    padding-top: 2px;
   }
   .modal-thumbnails {
     gap: 8px;
   }
+  .modal-thumb-nav {
+    width: 28px;
+    height: 30px;
+    font-size: 24px;
+  }
+  .modal-thumb-nav.prev {
+    left: 4px;
+  }
+  .modal-thumb-nav.next {
+    right: 4px;
+  }
   #modal-info {
-    padding: 32px 24px;
+    padding: 28px 24px;
   }
   .modal-product-name {
     font-size: 28px;
@@ -930,14 +1002,13 @@ ul { list-style: none; }
   font-weight: 300;
   font-style: normal;
   color: var(--ivory);
-  margin-bottom: 12px;
 }
 .brand-intro p {
   font-size: 13px;
   font-weight: 300;
   color: rgba(245,237,214,0.5);
-  max-width: 500px;
-  margin: 0 auto 36px;
+  max-width: clamp(280px, 90vw, 500px);
+  margin: 12px auto;
   line-height: 1.9;
 }
 .brand-cards {
@@ -952,7 +1023,7 @@ ul { list-style: none; }
   max-width: 380px;
   cursor: pointer;
   text-align: center;
-  transition: transform 0.25s ease;
+  transition: opacity 0.65s ease, transform 0.25s ease;
   border-radius: 5px;
   overflow: hidden;
   position: relative;
@@ -1012,6 +1083,12 @@ ul { list-style: none; }
   display: block;
   margin-bottom: 8px;
   text-shadow: 0 2px 8px rgba(26,26,46,0.8);
+  transition: all 0.35s ease;
+}
+.brand-card:hover .brand-card-name {
+  color: var(--gold);
+  text-shadow: 0 2px 12px rgba(201,168,76,0.6);
+  letter-spacing: 1px;
 }
 .brand-card-desc {
   font-size: clamp(12px, 1.1vw, 13px);
@@ -1281,10 +1358,7 @@ ul { list-style: none; }
   #page-diamonds, #page-skincare { padding-top: 84px; }
 }
 
-#subpage-hero {
-}
 .subpage-hero {
-  /* reduce top padding to move content upward */
   padding: 32px 40px 24px;
   text-align: center;
   position: relative;
@@ -1306,21 +1380,18 @@ ul { list-style: none; }
   border-bottom: 1px solid transparent;
   padding-bottom: 1px;
   transition: color 0.2s ease, border-color 0.2s ease;
-  /* place on the left of the hero area */
   position: absolute;
   left: 40px;
   top: 22px;
   text-align: left;
 }
 .back-link:hover { color: var(--gold); border-color: var(--gold); }
-.subpage-hero .eyebrow { margin-bottom: 14px; }
-/* align eyebrow with the left back-link */
 .subpage-hero .eyebrow {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
   top: 18px;
-  margin-bottom: 0;
+  margin-bottom: 14px;
   text-align: center;
 }
 .subpage-hero h2 {
@@ -1362,13 +1433,11 @@ ul { list-style: none; }
   border-color: var(--gold);
 }
 
-/* Hide back-link on small screens (mobile) */
 @media (max-width: 600px) {
   .back-link { display: none; }
 }
 
 @media (max-width: 600px) {
-  /* revert eyebrow to normal flow on small screens */
   .subpage-hero .eyebrow { position: static; left: auto; top: auto; margin-bottom: 14px; text-align: center; transform: none; display: block; margin-left: auto; margin-right: auto; }
   .subpage-hero { padding: 28px 20px 20px; }
 }
@@ -1943,7 +2012,17 @@ footer {
             <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
           </svg>
         </div>
-        <img id="modal-main-img" alt="" />
+        <img id="modal-main-img" alt="" style="cursor: zoom-in;" />
+        <div class="modal-zoom-overlay" id="modal-zoom-overlay">
+          <svg class="modal-zoom-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="18" cy="18" r="14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 28L38 38" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M14 18H22M18 14V22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="modal-zoom-preview" id="modal-zoom-preview">
+          <img id="modal-zoom-preview-img" alt="" />
+        </div>
       </div>
       <div class="modal-thumb-carousel" id="modal-thumb-carousel">
         <button type="button" class="modal-thumb-nav prev" id="modal-thumb-prev" aria-label="Previous images">&#10094;</button>
@@ -1988,7 +2067,7 @@ footer {
     <h2 class="reveal">Two worlds. One vision.</h2>
     <p class="reveal reveal-delay-1">Altiora brings together fine lab-grown diamond jewellery and elevated skincare — each curated with the same commitment to quality, ethics, and personal guidance.</p>
     <div class="brand-cards">
-      <div class="brand-card reveal reveal-delay-2" onclick="showPage('diamonds')">
+      <div class="brand-card reveal reveal-delay-3" onclick="showPage('diamonds')">
         <div class="brand-card-image">
           <div class="brand-card-image-inner" style="background-image: url('assets/diamond-preview.jpg');"></div>
         </div>
@@ -1998,7 +2077,7 @@ footer {
           <span class="brand-card-desc">Lab-grown diamond jewellery, handpicked from Asia's finest artisans.</span>
         </div>
       </div>
-      <div class="brand-card reveal reveal-delay-3" onclick="showPage('skincare')">
+      <div class="brand-card reveal reveal-delay-4" onclick="showPage('skincare')">
         <div class="brand-card-image">
           <div class="brand-card-image-inner" style="background-image: url('assets/skincare-preview.jpg');"></div>
         </div>
@@ -2683,11 +2762,14 @@ function openModal(product) {
       return;
     }
 
-    thumbPrev.classList.remove('hidden');
-    thumbNext.classList.remove('hidden');
     const maxScroll = Math.max(0, thumbViewport.scrollWidth - thumbViewport.clientWidth);
-    thumbPrev.disabled = thumbViewport.scrollLeft <= 2;
-    thumbNext.disabled = thumbViewport.scrollLeft >= (maxScroll - 2);
+    const atLeftEdge = thumbViewport.scrollLeft <= 2;
+    const atRightEdge = thumbViewport.scrollLeft >= (maxScroll - 2);
+
+    thumbPrev.classList.toggle('hidden', atLeftEdge);
+    thumbNext.classList.toggle('hidden', atRightEdge);
+    thumbPrev.disabled = atLeftEdge;
+    thumbNext.disabled = atRightEdge;
   };
 
   const scrollThumbs = (direction) => {
@@ -2758,12 +2840,118 @@ function openModal(product) {
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Initialize zoom functionality
+  setTimeout(() => {
+    const mainImage = document.getElementById('modal-main-img');
+    const mainImageContainer = document.getElementById('modal-main-image');
+    const zoomOverlay = document.getElementById('modal-zoom-overlay');
+    const zoomPreview = document.getElementById('modal-zoom-preview');
+    const zoomPreviewImg = document.getElementById('modal-zoom-preview-img');
+
+    if (mainImage.src && zoomPreviewImg) {
+      zoomPreviewImg.src = mainImage.src;
+    }
+
+    // Handle main image click for fullscreen
+    mainImage.onclick = () => {
+      if (!mainImage.src) return;
+      const fullscreenImg = document.createElement('img');
+      fullscreenImg.src = mainImage.src;
+      fullscreenImg.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background: rgba(26, 26, 46, 0.98);
+        z-index: 10000;
+        cursor: zoom-out;
+      `;
+      fullscreenImg.onclick = (e) => {
+        e.stopPropagation();
+        fullscreenImg.remove();
+      };
+      document.body.appendChild(fullscreenImg);
+    };
+
+    // Enable hover-based zoom only on devices that support hover
+    const canHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (canHover) {
+      // Handle zoom icon click
+      zoomOverlay.onclick = (e) => {
+        e.stopPropagation();
+        mainImage.click();
+      };
+
+      // Handle hover zoom preview
+      mainImageContainer.onmousemove = (e) => {
+      if (!mainImage.src) return;
+
+      const rect = mainImageContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Only show preview if inside the container
+      if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+        zoomPreview.style.display = 'block';
+
+        // Position and size the preview (150x150 zoomed area)
+        const previewSize = 150;
+        const zoomLevel = 2.5;
+        
+        // Calculate position to keep preview inside container
+        let previewX = x - previewSize / 2;
+        let previewY = y - previewSize / 2;
+        
+        // Clamp preview to container bounds
+        previewX = Math.max(0, Math.min(previewX, rect.width - previewSize));
+        previewY = Math.max(0, Math.min(previewY, rect.height - previewSize));
+        
+        zoomPreview.style.width = previewSize + 'px';
+        zoomPreview.style.height = previewSize + 'px';
+        zoomPreview.style.left = previewX + 'px';
+        zoomPreview.style.top = previewY + 'px';
+
+        // Use background-image on the preview with pixel sizing to preserve aspect ratio
+        zoomPreview.style.backgroundImage = `url(${mainImage.src})`;
+        zoomPreview.style.backgroundRepeat = 'no-repeat';
+        const imgRenderedW = mainImage.offsetWidth || rect.width;
+        const imgRenderedH = mainImage.offsetHeight || rect.height;
+        const bgW = Math.round(imgRenderedW * zoomLevel);
+        const bgH = Math.round(imgRenderedH * zoomLevel);
+        zoomPreview.style.backgroundSize = `${bgW}px ${bgH}px`;
+
+        // Calculate pixel offset so the hovered point is centered in the preview
+        const offsetX = (x / rect.width) * bgW - previewSize / 2;
+        const offsetY = (y / rect.height) * bgH - previewSize / 2;
+        zoomPreview.style.backgroundPosition = `-${Math.round(offsetX)}px -${Math.round(offsetY)}px`;
+        // hide any preview img element if present
+        if (zoomPreviewImg) zoomPreviewImg.style.display = 'none';
+      }
+      };
+
+      mainImageContainer.onmouseleave = () => {
+        zoomPreview.style.display = 'none';
+      };
+    } else {
+      // On touch devices / no-hover, hide overlay and preview
+      if (zoomOverlay) zoomOverlay.style.display = 'none';
+      if (zoomPreview) zoomPreview.style.display = 'none';
+      // Remove any mouse handlers just in case
+      mainImageContainer.onmousemove = null;
+      mainImageContainer.onmouseleave = null;
+      if (zoomOverlay) zoomOverlay.onclick = null;
+    }
+  }, 50);
 }
 function closeModal(e) {
   if (e && e.target !== document.getElementById('modal-overlay')) return;
   document.getElementById('modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
+
 // Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
