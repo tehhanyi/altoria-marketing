@@ -26,6 +26,7 @@
   --deep-dark: #10101D;
   --near-black: #0d0d1a;
   --skincaredark: #3F3A32;
+  --safe-edge: 40px;
 }
 
 /* =============================================
@@ -38,6 +39,12 @@ body {
   background: var(--navy);
   color: var(--text-dark);
   overflow-x: hidden;
+}
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 button, input, select, textarea { font-family: inherit; }
 button { cursor: pointer; border: none; background: none; }
@@ -103,9 +110,9 @@ ul { list-style: none; }
 }
 #site-nav.nav-sticky {
   position: fixed;
-  background: transparent;
-  backdrop-filter: none;
-  border-bottom: 1px solid transparent;
+  background: rgba(12,14,34,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(201,168,76,0.22);
 }
 #site-nav:hover, #site-nav:focus-within {
   background: rgba(12,14,34,0.52);
@@ -341,9 +348,9 @@ ul { list-style: none; }
   transition: background 0.2s ease, transform 0.2s ease;
 }
 #fab-btn:hover { background: var(--gold); transform: scale(1.08); }
-#fab-btn:hover .fab-icon { stroke: var(--navy); }
+#fab-btn:hover .fab-icon { color: var(--navy); stroke: var(--navy); }
 #fab-btn:active { background: var(--gold-press); }
-.fab-icon { stroke: var(--gold); fill: none; stroke-width: 1.8; transition: stroke 0.2s ease; }
+.fab-icon { color: var(--gold); stroke: var(--gold); fill: none; stroke-width: 1.8; transition: color 0.2s ease, stroke 0.2s ease; }
 
 #fab-panel {
   position: fixed;
@@ -406,7 +413,7 @@ ul { list-style: none; }
   transition: opacity 0.2s ease;
 }
 .fab-close:hover { opacity: 1; }
-.fab-close svg { stroke: var(--ivory); display: block; }
+.fab-close svg { color: var(--ivory); stroke: var(--ivory); display: block; }
 .fab-messages {
   padding: 12px;
   min-height: 140px;
@@ -571,8 +578,8 @@ ul { list-style: none; }
   background: var(--white);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.modal-close-btn:hover svg { stroke: var(--gold); }
-.modal-close-btn svg { stroke: var(--navy); display: block; transition: stroke 0.2s ease; }
+.modal-close-btn:hover svg { color: var(--gold); stroke: var(--gold); }
+.modal-close-btn svg { color: var(--navy); stroke: var(--navy); display: block; transition: color 0.2s ease, stroke 0.2s ease; }
 .modal-media {
   display: flex;
   flex-direction: column;
@@ -795,12 +802,11 @@ ul { list-style: none; }
   flex-direction: column;
   padding: 48px 44px;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
   background: var(--white);
 }
 #modal-info > .modal-desc {
   flex: 1;
-  overflow-y: auto;
   padding-right: 8px;
   margin-bottom: 24px;
 }
@@ -1957,11 +1963,68 @@ footer {
   #fab-btn { width: 88px; height: 88px; bottom: 64px; right: 64px; }
   #fab-panel { width: 680px; right: 64px; bottom: 180px; }
   footer { padding: 80px 160px; }
+
+  /* Make modal images wider on extra-large screens for better presentation */
+  .modal-main-image {
+    aspect-ratio: 16 / 10;
+    width: calc(100% - 160px);
+    margin: 40px 80px 0;
+  }
+  .modal-thumb { width: calc((100% - 48px) / 5); min-width: calc((100% - 48px) / 5); }
 }
 
 </style>
 </head>
 <body>
+<svg class="svg-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+  <symbol id="icon-arrow-right" viewBox="0 0 12 12">
+    <path d="M10 6H2M7 3l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="icon-back-left" viewBox="0 0 10 10">
+    <path d="M8 5H2M4 2L1 5l3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 22 22">
+    <polyline points="4,11 9,16 18,7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="icon-close" viewBox="0 0 24 24">
+    <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="icon-diamond-fallback-lg" viewBox="0 0 120 120">
+    <polygon points="60,15 100,35 100,85 60,105 20,85 20,35" fill="none" stroke="currentColor" stroke-width="1"/>
+    <polygon points="60,25 90,40 90,80 60,95 30,80 30,40" fill="none" stroke="currentColor" stroke-width="1"/>
+    <line x1="60" y1="15" x2="60" y2="25" stroke="currentColor" stroke-width="1"/>
+    <line x1="100" y1="35" x2="90" y2="40" stroke="currentColor" stroke-width="1"/>
+    <line x1="100" y1="85" x2="90" y2="80" stroke="currentColor" stroke-width="1"/>
+    <line x1="60" y1="105" x2="60" y2="95" stroke="currentColor" stroke-width="1"/>
+    <line x1="20" y1="85" x2="30" y2="80" stroke="currentColor" stroke-width="1"/>
+    <line x1="20" y1="35" x2="30" y2="40" stroke="currentColor" stroke-width="1"/>
+  </symbol>
+  <symbol id="icon-diamond-fallback-sm" viewBox="0 0 40 40">
+    <polygon points="20,5 34,12 34,28 20,35 6,28 6,12" fill="none" stroke="currentColor" stroke-width="0.8"/>
+  </symbol>
+  <symbol id="icon-external-up-right" viewBox="0 0 10 10">
+    <path d="M2 8L8 2M3 2h5v5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="icon-fab-chat" viewBox="0 0 22 22">
+    <path d="M3 2C2.4 2 2 2.4 2 3v11c0 0.6 0.4 1 1 1h10l3 2.5V15h2c0.6 0 1-0.4 1-1V3c0-0.6-0.4-1-1-1H3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="7.5" cy="9" r="0.8" fill="currentColor"/>
+    <circle cx="11" cy="9" r="0.8" fill="currentColor"/>
+    <circle cx="14.5" cy="9" r="0.8" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-insta" viewBox="0 0 24 24">
+    <rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-whatsapp" viewBox="0 0 256 256">
+    <path d="M216.714 38.165C193.054 14.477 161.587 1.42 128.053 1.406C58.321 1.406 1.689 58.034 1.66 127.788c-.008 22.087 5.761 43.63 16.728 62.634L.605 255.9l66.435-17.427c18.303 9.984 38.911 15.246 59.886 15.252h.051c69.724 0 126.362-56.641 126.391-126.397.014-33.472-13.003-64.958-36.654-88.663zM76.065 131.251c-1.565-2.091-12.786-16.979-12.786-32.398 0-15.418 8.09-22.995 10.959-26.128 2.869-3.134 6.264-3.917 8.352-3.917s4.179.02 6.003.11c1.922.098 4.504-.731 7.044 5.377 2.611 6.269 8.871 21.685 9.655 23.25.784 1.568 1.304 3.395.261 5.486-1.043 2.088-1.565 3.395-3.13 5.224-1.565 1.829-3.288 4.083-4.699 5.486-1.568 1.562-3.2 3.257-1.374 6.391 1.827 3.137 8.109 13.39 17.419 21.693 11.961 10.67 22.05 13.976 25.181 15.544 3.131 1.568 4.957 1.307 6.783-.784 1.827-2.091 7.827-9.144 9.916-12.278 2.088-3.134 4.176-2.611 7.044-1.568 2.872 1.046 18.265 8.623 21.396 10.189 3.131 1.568 5.219 2.353 6.003 3.66.784 1.307.784 7.577-1.827 14.892-2.611 7.314-15.121 13.99-21.139 14.886-5.395.807-12.221 1.144-19.724-1.242-4.547-1.442-10.38-3.369-17.852-6.594-31.412-13.568-51.925-45.198-53.493-47.289z" fill="currentColor" fill-rule="evenodd"/>
+  </symbol>
+  <symbol id="icon-zoom-plus" viewBox="0 0 48 48">
+    <circle cx="18" cy="18" r="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M28 28L38 38" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 18H22M18 14V22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+</svg>
 
 <!-- =============================================
      NAVIGATION
@@ -1988,10 +2051,7 @@ footer {
      ============================================= -->
 <button id="fab-btn" onclick="toggleFab()" aria-label="Open AI Advisor">
   <svg class="fab-icon" width="22" height="22" viewBox="0 0 22 22">
-    <path d="M3 2C2.4 2 2 2.4 2 3v11c0 0.6 0.4 1 1 1h10l3 2.5V15h2c0.6 0 1-0.4 1-1V3c0-0.6-0.4-1-1-1H3Z" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="7.5" cy="9" r="0.8" fill="currentColor"/>
-    <circle cx="11" cy="9" r="0.8" fill="currentColor"/>
-    <circle cx="14.5" cy="9" r="0.8" fill="currentColor"/>
+    <use href="./assets/svg/fab-chat.svg#icon-fab-chat" xlink:href="./assets/svg/fab-chat.svg#icon-fab-chat"></use>
   </svg>
 </button>
 
@@ -2006,7 +2066,7 @@ footer {
     </div>
     <button class="fab-close" onclick="closeFab()">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M1 1l12 12M13 1L1 13" stroke-width="1.5" stroke-linecap="round"/>
+        <use href="./assets/svg/close.svg#icon-close" xlink:href="./assets/svg/close.svg#icon-close"></use>
       </svg>
     </button>
   </div>
@@ -2016,7 +2076,7 @@ footer {
     <input class="fab-input" id="fab-input" placeholder="Type a message…" onkeydown="if(event.key==='Enter') sendFabMsg()">
     <button class="fab-send" onclick="sendFabMsg()">
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 6H2M7 3l3 3-3 3"/>
+        <use href="./assets/svg/arrow-right.svg#icon-arrow-right" xlink:href="./assets/svg/arrow-right.svg#icon-arrow-right"></use>
       </svg>
     </button>
   </div>
@@ -2029,7 +2089,7 @@ footer {
   <div id="modal-container">
     <button class="modal-close-btn" onclick="closeModal(null)">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path d="M5 5l14 14M19 5L5 19" stroke-width="1.5" stroke-linecap="round"/>
+        <use href="./assets/svg/close.svg#icon-close" xlink:href="./assets/svg/close.svg#icon-close"></use>
       </svg>
     </button>
     <!-- Left: images -->
@@ -2037,19 +2097,13 @@ footer {
       <div class="modal-main-image" id="modal-main-image">
         <div class="modal-main-fallback" id="modal-main-fallback">
           <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
-            <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
-            <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
-            <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
-            <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
-            <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
+            <use href="./assets/svg/diamond-fallback-lg.svg#icon-diamond-fallback-lg" xlink:href="./assets/svg/diamond-fallback-lg.svg#icon-diamond-fallback-lg"></use>
           </svg>
         </div>
         <img id="modal-main-img" alt="" style="cursor: zoom-in;" />
         <div class="modal-zoom-overlay" id="modal-zoom-overlay">
-          <svg class="modal-zoom-icon" width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <circle cx="18" cy="18" r="14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M28 28L38 38" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M14 18H22M18 14V22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          <svg class="modal-zoom-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" style="color:#fff">
+            <use href="./assets/svg/zoom-plus.svg#icon-zoom-plus" xlink:href="./assets/svg/zoom-plus.svg#icon-zoom-plus"></use>
           </svg>
         </div>
         <div class="modal-zoom-preview" id="modal-zoom-preview">
@@ -2169,11 +2223,11 @@ footer {
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
       <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">
         Instagram
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg>
       </a>
       <a class="footer-link" href="https://wa.me/6596992282" target="_blank">
         WhatsApp
-        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg>
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg>
       </a>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
@@ -2196,7 +2250,7 @@ footer {
       <div class="store-cat-desc">Lab-grown diamond rings, necklaces, earrings and bracelets. Handpicked from Asia's finest artisans.</div>
       <span class="store-browse-link">
         Browse Diamonds
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg>
       </span>
     </div>
     <div class="store-cat-card reveal reveal-delay-2" onclick="showPage('skincare')">
@@ -2205,7 +2259,7 @@ footer {
       <div class="store-cat-desc">Elevated skincare formulations for the discerning. Curated for every skin type, occasion, and routine.</div>
       <span class="store-browse-link">
         Browse Skincare
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg>
       </span>
     </div>
   </div>
@@ -2216,7 +2270,7 @@ footer {
       <h3>As seen on Instagram</h3>
       <a href="https://instagram.com/altioramarketingsg" target="_blank" class="insta-handle-btn">
         @ALTIORAMARKETINGSG
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 8L8 2M3 2h5v5"/></svg>
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg>
       </a>
     </div>
     <div class="insta-grid" id="insta-grid"></div>
@@ -2232,8 +2286,8 @@ footer {
       <span class="footer-link" onclick="showPage('home')">Home</span>
       <span class="footer-link" onclick="showPage('store')">Collections</span>
       <span class="footer-link" onclick="showPage('enquire')">Enquire</span>
-      <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">Instagram <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
-      <a class="footer-link" href="https://wa.me/6596992282" target="_blank">WhatsApp <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 7L7 2M3 2h4v4"/></svg></a>
+      <a class="footer-link" href="https://instagram.com/altioramarketingsg" target="_blank">Instagram <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg></a>
+      <a class="footer-link" href="https://wa.me/6596992282" target="_blank">WhatsApp <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/external-up-right.svg#icon-external-up-right" xlink:href="./assets/svg/external-up-right.svg#icon-external-up-right"></use></svg></a>
     </nav>
     <span class="footer-copy">© 2026 Altiora Marketing Pte. Ltd.</span>
   </footer>
@@ -2245,7 +2299,7 @@ footer {
 <div id="page-diamonds" class="page">
   <section class="subpage-hero">
     <span class="back-link" onclick="showPage('store')">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/back-left.svg#icon-back-left" xlink:href="./assets/svg/back-left.svg#icon-back-left"></use></svg>
       Back to Collections
     </span>
     <div class="eyebrow">COLLECTION 01</div>
@@ -2284,7 +2338,7 @@ footer {
 <div id="page-skincare" class="page">
   <section class="subpage-hero">
     <span class="back-link" onclick="showPage('store')">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 5H2M4 2L1 5l3 3"/></svg>
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><use href="./assets/svg/back-left.svg#icon-back-left" xlink:href="./assets/svg/back-left.svg#icon-back-left"></use></svg>
       Back to Collections
     </span>
     <div class="eyebrow">COLLECTION 02</div>
@@ -2351,8 +2405,8 @@ footer {
         </div>
       </div>
       <button class="whatsapp-btn reveal reveal-delay-5" onclick="window.open('https://wa.me/6596992282', '_blank')">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="#C9A84C">
-          <path d="M7 0.5C3.41 0.5 0.5 3.41 0.5 7c0 1.23.33 2.38.9 3.37L0.5 13.5l3.23-.88C4.69 13.17 5.82 13.5 7 13.5c3.59 0 6.5-2.91 6.5-6.5S10.59 0.5 7 0.5zm3.44 9.06c-.14.4-.83.76-1.15.81-.3.05-.67.07-1.08-.07-.25-.09-.57-.21-.98-.41-1.72-.74-2.84-2.47-2.93-2.58-.09-.11-.73-.97-.73-1.85 0-.88.46-1.31.63-1.49.14-.15.38-.22.51-.22h.36c.12 0 .28.01.43.33.17.36.57 1.39.62 1.49.05.1.08.22.02.35-.06.13-.09.21-.18.32-.09.11-.19.24-.27.32-.09.09-.18.19-.08.37.1.18.46.75.98 1.22.67.59 1.24.78 1.41.86.18.08.28.07.39-.04.11-.11.46-.54.59-.72.12-.18.25-.15.42-.09.17.06 1.1.52 1.29.61.18.09.31.14.35.22.05.08.05.46-.09.86z"/>
+        <svg width="14" height="14" viewBox="0 0 14 14">
+          <use href="./assets/svg/whatsapp.svg#icon-whatsapp" xlink:href="./assets/svg/whatsapp.svg#icon-whatsapp"></use>
         </svg>
         Chat on WhatsApp
       </button>
@@ -2399,7 +2453,7 @@ footer {
         <button class="form-submit" id="form-submit" onclick="submitForm()">
           <span class="submit-text">
             Submit Enquiry
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-left:4px"><path d="M2 6h8M7 3l3 3-3 3"/></svg>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-left:4px"><use href="./assets/svg/arrow-right.svg#icon-arrow-right" xlink:href="./assets/svg/arrow-right.svg#icon-arrow-right"></use></svg>
           </span>
           <span class="submit-spinner">
             <span class="spinner-ring"></span>
@@ -2410,7 +2464,7 @@ footer {
       <div class="form-success" id="form-success">
         <div class="success-icon">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="4,11 9,16 18,7"/>
+            <use href="./assets/svg/check.svg#icon-check" xlink:href="./assets/svg/check.svg#icon-check"></use>
           </svg>
         </div>
         <h3>We've received your enquiry.</h3>
@@ -2440,6 +2494,42 @@ footer {
 <script src="assets-config.js"></script>
 <script src="products.js"></script>
 <script>
+/* ----------------------------------------
+   INLINE SVG ICONS
+   ---------------------------------------- */
+function localizeSvgUses(root = document) {
+  root.querySelectorAll('use[href*="#"], use[xlink\\:href*="#"]').forEach(useEl => {
+    const rawHref = useEl.getAttribute('href') || useEl.getAttribute('xlink:href');
+    if (!rawHref || !rawHref.includes('#')) return;
+
+    const localHref = '#' + rawHref.split('#').pop();
+    useEl.setAttribute('href', localHref);
+    useEl.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', localHref);
+
+    const parentSvg = useEl.closest('svg');
+    const strokeAttr = parentSvg && parentSvg.getAttribute('stroke');
+    if (parentSvg && strokeAttr && strokeAttr !== 'currentColor' && !parentSvg.style.color) {
+      parentSvg.style.color = strokeAttr;
+    }
+  });
+}
+
+localizeSvgUses();
+
+const svgUseObserver = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return;
+      if (node.matches && node.matches('use[href*="#"], use[xlink\\:href*="#"]')) {
+        localizeSvgUses(node.parentNode || document);
+      } else if (node.querySelectorAll) {
+        localizeSvgUses(node);
+      }
+    });
+  });
+});
+svgUseObserver.observe(document.body, { childList: true, subtree: true });
+
 /* ----------------------------------------
    PRODUCT DATA
    ---------------------------------------- */
@@ -2601,25 +2691,6 @@ function closeMenu() {
 /* ----------------------------------------
    PRODUCT GRIDS
    ---------------------------------------- */
-function diamondSVG() {
-  return `<svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#C9A84C" stroke-width="1">
-    <polygon points="28,6 50,17 50,39 28,50 6,39 6,17"/>
-    <polygon points="28,12 44,20 44,36 28,44 12,36 12,20"/>
-    <line x1="28" y1="6" x2="28" y2="12"/>
-    <line x1="50" y1="17" x2="44" y2="20"/>
-    <line x1="50" y1="39" x2="44" y2="36"/>
-    <line x1="28" y1="50" x2="28" y2="44"/>
-    <line x1="6" y1="39" x2="12" y2="36"/>
-    <line x1="6" y1="17" x2="12" y2="20"/>
-  </svg>`;
-}
-function skincareSVG() {
-  return `<svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#C9A84C" stroke-width="1">
-    <circle cx="28" cy="28" r="22"/>
-    <circle cx="28" cy="28" r="14"/>
-    <circle cx="28" cy="28" r="6"/>
-  </svg>`;
-}
 
 function placeholderArt() {
   return `<div class="placeholder-art"><span>Altiora Marketing</span></div>`;
@@ -2828,9 +2899,7 @@ function renderInstaGrid() {
     tile.style.transform = 'scale(0.95)';
     tile.innerHTML = `
       <svg class="insta-tile-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.2">
-        <rect x="2" y="2" width="20" height="20" rx="5"/>
-        <circle cx="12" cy="12" r="5"/>
-        <circle cx="17.5" cy="6.5" r="1" fill="#C9A84C"/>
+        <use href="./assets/svg/insta.svg#icon-insta" xlink:href="./assets/svg/insta.svg#icon-insta"></use>
       </svg>
       <div class="insta-tile-overlay">
         <span class="insta-tile-label">View Post</span>
@@ -2901,11 +2970,7 @@ function openModal(product) {
 
   const fallbackMarkup = `
     <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
-      <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
-      <polygon points="60,25 90,40 90,80 60,95 30,80 30,40"/>
-      <line x1="60" y1="15" x2="60" y2="25"/><line x1="100" y1="35" x2="90" y2="40"/>
-      <line x1="100" y1="85" x2="90" y2="80"/><line x1="60" y1="105" x2="60" y2="95"/>
-      <line x1="20" y1="85" x2="30" y2="80"/><line x1="20" y1="35" x2="30" y2="40"/>
+      <use href="./assets/svg/diamond-fallback-lg.svg#icon-diamond-fallback-lg" xlink:href="./assets/svg/diamond-fallback-lg.svg#icon-diamond-fallback-lg"></use>
     </svg>
   `;
 
@@ -2928,7 +2993,7 @@ function openModal(product) {
       fallback.className = 'modal-thumb-fallback';
       fallback.innerHTML = `
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#C9A84C" stroke-width="0.8" opacity="0.2">
-          <polygon points="20,5 34,12 34,28 20,35 6,28 6,12"/>
+          <use href="./assets/svg/diamond-fallback-sm.svg#icon-diamond-fallback-sm" xlink:href="./assets/svg/diamond-fallback-sm.svg#icon-diamond-fallback-sm"></use>
         </svg>
       `;
 
@@ -2949,7 +3014,10 @@ function openModal(product) {
     });
   }
 
-  updateThumbNavState();
+  requestAnimationFrame(() => {
+    updateThumbNavState();
+    setTimeout(updateThumbNavState, 5);
+  });
 
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('open');
