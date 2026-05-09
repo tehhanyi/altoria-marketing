@@ -561,17 +561,17 @@
     "skincare": [
       {
         "id": "skincare-001",
-        "name": "Luminance Serum",
+        "name": "K-Energy Glow Mist",
         "type": "skincare",
-        "category": "serums",
-        "specs": "Brightening vitamin C complex. Lightweight, fast-absorbing.",
-        "description": "Brightening vitamin C complex. Lightweight, fast-absorbing.",
-        "badge": "New In",
+        "category": "toners",
+        "specs": "A moisturizing, soothing mist with Exonity Technology Biomimetic Exosomes.",
+        "description": "A moisturizing, soothing mist contains Exonity Technology Biomimetic Exosomes that provide moisture and shine to the skin with a fine spray.",
+        "badge": "Bestseller",
         "img": [
           {
             "id": "skincare-001",
             "img_id": "skincare-001-1",
-            "img_addr": ""
+            "img_addr": "https://oovdmtnwipgoumnrwmia.supabase.co/storage/v1/object/public/altoria-assets/skincare/1%20toner/K-Energy%20Glow%20Mist.png"
           }
         ]
       },
@@ -598,7 +598,7 @@
         "category": "cleansers",
         "specs": "Gentle foaming cleanser. Removes impurities without stripping.",
         "description": "Gentle foaming cleanser. Removes impurities without stripping.",
-        "badge": "Bestseller",
+        "badge": null,
         "img": [
           {
             "id": "skincare-003",
@@ -630,7 +630,7 @@
         "category": "serums",
         "specs": "Overnight recovery treatment. Fragrance-free, post-procedure safe.",
         "description": "Overnight recovery treatment. Fragrance-free, post-procedure safe.",
-        "badge": "New In",
+        "badge": null,
         "img": [
           {
             "id": "skincare-005",

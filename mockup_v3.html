@@ -210,11 +210,13 @@ ul { list-style: none; }
   border-top: 1px solid rgba(201,168,76,0.1);
   transform: translateY(-10px);
   opacity: 0;
+  pointer-events: none;
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 .mobile-menu.open {
   transform: translateY(0);
   opacity: 1;
+  pointer-events: all;
 }
 .mobile-menu-link {
   display: block;
@@ -249,7 +251,7 @@ ul { list-style: none; }
 .mobile-menu-cta:hover { background: var(--gold-hover); }
 
 @media (max-width: 768px) {
-  #site-nav { height: 84px; padding: 0 20px; }
+  #site-nav { height: 84px; padding: 0 20px; pointer-events: none; }
   .nav-logo {
     left: 20px;
     transform: translateY(-50%);
@@ -257,8 +259,10 @@ ul { list-style: none; }
     max-width: calc(100% - 84px);
   }
   .nav-links, .nav-cta { display: none; }
-  .hamburger { display: flex; }
+  .hamburger { display: flex; pointer-events: all; }
   .mobile-menu { display: block; }
+  .nav-logo { pointer-events: all; }
+  .nav-cta { pointer-events: all; }
   #site-nav.nav-sticky { position: fixed; }
 }
 
@@ -532,18 +536,18 @@ ul { list-style: none; }
 }
 #modal-container {
   background: var(--white);
-  border-radius: 5px;
+  border-radius: 8px;
   width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 1000px;
+  height: 85vh;
   position: relative;
-  box-shadow: 0 20px 60px rgba(26,26,46,0.2);
+  box-shadow: 0 25px 70px rgba(26,26,46,0.25);
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  padding: 40px;
+  grid-template-columns: 50% 50%;
+  gap: 0;
+  padding: 0;
   animation: modalOpen 0.3s ease;
+  overflow: hidden;
 }
 @keyframes modalOpen {
   from { opacity: 0; transform: scale(0.9); }
@@ -554,32 +558,41 @@ ul { list-style: none; }
   top: 20px; right: 20px;
   width: 40px; height: 40px;
   border-radius: 50%;
-  background: #F5F5F5;
+  background: rgba(255,255,255,0.9);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
+  z-index: 10;
 }
-.modal-close-btn:hover { background: var(--ivory); }
+.modal-close-btn:hover { 
+  background: var(--white);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
 .modal-close-btn:hover svg { stroke: var(--gold); }
-.modal-close-btn svg { stroke: var(--navy); display: block; }
+.modal-close-btn svg { stroke: var(--navy); display: block; transition: stroke 0.2s ease; }
 .modal-media {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #F5EDD6 0%, #FFFDF8 100%);
+  overflow-y: auto;
 }
 .modal-main-image {
   position: relative;
-  width: 100%;
-  aspect-ratio: 4/3;
-  background: #F0E8D4;
-  border: 1px solid var(--ivory-dark);
+  width: calc(100% - 40px);
+  margin: 20px 20px 0;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #F5EDD6 0%, #FFFDF8 100%);
+  border: 2px solid #EDE0C4;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  flex: 0 0 auto;
 }
 .modal-main-image img {
   position: relative;
@@ -620,24 +633,78 @@ ul { list-style: none; }
   justify-content: center;
   z-index: 0;
 }
-.modal-thumbnails {
+.modal-thumb-carousel {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
   gap: 8px;
   margin-top: 12px;
+  padding: 0 12px 20px;
+}
+.modal-thumbnails-viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.modal-thumbnails-viewport::-webkit-scrollbar {
+  display: none;
+}
+.modal-thumbnails {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+.modal-thumb-nav {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.35);
+  background: rgba(255,255,255,0.95);
+  color: var(--navy);
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.modal-thumb-nav:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.modal-thumb-nav:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.modal-thumb-nav.hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 .modal-thumb {
   position: relative;
+  width: calc((100% - 24px) / 3);
+  min-width: calc((100% - 24px) / 3);
   aspect-ratio: 1;
-  background: #F0E8D4;
-  border: 1px solid var(--ivory-dark);
+  background: linear-gradient(135deg, #F5EDD6 0%, #FFFDF8 100%);
+  border: 2px solid #EDE0C4;
   cursor: pointer;
   overflow: hidden;
   padding: 0;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  transition: all 0.25s ease;
+  border-radius: 4px;
 }
-.modal-thumb:hover { border-color: var(--gold); background: #F5E8D8; transform: translateY(-1px); }
-.modal-thumb.thumb-active { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(201,168,76,0.15); }
+.modal-thumb:hover { 
+  border-color: var(--gold); 
+  background: #F5E8D8; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201,168,76,0.15);
+}
+.modal-thumb.thumb-active { 
+  border-color: var(--gold); 
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.3);
+}
 .modal-thumb img {
   position: relative;
   z-index: 2;
@@ -665,50 +732,99 @@ ul { list-style: none; }
   color: var(--stone);
   margin-bottom: 8px;
 }
+#modal-info {
+  display: flex;
+  flex-direction: column;
+  padding: 48px 44px;
+  height: 100%;
+  overflow: hidden;
+  background: var(--white);
+}
+#modal-info > .modal-desc {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  margin-bottom: 24px;
+}
+#modal-info > .modal-cta {
+  flex-shrink: 0;
+  margin-top: auto;
+}
 .modal-product-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 32px;
+  font-size: 42px;
   font-weight: 300;
   color: var(--navy);
-  margin-bottom: 10px;
+  margin-bottom: 18px;
   line-height: 1.2;
 }
 .modal-specs {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--navy);
-  margin-bottom: 12px;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
 }
 .modal-desc {
   font-size: 13px;
   font-weight: 300;
-  color: var(--text-light);
-  line-height: 1.7;
+  color: var(--text-mid);
+  line-height: 1.8;
   margin-bottom: 28px;
 }
 .modal-cta {
   width: 100%;
-  background: var(--navy);
-  color: var(--ivory);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 14px;
+  padding: 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(201,168,76,0.15);
 }
-.modal-cta:hover { background: var(--gold); color: var(--navy); }
-.modal-cta:active { background: var(--gold-press); }
+.modal-cta:hover { 
+  background: var(--gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(201,168,76,0.25);
+}
+.modal-cta:active { background: var(--gold-press); transform: translateY(0); }
 
 @media (max-width: 768px) {
   #modal-container {
     grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 24px;
-    max-height: 95vh;
+    height: 90vh;
+    padding: 0;
+    border-radius: 8px;
+  }
+  .modal-media {
+    min-height: 300px;
+  }
+  .modal-main-image {
+    width: calc(100% - 24px);
+    margin: 12px 12px 0;
+  }
+  .modal-thumb-carousel {
+    grid-template-columns: 28px 1fr 28px;
+    gap: 8px;
+    padding: 0 8px 12px;
+  }
+  .modal-thumbnails {
+    gap: 8px;
+  }
+  #modal-info {
+    padding: 32px 24px;
+  }
+  .modal-product-name {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .modal-specs {
+    font-size: 14px;
   }
 }
 
@@ -832,42 +948,84 @@ ul { list-style: none; }
 }
 .brand-card {
   flex: 1;
-  min-width: 200px;
-  max-width: 260px;
-  padding: clamp(22px, 2.4vw, 28px) clamp(20px, 2.6vw, 32px);
-  border: 1px solid rgba(201,168,76,0.2);
-  background: transparent;
+  min-width: 240px;
+  max-width: 380px;
   cursor: pointer;
   text-align: center;
-  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  transition: transform 0.25s ease;
   border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  aspect-ratio: 4 / 3;
 }
 .brand-card:hover {
-  border-color: var(--gold);
-  background: rgba(201,168,76,0.04);
   transform: translateY(-3px);
 }
-.brand-card:active { background: rgba(201,168,76,0.12); transform: translateY(0); }
+.brand-card:active { transform: translateY(0); }
+.brand-card-image {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background: rgba(201,168,76,0.04);
+}
+.brand-card-image-inner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.35s ease;
+}
+.brand-card:hover .brand-card-image-inner {
+  transform: scale(1.06);
+}
+.brand-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(26,26,46,0.5), rgba(26,26,46,0.65));
+  z-index: 5;
+}
+.brand-card-content {
+  padding: clamp(22px, 2.4vw, 28px) clamp(20px, 2.6vw, 32px);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10;
+}
 .brand-card-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(18px, 1.4vw, 20px);
+  font-size: clamp(22px, 2vw, 28px);
   font-weight: 400;
   font-style: italic;
   color: var(--ivory);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(26,26,46,0.8);
 }
 .brand-card-desc {
-  font-size: clamp(10px, 0.9vw, 11px);
+  font-size: clamp(12px, 1.1vw, 13px);
   font-weight: 300;
-  color: rgba(245,237,214,0.4);
+  color: rgba(245,237,214,0.85);
   line-height: 1.7;
+  text-shadow: 0 1px 4px rgba(26,26,46,0.8);
 }
 
 @media (max-width: 768px) {
   .brand-intro { padding: 48px 20px; }
   .brand-cards { flex-direction: column; align-items: center; gap: 12px; }
   .brand-card { max-width: 100%; width: 100%; }
+  .brand-card-image { aspect-ratio: 4 / 3; }
 }
 
 /* AI Advisor section */
@@ -1123,9 +1281,13 @@ ul { list-style: none; }
   #page-diamonds, #page-skincare { padding-top: 84px; }
 }
 
+#subpage-hero {
+}
 .subpage-hero {
-  padding: 52px 40px 40px;
+  /* reduce top padding to move content upward */
+  padding: 32px 40px 24px;
   text-align: center;
+  position: relative;
 }
 #page-diamonds .subpage-hero { background: var(--navy); }
 #page-skincare .subpage-hero { background: var(--skincaredark); }
@@ -1144,9 +1306,23 @@ ul { list-style: none; }
   border-bottom: 1px solid transparent;
   padding-bottom: 1px;
   transition: color 0.2s ease, border-color 0.2s ease;
+  /* place on the left of the hero area */
+  position: absolute;
+  left: 40px;
+  top: 22px;
+  text-align: left;
 }
 .back-link:hover { color: var(--gold); border-color: var(--gold); }
 .subpage-hero .eyebrow { margin-bottom: 14px; }
+/* align eyebrow with the left back-link */
+.subpage-hero .eyebrow {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 18px;
+  margin-bottom: 0;
+  text-align: center;
+}
 .subpage-hero h2 {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(28px,6vw,42px);
@@ -1184,6 +1360,17 @@ ul { list-style: none; }
   background: var(--gold);
   color: var(--navy);
   border-color: var(--gold);
+}
+
+/* Hide back-link on small screens (mobile) */
+@media (max-width: 600px) {
+  .back-link { display: none; }
+}
+
+@media (max-width: 600px) {
+  /* revert eyebrow to normal flow on small screens */
+  .subpage-hero .eyebrow { position: static; left: auto; top: auto; margin-bottom: 14px; text-align: center; transform: none; display: block; margin-left: auto; margin-right: auto; }
+  .subpage-hero { padding: 28px 20px 20px; }
 }
 .filter-btn:active { background: var(--gold-press); }
 
@@ -1700,7 +1887,10 @@ footer {
      ============================================= -->
 <button id="fab-btn" onclick="toggleFab()" aria-label="Open AI Advisor">
   <svg class="fab-icon" width="22" height="22" viewBox="0 0 22 22">
-    <path d="M3 3h16v12H3zM7 18l4 2 4-2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 2C2.4 2 2 2.4 2 3v11c0 0.6 0.4 1 1 1h10l3 2.5V15h2c0.6 0 1-0.4 1-1V3c0-0.6-0.4-1-1-1H3Z" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="7.5" cy="9" r="0.8" fill="currentColor"/>
+    <circle cx="11" cy="9" r="0.8" fill="currentColor"/>
+    <circle cx="14.5" cy="9" r="0.8" fill="currentColor"/>
   </svg>
 </button>
 
@@ -1755,7 +1945,13 @@ footer {
         </div>
         <img id="modal-main-img" alt="" />
       </div>
-      <div class="modal-thumbnails" id="modal-thumbnails"></div>
+      <div class="modal-thumb-carousel" id="modal-thumb-carousel">
+        <button type="button" class="modal-thumb-nav prev" id="modal-thumb-prev" aria-label="Previous images">&#10094;</button>
+        <div class="modal-thumbnails-viewport" id="modal-thumbnails-viewport">
+          <div class="modal-thumbnails" id="modal-thumbnails"></div>
+        </div>
+        <button type="button" class="modal-thumb-nav next" id="modal-thumb-next" aria-label="Next images">&#10095;</button>
+      </div>
     </div>
     <!-- Right: info -->
     <div id="modal-info">
@@ -1793,12 +1989,24 @@ footer {
     <p class="reveal reveal-delay-1">Altiora brings together fine lab-grown diamond jewellery and elevated skincare — each curated with the same commitment to quality, ethics, and personal guidance.</p>
     <div class="brand-cards">
       <div class="brand-card reveal reveal-delay-2" onclick="showPage('diamonds')">
-        <span class="brand-card-name">Diamonds by Altiora</span>
-        <span class="brand-card-desc">Lab-grown diamond jewellery, handpicked from Asia's finest artisans.</span>
+        <div class="brand-card-image">
+          <div class="brand-card-image-inner" style="background-image: url('assets/diamond-preview.jpg');"></div>
+        </div>
+        <div class="brand-card-overlay"></div>
+        <div class="brand-card-content">
+          <span class="brand-card-name">Diamonds by Altiora</span>
+          <span class="brand-card-desc">Lab-grown diamond jewellery, handpicked from Asia's finest artisans.</span>
+        </div>
       </div>
       <div class="brand-card reveal reveal-delay-3" onclick="showPage('skincare')">
-        <span class="brand-card-name">Skincare by Altiora</span>
-        <span class="brand-card-desc">Elevated formulations for every skin, every routine.</span>
+        <div class="brand-card-image">
+          <div class="brand-card-image-inner" style="background-image: url('assets/skincare-preview.jpg');"></div>
+        </div>
+        <div class="brand-card-overlay"></div>
+        <div class="brand-card-content">
+          <span class="brand-card-name">Skincare by Altiora</span>
+          <span class="brand-card-desc">Elevated formulations for every skin, every routine.</span>
+        </div>
       </div>
     </div>
   </section>
@@ -1973,6 +2181,7 @@ footer {
     <p>Elevated formulations for every skin type. Curated with the same care as our diamonds.</p>
     <div class="filter-bar" id="skincare-filters">
       <button class="filter-btn active" onclick="setFilter('skincare','all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('skincare','toners',this)">Toners</button>
       <button class="filter-btn" onclick="setFilter('skincare','serums',this)">Serums</button>
       <button class="filter-btn" onclick="setFilter('skincare','moisturisers',this)">Moisturisers</button>
       <button class="filter-btn" onclick="setFilter('skincare','cleansers',this)">Cleansers</button>
@@ -2141,11 +2350,12 @@ function resolveAssetUrl(rawAddr) {
   return base ? `${base}/${path}` : path;
 }
 
-function getProductImageUrls(product, limit = 4) {
-  return (product.img || [])
+function getProductImageUrls(product, limit) {
+  const urls = (product.img || [])
     .map(item => resolveAssetUrl(item && item.img_addr))
-    .filter(Boolean)
-    .slice(0, limit);
+    .filter(Boolean);
+
+  return Number.isFinite(limit) ? urls.slice(0, limit) : urls;
 }
 
 function setImageWithLoadingState(imgEl, containerEl, fallbackEl, src, alt) {
@@ -2447,18 +2657,52 @@ function renderInstaGrid() {
    PRODUCT MODAL
    ---------------------------------------- */
 function openModal(product) {
-  const images = getProductImageUrls(product, 4);
+  const images = getProductImageUrls(product);
   const mainImage = document.getElementById('modal-main-img');
   const mainContainer = document.getElementById('modal-main-image');
   const mainFallback = document.getElementById('modal-main-fallback');
   const thumbnails = document.getElementById('modal-thumbnails');
+  const thumbViewport = document.getElementById('modal-thumbnails-viewport');
+  const thumbPrev = document.getElementById('modal-thumb-prev');
+  const thumbNext = document.getElementById('modal-thumb-next');
 
   document.getElementById('modal-cat').textContent = product.category.charAt(0).toUpperCase() + product.category.slice(1);
   document.getElementById('modal-name').textContent = product.name;
   document.getElementById('modal-specs').textContent = product.specs;
-  document.getElementById('modal-desc').textContent = product.description;
+  document.getElementById('modal-desc').innerHTML = product.description;
 
   thumbnails.innerHTML = '';
+  thumbViewport.scrollLeft = 0;
+
+  const updateThumbNavState = () => {
+    if (images.length <= 3) {
+      thumbPrev.classList.add('hidden');
+      thumbNext.classList.add('hidden');
+      thumbPrev.disabled = true;
+      thumbNext.disabled = true;
+      return;
+    }
+
+    thumbPrev.classList.remove('hidden');
+    thumbNext.classList.remove('hidden');
+    const maxScroll = Math.max(0, thumbViewport.scrollWidth - thumbViewport.clientWidth);
+    thumbPrev.disabled = thumbViewport.scrollLeft <= 2;
+    thumbNext.disabled = thumbViewport.scrollLeft >= (maxScroll - 2);
+  };
+
+  const scrollThumbs = (direction) => {
+    const firstThumb = thumbnails.querySelector('.modal-thumb');
+    if (!firstThumb) return;
+    const styles = window.getComputedStyle(thumbnails);
+    const gap = parseFloat(styles.columnGap || styles.gap || '0') || 0;
+    const step = firstThumb.getBoundingClientRect().width + gap;
+    thumbViewport.scrollBy({ left: direction * step, behavior: 'smooth' });
+  };
+
+  thumbPrev.onclick = () => scrollThumbs(-1);
+  thumbNext.onclick = () => scrollThumbs(1);
+  thumbViewport.onscroll = updateThumbNavState;
+
   const fallbackMarkup = `
     <svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#C9A84C" stroke-width="1" opacity="0.3">
       <polygon points="60,15 100,35 100,85 60,105 20,85 20,35"/>
@@ -2501,12 +2745,15 @@ function openModal(product) {
         thumbnails.querySelectorAll('.modal-thumb').forEach(button => button.classList.remove('thumb-active'));
         thumb.classList.add('thumb-active');
         setImageWithLoadingState(mainImage, mainContainer, mainFallback, src, product.name);
+        thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       };
 
       thumbnails.appendChild(thumb);
       setImageWithLoadingState(img, thumb, fallback, src, product.name);
     });
   }
+
+  updateThumbNavState();
 
   const overlay = document.getElementById('modal-overlay');
   overlay.classList.add('open');

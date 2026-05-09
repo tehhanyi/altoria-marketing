@@ -5,9 +5,9 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Necklace",
       "type": "jewel",
       "category": "necklaces",
-      "specs": "1.05 - 1.07 ct",
-      "description": "1.05 - 1.07 ct blah blah blah",
-      "badge": null,
+      "specs": "Round Cut Necklace",
+      "description": "Lab-Grown Diamond Round Cut Necklace<br><br>Grade: D VS1 Ex Ex<br>Carats: 1.05, 1.06, 1.07<br><br>Certificates:<br>IGI LG758568680, IGI LG758568686, IGI LG758570045 (1.05)<br>IGI LG758568690, IGI LG754561467, IGI LG758568689, IGI LG754561470 (1.06)<br>IGI LG754561480, IGI LG754561476 (1.07)<br><br>Setting: 18K White Gold",
+      "badge": "Promo",
       "img": [
         {
           "id": "diamond-001",
@@ -31,8 +31,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Emerald Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "3.55ct",
-      "description": "3.55ct",
+      "specs": "Emerald Cut Ring",
+      "description": "Lab-Grown Diamond Emerald Cut Ring<br><br>Grade: E VVS2<br>Carats: 3.55<br>Certificate: IGI LG652439541<br>Setting: 18K Yellow Gold<br>Ring Size: HK#12",
       "badge": null,
       "img": [
         {
@@ -57,8 +57,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Pear Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "3.04ct",
-      "description": "3.04ct",
+      "specs": "Pear Cut Ring",
+      "description": "Lab-Grown Diamond Pear Cut Ring<br><br>Grade: E VS1 Ex Ex<br>Carats: 3.04<br>Certificate: IGI LG661402011<br>Setting: 18K White Gold<br>Ring Size: HK#13",
       "badge": null,
       "img": [
         {
@@ -83,8 +83,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Pear Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "3.20ct",
-      "description": "3.20ct",
+      "specs": "Pear Cut Ring",
+      "description": "Lab-Grown Diamond Pear Cut Ring<br><br>Grade: E VVS2 Ex Ex<br>Carats: 3.20<br>Certificate: IGI LG671436327<br>Setting: Platinum<br>Ring Size: HK#13",
       "badge": null,
       "img": [
         {
@@ -109,8 +109,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut (Pair) Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "10.14ct",
-      "description": "10.14ct",
+      "specs": "Round Cut Earrings",
+      "description": "Lab-Grown Diamond Round Cut Pair Earrings<br><br>Grade: E VS1 Ex Ex<br>Carats: 10.14 (5.04 and 5.10 each)<br>Certificates: IGI LG671472427 and IGI LG670477276<br>Setting: 18K White Gold Earrings Setting",
       "badge": null,
       "img": [
         {
@@ -135,8 +135,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Princess Cut Pendant Necklace",
       "type": "jewel",
       "category": "necklaces",
-      "specs": "2.03ct",
-      "description": "2.03ct",
+      "specs": "Princess Cut Necklace",
+      "description": "Lab-Grown Diamond Princess Cut Pendant Necklace<br><br>Grade: E VS1 Ex Ex<br>Carats: 2.03<br>Certificate: IGI LG670486825<br>Setting: 18K Rose Gold Pendant Setting",
       "badge": null,
       "img": [
         {
@@ -161,8 +161,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Heart Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "3.01ct",
-      "description": "3.01ct",
+      "specs": "Heart Cut Ring",
+      "description": "Lab-Grown Diamond Heart Cut Ring<br><br>Grade: E VS1 Ex Ex<br>Carats: 3.01<br>Certificate: IGI LG651436429<br>Setting: 18K White Gold<br>Ring Size: HK#10",
       "badge": null,
       "img": [
         {
@@ -187,8 +187,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Emerald Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "5.06ct",
-      "description": "5.06ct",
+      "specs": "Emerald Cut Ring",
+      "description": "Lab-Grown Diamond Emerald Cut Ring<br><br>Grade: E VVS2 Ex Ex<br>Carats: 5.06<br>Certificate: IGI LG674552877<br>Setting: 18K White Gold<br>Ring Size: HK#14",
       "badge": null,
       "img": [
         {
@@ -213,8 +213,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Tennis Bracelet",
       "type": "jewel",
       "category": "bracelets",
-      "specs": "11.08ct",
-      "description": "11.08ct",
+      "specs": "Round Cut Bracelet",
+      "description": "Lab-Grown Diamond Round Cut Tennis Bracelet<br><br>Carats: 11.08 (0.3 each)<br>Setting: 18K White Gold<br>Bracelet Size: 16.5cm<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -239,8 +239,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Tennis Bracelet",
       "type": "jewel",
       "category": "bracelets",
-      "specs": "9.00ct",
-      "description": "9.00ct",
+      "specs": "Round Cut Bracelet",
+      "description": "Lab-Grown Diamond Round Cut Tennis Bracelet<br><br>Carats: 9.00 (0.2 each)<br>Setting: 18K White Gold<br>Bracelet Size: 16.5cm<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -265,8 +265,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Half Eternity Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "3.50ct",
-      "description": "3.50ct",
+      "specs": "Round Cut Ring",
+      "description": "Lab-Grown Diamond Round Cut Half Eternity Ring<br><br>Carats: 3.50 (0.5 each)<br>Setting: 18K White Gold<br>Ring Size: HK#12.5<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -291,8 +291,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Half Eternity Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "5.68ct",
-      "description": "5.68ct",
+      "specs": "Round Cut Ring",
+      "description": "Lab-Grown Diamond Round Cut Half Eternity Ring<br><br>Carats: 5.68 (0.3 each)<br>Setting: 18K White Gold<br>Ring Size: HK#12.5<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -317,8 +317,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Emerald Cut Full Eternity Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "7.50ct",
-      "description": "7.50ct",
+      "specs": "Emerald Cut Ring",
+      "description": "Lab-Grown Diamond Emerald Cut Full Eternity Ring<br><br>Carats: 7.50 (0.4 each)<br>Setting: 18K White Gold<br>Ring Size: HK#10.5<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -343,8 +343,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Butterflies Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "3.60ct",
-      "description": "3.60ct",
+      "specs": "Flower Cut Earrings",
+      "description": "Lab-Grown Diamond Butterfly/Flower Cut Earrings<br><br>Carats: 3.60<br>Setting: 18K White Gold<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -369,8 +369,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Full Eternity Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "2.02ct",
-      "description": "2.02ct",
+      "specs": "Round Cut Ring",
+      "description": "Lab-Grown Diamond Round Cut Full Eternity Ring<br><br>Carats: 2.02 (0.1 each)<br>Setting: 18K White Gold<br>Ring Size: HK#12.5<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -395,8 +395,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Pear Cut Pendant Necklace",
       "type": "jewel",
       "category": "necklaces",
-      "specs": "1.50ct",
-      "description": "1.50ct",
+      "specs": "Pear Cut Necklace",
+      "description": "Lab-Grown Diamond Pear Cut Pendant Necklace<br><br>Grade: E VS1 Ex Ex<br>Carats: 1.50<br>Certificate: IGI LG667456762<br>Setting: 18K Rose Gold Pendant Setting",
       "badge": null,
       "img": [
         {
@@ -426,8 +426,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Flower Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "6.16ct",
-      "description": "6.16ct",
+      "specs": "Flower Cut Earrings",
+      "description": "Lab-Grown Diamond Star/Flower Cut Earrings<br><br>Carats: 6.16<br>Setting: 18K White Gold<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -452,8 +452,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut (Pair) Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "6.01ct",
-      "description": "6.01ct",
+      "specs": "Round Cut Earrings",
+      "description": "Lab-Grown Diamond Round Cut Pair Earrings<br><br>Grade: E VVS2 Ex Ex<br>Carats: 6.01 (3.01 and 3.00 each)<br>Certificates: IGI LG678596020 and IGI LG678544512<br>Setting: 18K White Gold Earrings Setting",
       "badge": null,
       "img": [
         {
@@ -483,8 +483,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut Hoop Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "5.76ct",
-      "description": "5.76ct",
+      "specs": "Round Cut Earrings",
+      "description": "Lab-Grown Diamond Round Cut Hoop Earrings<br><br>Carats: 5.76 (0.1 each)<br>Setting: 18K White Gold Earrings Setting<br><br>No individual certificates",
       "badge": null,
       "img": [
         {
@@ -504,8 +504,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Oval Cut Ring",
       "type": "jewel",
       "category": "rings",
-      "specs": "5.08ct",
-      "description": "5.08ct",
+      "specs": "Oval Cut Ring",
+      "description": "Lab-Grown Diamond Oval Cut Ring<br><br>Grade: E VS1 Ex Ex<br>Carats: 5.08<br>Certificate: IGI LG671484488<br>Setting: Platinum<br>Ring Size: HK#14",
       "badge": null,
       "img": [
         {
@@ -530,8 +530,8 @@ window.EMBEDDED_PRODUCTS = {
       "name": "Round Cut (Pair) Earrings",
       "type": "jewel",
       "category": "earrings",
-      "specs": "2.00ct",
-      "description": "2.00ct",
+      "specs": "Round Cut Earrings",
+      "description": "Lab-Grown Diamond Round Cut Pair Earrings<br><br>Grade: D VVS2 Ex Ex<br>Carats: 2.00 (1.00 each)<br>Certificates: IGI LG677563518 and IGI LG677562619<br>Setting: 18K White Gold Earrings Setting",
       "badge": null,
       "img": [
         {
@@ -560,17 +560,17 @@ window.EMBEDDED_PRODUCTS = {
   "skincare": [
     {
       "id": "skincare-001",
-      "name": "Luminance Serum",
+      "name": "K-Energy Glow Mist",
       "type": "skincare",
-      "category": "serums",
-      "specs": "Brightening vitamin C complex. Lightweight, fast-absorbing.",
-      "description": "Brightening vitamin C complex. Lightweight, fast-absorbing.",
+      "category": "toners",
+      "specs": "A moisturizing, soothing mist with Exonity Technology Biomimetic Exosomes.",
+      "description": "A moisturizing, soothing mist contains Exonity Technology Biomimetic Exosomes that provide moisture and shine to the skin with a fine spray.",
       "badge": "New In",
       "img": [
         {
           "id": "skincare-001",
           "img_id": "skincare-001-1",
-          "img_addr": ""
+          "img_addr": "skincare/1%20toner/K-Energy%20Glow%20Mist.png"
         }
       ]
     },
