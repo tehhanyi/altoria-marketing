@@ -1489,6 +1489,38 @@ ul { list-style: none; }
 .prod-card.card-hidden {
   display: none;
 }
+.product-load-sentinel {
+  min-height: 1px;
+  grid-column: 1 / -1;
+}
+.product-load-status {
+  grid-column: 1 / -1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px 0 4px;
+  color: var(--text-light);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.product-load-status.is-visible {
+  display: flex;
+}
+.product-load-status::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(201,168,76,0.35);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: productLoadSpin 0.8s linear infinite;
+}
+@keyframes productLoadSpin {
+  to { transform: rotate(360deg); }
+}
 .prod-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 30px rgba(26,26,46,0.08);
@@ -2593,66 +2625,172 @@ function placeholderArt() {
   return `<div class="placeholder-art"><span>Altiora Marketing</span></div>`;
 }
 
-function renderGrid(type) {
+const PRODUCT_GRID_BATCH_SIZE = 8;
+const productGridState = {};
+
+function escapeAttr(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function getGridColumnCount(grid) {
+  const columns = window.getComputedStyle(grid).gridTemplateColumns;
+  if (!columns || columns === 'none') return 1;
+  return columns.split(' ').filter(Boolean).length || 1;
+}
+
+function getInitialProductLimit(type) {
+  if (window.matchMedia('(max-width: 480px)').matches) return 5;
+
   const grid = document.getElementById(type + '-grid');
-  grid.innerHTML = '';
-  const items = PRODUCTS[type];
-  const isSkin = type === 'skincare';
+  return Math.max(2, getGridColumnCount(grid) * 2);
+}
 
-  items.forEach((p, i) => {
-    const card = document.createElement('div');
-    card.className = 'prod-card';
-    card.dataset.category = p.category;
-    // Choose image HTML: use product image if available, otherwise fallback to SVG
-    const imgSrc = resolveAssetUrl(p.img && p.img[0] && p.img[0].img_addr);
+function getProductsForGrid(type, filter) {
+  const items = PRODUCTS[type] || [];
+  return filter === 'all' ? items : items.filter(item => item.category === filter);
+}
 
-    const hasImg = !!imgSrc;
-    const imgInner = hasImg
-      ? `<img src="${imgSrc}" loading="lazy" alt="${p.name}" />`
-      : placeholderArt();
+function resetGridObserver(type) {
+  const state = productGridState[type];
+  if (state && state.observer) {
+    state.observer.disconnect();
+    state.observer = null;
+  }
+}
 
-    card.innerHTML = `
-      <div class="prod-img${hasImg ? ' img-loading' : ''}">
-        <div class="prod-img-inner">${imgInner}</div>
-        ${p.badge ? `<div class="prod-badge">${p.badge}</div>` : ''}
-      </div>
-      <div class="prod-info">
-        <div class="prod-cat">${p.category}</div>
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-specs">${p.specs}</div>
-      </div>
-    `;
-    card.onclick = () => openModal(p);
-    grid.appendChild(card);
+function createProductCard(product, index, isInitialBatch) {
+  const card = document.createElement('div');
+  card.className = 'prod-card';
+  card.dataset.category = product.category;
 
-    // Attach load/error handlers after DOM insertion
-    if (hasImg) {
-      const imgEl = card.querySelector('.prod-img-inner img');
-      const prodImgEl = card.querySelector('.prod-img');
-      if (imgEl) {
-        const onLoaded = () => {
-          imgEl.classList.add('img-loaded');
-          prodImgEl.classList.remove('img-loading');
-        };
-        // Already cached by browser (complete before listener attached)
-        if (imgEl.complete && imgEl.naturalWidth > 0) {
-          onLoaded();
-        } else {
-          imgEl.addEventListener('load', onLoaded, { once: true });
-          imgEl.addEventListener('error', () => {
-            prodImgEl.classList.remove('img-loading');
-            card.querySelector('.prod-img-inner').innerHTML = placeholderArt();
-          }, { once: true });
-        }
-      }
+  const imgSrc = resolveAssetUrl(product.img && product.img[0] && product.img[0].img_addr);
+  const hasImg = !!imgSrc;
+  const imageLoading = isInitialBatch ? 'eager' : 'lazy';
+  const fetchPriority = isInitialBatch && index < 2 ? 'high' : 'auto';
+  const imgInner = hasImg
+    ? `<img src="${imgSrc}" loading="${imageLoading}" decoding="async" fetchpriority="${fetchPriority}" alt="${escapeAttr(product.name)}" />`
+    : placeholderArt();
+
+  card.innerHTML = `
+    <div class="prod-img${hasImg ? ' img-loading' : ''}">
+      <div class="prod-img-inner">${imgInner}</div>
+      ${product.badge ? `<div class="prod-badge">${product.badge}</div>` : ''}
+    </div>
+    <div class="prod-info">
+      <div class="prod-cat">${product.category}</div>
+      <div class="prod-name">${product.name}</div>
+      <div class="prod-specs">${product.specs}</div>
+    </div>
+  `;
+  card.onclick = () => openModal(product);
+
+  if (hasImg) {
+    const imgEl = card.querySelector('.prod-img-inner img');
+    const prodImgEl = card.querySelector('.prod-img');
+    const onLoaded = () => {
+      imgEl.classList.add('img-loaded');
+      prodImgEl.classList.remove('img-loading');
+    };
+
+    if (imgEl.complete && imgEl.naturalWidth > 0) {
+      onLoaded();
+    } else {
+      imgEl.addEventListener('load', onLoaded, { once: true });
+      imgEl.addEventListener('error', () => {
+        prodImgEl.classList.remove('img-loading');
+        card.querySelector('.prod-img-inner').innerHTML = placeholderArt();
+      }, { once: true });
     }
+  }
 
-    // Stagger card entrance
+  return card;
+}
+
+function loadProductBatch(type, options = {}) {
+  const state = productGridState[type];
+  if (!state || state.loading || state.rendered >= state.items.length) return;
+
+  state.loading = true;
+  if (!options.initial && state.status) state.status.classList.add('is-visible');
+
+  const batchSize = options.initial
+    ? getInitialProductLimit(type)
+    : Math.max(PRODUCT_GRID_BATCH_SIZE, getGridColumnCount(state.grid) * 2);
+  const start = state.rendered;
+  const nextItems = state.items.slice(start, start + batchSize);
+  const fragment = document.createDocumentFragment();
+
+  nextItems.forEach((product, offset) => {
+    const absoluteIndex = start + offset;
+    const card = createProductCard(product, absoluteIndex, options.initial);
+    fragment.appendChild(card);
+
     setTimeout(() => {
-      card.style.transition = `opacity 0.4s ease ${i * 55}ms, transform 0.4s ease ${i * 55}ms`;
+      card.style.transition = `opacity 0.4s ease ${offset * 45}ms, transform 0.4s ease ${offset * 45}ms`;
       card.classList.add('card-visible');
-    }, 60 + i * 55);
+    }, 40 + offset * 45);
   });
+
+  state.grid.insertBefore(fragment, state.status);
+  state.rendered += nextItems.length;
+  state.loading = false;
+  if (state.status) state.status.classList.remove('is-visible');
+
+  if (state.rendered >= state.items.length) {
+    resetGridObserver(type);
+    if (state.sentinel) state.sentinel.remove();
+    if (state.status) state.status.remove();
+  }
+}
+
+function renderGrid(type, options = {}) {
+  const grid = document.getElementById(type + '-grid');
+  if (!grid) return;
+
+  const existingState = productGridState[type];
+  if (existingState && existingState.rendered > 0 && !options.reset) return;
+
+  resetGridObserver(type);
+  grid.innerHTML = '';
+
+  const filter = (productGridState[type] && productGridState[type].filter) || 'all';
+  const items = getProductsForGrid(type, filter);
+  const status = document.createElement('div');
+  const sentinel = document.createElement('div');
+
+  status.className = 'product-load-status';
+  status.textContent = 'Loading more';
+  sentinel.className = 'product-load-sentinel';
+
+  grid.append(status, sentinel);
+
+  productGridState[type] = {
+    filter,
+    grid,
+    items,
+    rendered: 0,
+    loading: false,
+    observer: null,
+    sentinel,
+    status
+  };
+
+  updateCount(type, items.length);
+  loadProductBatch(type, { initial: true });
+
+  if (productGridState[type].rendered < items.length) {
+    productGridState[type].observer = new IntersectionObserver((entries) => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        loadProductBatch(type);
+      }
+    }, { rootMargin: '700px 0px 900px', threshold: 0 });
+
+    productGridState[type].observer.observe(sentinel);
+  }
 }
 
 function setFilter(type, cat, btn) {
@@ -2662,42 +2800,18 @@ function setFilter(type, cat, btn) {
   filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  // Filter cards with animation
-  const grid = document.getElementById(type + '-grid');
-  const cards = grid.querySelectorAll('.prod-card');
-  let visibleCount = 0;
-  let animIdx = 0;
-
-  cards.forEach(card => {
-    const match = cat === 'all' || card.dataset.category === cat;
-    if (match) {
-      card.classList.remove('card-hidden');
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(12px)';
-      const delay = animIdx * 50;
-      setTimeout(() => {
-        card.style.transition = `opacity 0.35s ease ${delay}ms, transform 0.35s ease ${delay}ms`;
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, 20);
-      animIdx++;
-      visibleCount++;
-    } else {
-      card.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-      card.style.opacity = '0';
-      card.style.transform = 'scale(0.96)';
-      setTimeout(() => card.classList.add('card-hidden'), 200);
-    }
-  });
-
-  updateCount(type, visibleCount);
+  productGridState[type] = productGridState[type] || {};
+  productGridState[type].filter = cat;
+  renderGrid(type, { reset: true });
 }
 
 function updateCount(type, count) {
   const singularType = type.endsWith('s') ? type.slice(0, -1) : type;
   const el = document.getElementById(type + '-count') || document.getElementById(singularType + '-count');
   if (!el) return;
-  const total = count !== undefined ? count : PRODUCTS[type].length;
+  const total = count !== undefined
+    ? count
+    : (productGridState[type] && productGridState[type].items ? productGridState[type].items.length : PRODUCTS[type].length);
   el.textContent = total + ' item' + (total !== 1 ? 's' : '');
 }
 
